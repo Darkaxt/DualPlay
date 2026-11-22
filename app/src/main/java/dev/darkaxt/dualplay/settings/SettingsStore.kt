@@ -12,6 +12,9 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
 
+/** Folder of the bundled presets under `files/shaders`. */
+const val BUILTIN_SHADERS = "builtin"
+
 /** One setting: a frontend setting (key prefix `dualplay_`) or a core option reported by the core. */
 data class OptionInfo(
     val key: String,
@@ -61,10 +64,42 @@ object Frontend {
  * - `catalog/<core>.json`: the core's options as last reported by the core (labels, values, defaults).
  * The core's pinned options ([CoreSpec.options]) are locked and override every layer.
  */
-class SettingsStore(context: Context) {
+class SettingsStore(private val context: Context) {
 
     private val root = File(context.filesDir, "settings")
     private val shaderRoot = File(context.filesDir, "shaders")
+
+    init {
+        installBuiltinShaders()
+    }
+
+    /**
+     * Copies the bundled presets (`assets/shaders/builtin`, licences in its LICENSES.md) to
+     * `files/shaders/builtin` once per installed APK. User presets elsewhere under `files/shaders` stay.
+     */
+    private fun installBuiltinShaders() {
+        synchronized(SettingsStore::class.java) {
+            val stamp = context.packageManager.getPackageInfo(context.packageName, 0).lastUpdateTime.toString()
+            val dir = File(shaderRoot, BUILTIN_SHADERS)
+            val stampFile = File(dir, ".installed")
+            if (stampFile.isFile && stampFile.readText() == stamp) return
+            dir.deleteRecursively()
+            val count = copyAssets("shaders/$BUILTIN_SHADERS", dir)
+            stampFile.writeText(stamp)
+            Log.i(GameActivity.TAG, "builtin shaders installed files=$count")
+        }
+    }
+
+    private fun copyAssets(path: String, target: File): Int {
+        val children = context.assets.list(path).orEmpty()
+        if (children.isEmpty()) {
+            target.parentFile?.mkdirs()
+            context.assets.open(path).use { input -> target.outputStream().use { input.copyTo(it) } }
+            return 1
+        }
+        target.mkdirs()
+        return children.sumOf { copyAssets("$path/$it", File(target, it)) }
+    }
 
     /** Slang presets under `files/shaders`, as paths relative to it. */
     fun shaderPresets(): List<String> =

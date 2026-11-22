@@ -1,0 +1,139 @@
+# Stage 3C Thor evidence (AYN Thor bfa98654), 2026-11-22
+
+## b19
+# install exit 0
+# wake exit 0
+# reset-settings exit 0
+# g-start exit 0
+# g-cap exit 0
+# g-pull exit 0
+# g-rm exit 0
+# g-rest exit 0
+# g-log exit 0
+11-22 14:16:22.229 I/DualPlay(28166): autoLaunch 'Advance Wars (USA)' -> /storage/75D7-DC5F/Roms/gba/Advance Wars (USA).7z
+11-22 14:16:22.340 I/DualPlay(28166): lifecycle create n=1 task=2438 restored=false display=0 orientation=2 size=833x444dp
+11-22 14:16:22.354 I/DualPlay(28166): builtin shaders installed files=24
+11-22 14:16:22.359 I/DualPlay(28166): settings launch dualplay_shader=builtin/lcd-sameboy.slangp(game) dualplay_rewind=off(default) dualplay_rewind_mb=64(default) dualplay_runahead=0(default) dualplay_ff_speed=3(default) dualplay_achievements=off(default)
+11-22 14:16:22.602 I/DualPlay(28166): shader preset /data/user/0/dev.darkaxt.dualplay/files/shaders/builtin/lcd-sameboy.slangp exists=true
+11-22 14:16:22.602 I/DualPlay(28166): runtime config rewindMb=0 interval=1 runahead=0 rewindTest=0
+11-22 14:16:22.602 I/DualPlay(28166): runtime periodic frame=4 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=1084 runAhead=0 rewinding=0 encodeUs=0 shaderUs=0 bottomShaderUs=0
+11-22 14:16:25.626 I/DualPlay(28166): settings selfTest dualplay_shader=builtin/lcd-sameboy.slangp(game) dualplay_rewind=off(default) dualplay_rewind_mb=64(default) dualplay_runahead=0(default) dualplay_ff_speed=3(default) dualplay_achievements=off(default)
+11-22 14:16:27.635 I/DualPlay(28166): runtime periodic frame=298 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=574 runAhead=0 rewinding=0 encodeUs=0 shaderUs=99 bottomShaderUs=0
+11-22 14:16:32.663 I/DualPlay(28166): runtime periodic frame=598 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=932 runAhead=0 rewinding=0 encodeUs=0 shaderUs=113 bottomShaderUs=0
+11-22 14:16:37.688 I/DualPlay(28166): runtime periodic frame=898 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=527 runAhead=0 rewinding=0 encodeUs=0 shaderUs=70 bottomShaderUs=0
+11-22 14:16:38.250 I/DualPlay(28166): lifecycle destroy finishing=true changingConfig=false
+# g-stop exit 0
+# d-start exit 0
+# d-cap exit 0
+# d-pull exit 0
+# d-rm exit 0
+# d-capb exit 0
+# d-pullb exit 0
+# d-rmb exit 0
+# d-rest exit 0
+# d-log exit 0
+11-22 14:16:43.107 I/DualPlay(29019): autoLaunch 'Zoo Keeper (USA)' -> /storage/75D7-DC5F/Roms/nds/0034 - Zoo Keeper (USA).7z
+11-22 14:16:43.199 I/DualPlay(29019): lifecycle create n=1 task=2439 restored=false display=0 orientation=2 size=833x444dp
+11-22 14:16:43.210 I/DualPlay(29019): settings launch dualplay_shader=builtin/crt-lottes-fast.slangp(game) dualplay_rewind=off(default) dualplay_rewind_mb=64(default) dualplay_runahead=0(default) dualplay_ff_speed=3(default) dualplay_achievements=off(default) melonds_number_of_screen_layouts=1(locked) melonds_screen_layout1=top-bottom(locked) melonds_screen_gap=0(locked) melonds_show_cursor=disabled(locked)
+11-22 14:16:43.451 I/DualPlay(29019): shader preset /data/user/0/dev.darkaxt.dualplay/files/shaders/builtin/crt-lottes-fast.slangp exists=true
+11-22 14:16:43.451 I/DualPlay(29019): runtime config rewindMb=0 interval=1 runahead=0 rewindTest=0
+11-22 14:16:43.451 I/DualPlay(29019): runtime periodic frame=1 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=22111 runAhead=0 rewinding=0 encodeUs=0 shaderUs=0 bottomShaderUs=0
+11-22 14:16:46.494 I/DualPlay(29019): settings selfTest dualplay_shader=builtin/crt-lottes-fast.slangp(game) dualplay_rewind=off(default) dualplay_rewind_mb=64(default) dualplay_runahead=0(default) dualplay_ff_speed=3(default) dualplay_achievements=off(default) melonds_number_of_screen_layouts=1(locked) melonds_screen_gap=0(locked) melonds_screen_layout1=top-bottom(locked) melonds_show_cursor=disabled(locked)
+11-22 14:16:48.459 I/DualPlay(29019): runtime periodic frame=294 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=2048 runAhead=0 rewinding=0 encodeUs=0 shaderUs=96 bottomShaderUs=51
+11-22 14:16:53.481 I/DualPlay(29019): runtime periodic frame=594 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=3114 runAhead=0 rewinding=0 encodeUs=0 shaderUs=77 bottomShaderUs=84
+11-22 14:16:58.502 I/DualPlay(29019): runtime periodic frame=895 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=2428 runAhead=0 rewinding=0 encodeUs=0 shaderUs=96 bottomShaderUs=66
+11-22 14:17:02.144 I/DualPlay(29019): lifecycle destroy finishing=true changingConfig=false
+# d-stop exit 0
+# home-start exit 0
+# home-cap exit 0
+# home-pull exit 0
+# home-rm exit 0
+# home-stop exit 0
+# acc-start exit 0
+# acc-cap exit 0
+# acc-pull exit 0
+# acc-rm exit 0
+# acc-log exit 0
+# acc-stop exit 0
+# builtin exit 0
+# reset-after exit 0
+# files exit 0
+# sleep exit 0
+
+## b20
+# install exit 0
+# wake exit 0
+# reset-settings exit 0
+# d-start exit 0
+# d-cap exit 0
+# d-pull exit 0
+# d-rm exit 0
+# d-capb exit 0
+# d-pullb exit 0
+# d-rmb exit 0
+# d-rest exit 0
+# d-log exit 0
+11-22 14:19:30.491 I/DualPlay(30731): lifecycle create n=1 task=2442 restored=false display=0 orientation=2 size=833x444dp
+11-22 14:19:30.772 I/DualPlay(30731): runtime periodic frame=1 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=32098 runAhead=0 rewinding=0 encodeUs=0 shaderUs=0 bottomShaderUs=0
+11-22 14:19:33.799 I/DualPlay(30731): selfTest step=shader:builtin/crt-geom.slangp frame=184
+11-22 14:19:33.803 I/DualPlay(30731): setting changed dualplay_shader=builtin/crt-geom.slangp live=true
+11-22 14:19:35.806 I/DualPlay(30731): runtime periodic frame=184 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=4 runAhead=0 rewinding=0 encodeUs=0 shaderUs=88 bottomShaderUs=60
+11-22 14:19:36.810 I/DualPlay(30731): selfTest step=wait frame=184
+11-22 14:19:39.824 I/DualPlay(30731): selfTest step=wait frame=184
+11-22 14:19:40.829 I/DualPlay(30731): runtime periodic frame=184 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=11 runAhead=0 rewinding=0 encodeUs=0 shaderUs=190 bottomShaderUs=158
+11-22 14:19:42.836 I/DualPlay(30731): selfTest step=wait frame=184
+11-22 14:19:45.852 I/DualPlay(30731): runtime periodic frame=184 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=11 runAhead=0 rewinding=0 encodeUs=0 shaderUs=223 bottomShaderUs=166
+11-22 14:19:45.852 I/DualPlay(30731): selfTest step=quit frame=184
+11-22 14:19:46.455 I/DualPlay(30731): lifecycle destroy finishing=true changingConfig=false
+# d-stop exit 0
+# g-start exit 0
+# g-cap exit 0
+# g-pull exit 0
+# g-rm exit 0
+# g-rest exit 0
+# g-log exit 0
+11-22 14:19:55.161 I/DualPlay(31367): lifecycle create n=1 task=2443 restored=false display=0 orientation=2 size=833x444dp
+11-22 14:19:55.397 I/DualPlay(31367): runtime periodic frame=5 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=1065 runAhead=0 rewinding=0 encodeUs=0 shaderUs=0 bottomShaderUs=0
+11-22 14:19:58.427 I/DualPlay(31367): selfTest step=shader:builtin/color-gba.slangp frame=186
+11-22 14:19:58.434 I/DualPlay(31367): setting changed dualplay_shader=builtin/color-gba.slangp live=true
+11-22 14:20:00.435 I/DualPlay(31367): runtime periodic frame=186 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=4 runAhead=0 rewinding=0 encodeUs=0 shaderUs=92 bottomShaderUs=0
+11-22 14:20:01.440 I/DualPlay(31367): selfTest step=wait frame=186
+11-22 14:20:04.455 I/DualPlay(31367): selfTest step=shader:none frame=186
+11-22 14:20:04.459 I/DualPlay(31367): setting changed dualplay_shader= live=true
+11-22 14:20:05.460 I/DualPlay(31367): runtime periodic frame=186 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=2 runAhead=0 rewinding=0 encodeUs=0 shaderUs=0 bottomShaderUs=0
+11-22 14:20:07.473 I/DualPlay(31367): selfTest step=wait frame=186
+11-22 14:20:10.489 I/DualPlay(31367): runtime periodic frame=186 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=8 runAhead=0 rewinding=0 encodeUs=0 shaderUs=0 bottomShaderUs=0
+11-22 14:20:10.489 I/DualPlay(31367): selfTest step=quit frame=186
+11-22 14:20:11.058 I/DualPlay(31367): lifecycle destroy finishing=true changingConfig=false
+# g-stop exit 0
+# builtin exit 0
+# reset-after exit 0
+# files exit 0
+# sleep exit 0
+
+## b21 (forced recreation, DS)
+# d-log exit 0
+11-22 14:46:47.449 I/DualPlay(16166): lifecycle create n=1 task=2445 restored=false display=0 orientation=2 size=833x444dp
+11-22 14:46:47.913 I/DualPlay(16166): runtime periodic frame=10 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=5704 runAhead=0 rewinding=0 encodeUs=0 shaderUs=0 bottomShaderUs=0
+11-22 14:46:50.945 I/DualPlay(16166): selfTest step=shader:builtin/crt-lottes-fast.slangp frame=191
+11-22 14:46:50.976 I/DualPlay(16166): setting changed dualplay_shader=builtin/crt-lottes-fast.slangp live=true
+11-22 14:46:51.319 I/libretrodroid(16166): ShaderPreset: loaded /data/user/0/dev.darkaxt.dualplay/files/shaders/builtin/crt-lottes-fast.slangp in 331 ms
+11-22 14:46:51.383 I/libretrodroid(16166): ShaderPreset: loaded /data/user/0/dev.darkaxt.dualplay/files/shaders/builtin/crt-lottes-fast.slangp in 46 ms
+11-22 14:46:52.962 I/DualPlay(16166): runtime periodic frame=192 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=10 runAhead=0 rewinding=0 encodeUs=0 shaderUs=280 bottomShaderUs=198
+11-22 14:46:53.977 I/DualPlay(16166): selfTest step=wait frame=192
+11-22 14:46:56.996 I/DualPlay(16166): selfTest step=recreate frame=192
+11-22 14:46:57.153 I/DualPlay(16166): lifecycle handover state bytes=19228045 session=0 pending=1
+11-22 14:46:57.225 I/DualPlay(16166): lifecycle destroy finishing=false changingConfig=true
+11-22 14:46:57.253 I/DualPlay(16166): lifecycle create n=2 task=2445 restored=true configDiff=0x0 display=0 orientation=2 size=833x444dp
+11-22 14:46:57.590 I/libretrodroid(16166): ShaderPreset: loaded /data/user/0/dev.darkaxt.dualplay/files/shaders/builtin/crt-lottes-fast.slangp in 48 ms
+11-22 14:46:57.659 I/libretrodroid(16166): ShaderPreset: loaded /data/user/0/dev.darkaxt.dualplay/files/shaders/builtin/crt-lottes-fast.slangp in 63 ms
+11-22 14:46:57.794 I/DualPlay(16166): lifecycle resume state ok=true
+11-22 14:46:57.835 I/DualPlay(16166): shader preset /data/user/0/dev.darkaxt.dualplay/files/shaders/builtin/crt-lottes-fast.slangp exists=true
+11-22 14:46:57.836 I/DualPlay(16166): runtime periodic frame=11 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=9627 runAhead=0 rewinding=0 encodeUs=0 shaderUs=393 bottomShaderUs=118
+11-22 14:46:57.914 I/libretrodroid(16166): ShaderPreset: loaded /data/user/0/dev.darkaxt.dualplay/files/shaders/builtin/crt-lottes-fast.slangp in 73 ms
+11-22 14:46:58.017 I/libretrodroid(16166): ShaderPreset: loaded /data/user/0/dev.darkaxt.dualplay/files/shaders/builtin/crt-lottes-fast.slangp in 102 ms
+11-22 14:47:02.881 I/DualPlay(16166): runtime periodic frame=305 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=9174 runAhead=0 rewinding=0 encodeUs=0 shaderUs=251 bottomShaderUs=145
+11-22 14:47:07.893 I/DualPlay(16166): runtime periodic frame=605 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=10726 runAhead=0 rewinding=0 encodeUs=0 shaderUs=265 bottomShaderUs=137
+11-22 14:47:12.907 I/DualPlay(16166): runtime periodic frame=905 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=3356 runAhead=0 rewinding=0 encodeUs=0 shaderUs=122 bottomShaderUs=135
+11-22 14:47:17.955 I/DualPlay(16166): runtime periodic frame=1207 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=1854 runAhead=0 rewinding=0 encodeUs=0 shaderUs=94 bottomShaderUs=50
+# resume-left exit 0

@@ -3,9 +3,9 @@
  */
 package dev.darkaxt.dualplay
 
-import android.os.Build
 import android.util.Log
 import com.swordfish.libretrodroid.LibretroDroid
+import dev.darkaxt.dualplay.ra.RaAccount
 import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
@@ -19,12 +19,11 @@ import java.util.concurrent.Executors
 class RetroAchievementsBridge(
     appVersion: String,
     private val onEvent: (event: Int, value: Long, text: String) -> Unit = { event, value, text ->
-        Log.i(GameActivity.TAG, "rcheevos ${eventName(event)} value=$value text=${text.replace('\n', '|')}")
+        Log.i(GameActivity.TAG, "rcheevos ${eventName(event)} value=$value text=${loggable(event, text)}")
     },
 ) : LibretroDroid.AchievementsListener {
 
-    private val userAgent =
-        "DualPlay/$appVersion (Android ${Build.VERSION.RELEASE}) ${LibretroDroid.achievementsUserAgentClause()}"
+    private val userAgent = RaAccount.userAgent(appVersion)
     private val http: ExecutorService = Executors.newSingleThreadExecutor { runnable ->
         Thread(runnable, "DualPlay-RA-HTTP").apply { isDaemon = true }
     }
@@ -73,6 +72,10 @@ class RetroAchievementsBridge(
     companion object {
         /** RC_API_SERVER_RESPONSE_RETRYABLE_CLIENT_ERROR */
         private const val RETRYABLE_CLIENT_ERROR = -2
+
+        /** Event text safe for logcat: a login reports "user\ntoken", so only the user is kept. */
+        fun loggable(event: Int, text: String): String =
+            if (event == 3) text.substringBefore('\n') + (if ('\n' in text) "|<token>" else "") else text.replace('\n', '|')
 
         fun eventName(event: Int): String = when (event) {
             0 -> "log"

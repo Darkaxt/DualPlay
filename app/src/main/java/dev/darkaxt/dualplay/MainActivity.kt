@@ -47,6 +47,14 @@ import dev.darkaxt.dualplay.ui.rememberInitialFocus
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import dev.darkaxt.dualplay.ra.RaAccount
 import java.io.File
 
 /**
@@ -65,6 +73,7 @@ class MainActivity : ComponentActivity() {
         data object Systems : Screen
         data class Games(val system: GameSystem) : Screen
         data class CoreSettings(val core: CoreSpec) : Screen
+        data object Account : Screen
         data class Extracting(val entry: RomEntry, val bytes: Long, val error: String? = null) : Screen
     }
 
@@ -84,8 +93,10 @@ class MainActivity : ComponentActivity() {
             val requested = intent.getStringExtra("screen").orEmpty()
             GameSystem.byFolder(requested)?.let { screen = Screen.Games(it) }
             CoreRegistry.byId(requested.removePrefix("settings:"))?.let { screen = Screen.CoreSettings(it) }
+            if (requested == "account") screen = Screen.Account
             pendingAutoLaunch = intent.getStringExtra("autoLaunch")
         }
+        loadAccount()
         setContent { DualPlayTheme { Root() } }
     }
 
@@ -96,6 +107,10 @@ class MainActivity : ComponentActivity() {
             hasAccess = access
             if (access) rescan()
         }
+    }
+
+    private fun loadAccount() {
+        lifecycleScope.launch { raUser = withContext(Dispatchers.IO) { RaAccount(this@MainActivity).load()?.user } }
     }
 
     private fun rescan() {
@@ -160,6 +175,7 @@ class MainActivity : ComponentActivity() {
                     Screen.Systems -> SystemsScreen()
                     is Screen.Games -> GamesScreen(current.system)
                     is Screen.CoreSettings -> CoreSettingsScreen(current.core)
+                    Screen.Account -> AccountScreen()
                     is Screen.Extracting -> ExtractingScreen(current)
                 }
             }
@@ -213,6 +229,9 @@ class MainActivity : ComponentActivity() {
                 val core = CoreRegistry.all[index]
                 MenuRow(core.label, detail = core.system.uppercase()) { screen = Screen.CoreSettings(core) }
             }
+            item {
+                MenuRow("RetroAchievements", detail = raUser ?: "Not signed in") { screen = Screen.Account }
+            }
         }
     }
 
@@ -246,6 +265,75 @@ class MainActivity : ComponentActivity() {
                     ) { launch(row) }
                 }
             }
+        }
+    }
+
+    /** Signed-in RetroAchievements user name, refreshed when the account screen changes it. */
+    private var raUser by mutableStateOf<String?>(null)
+
+    @Composable
+    private fun AccountScreen() {
+        val account = remember { RaAccount(this) }
+        var user by remember { mutableStateOf("") }
+        var password by remember { mutableStateOf("") }
+        var busy by remember { mutableStateOf(false) }
+        var message by remember { mutableStateOf<String?>(null) }
+        val focus = rememberInitialFocus(raUser)
+        BackHandler { screen = Screen.Systems }
+        Header(
+            "RetroAchievements",
+            "Softcore achievements for supported games. Your password is sent once to RetroAchievements to get a " +
+                "sign-in token; only the user name and token are kept, encrypted on this device.",
+        )
+        Column(verticalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.widthIn(max = 720.dp)) {
+            val signedIn = raUser
+            if (signedIn != null) {
+                Text("Signed in as $signedIn", color = Color(0xFFE4E8E6), fontSize = 20.sp)
+                MenuRow("Sign out", Modifier.focusRequester(focus)) {
+                    account.signOut()
+                    raUser = null
+                    message = "Signed out."
+                    Log.i(TAG, "ra account signed out")
+                }
+            } else {
+                OutlinedTextField(
+                    value = user, onValueChange = { user = it.trim() }, singleLine = true,
+                    label = { Text("User name") }, modifier = Modifier.fillMaxWidth().focusRequester(focus),
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                )
+                OutlinedTextField(
+                    value = password, onValueChange = { password = it }, singleLine = true,
+                    label = { Text("Password") }, modifier = Modifier.fillMaxWidth(),
+                    visualTransformation = PasswordVisualTransformation(),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
+                )
+                MenuRow(if (busy) "Signing in…" else "Sign in") {
+                    if (busy || user.isEmpty() || password.isEmpty()) return@MenuRow
+                    busy = true
+                    message = null
+                    val name = user
+                    val secret = password
+                    lifecycleScope.launch {
+                        val result = withContext(Dispatchers.IO) {
+                            runCatching {
+                                val version = packageManager.getPackageInfo(packageName, 0).versionName ?: "dev"
+                                RaAccount.signIn(name, secret, version).also(account::save)
+                            }
+                        }
+                        password = ""
+                        busy = false
+                        result.onSuccess {
+                            raUser = it.user
+                            message = null
+                            Log.i(TAG, "ra account signed in user=${it.user}")
+                        }.onFailure {
+                            message = it.message ?: it.javaClass.simpleName
+                            Log.w(TAG, "ra account sign-in failed: ${it.javaClass.simpleName}")
+                        }
+                    }
+                }
+            }
+            message?.let { Text(it, color = Color(0xFFE0A0A0), fontSize = 16.sp) }
         }
     }
 

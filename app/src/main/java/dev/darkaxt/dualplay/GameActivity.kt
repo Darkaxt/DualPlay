@@ -4,6 +4,7 @@
 package dev.darkaxt.dualplay
 
 import android.content.pm.ApplicationInfo
+import android.content.res.Configuration
 import android.hardware.display.DisplayManager
 import android.os.Bundle
 import android.util.Log
@@ -47,6 +48,7 @@ import com.swordfish.libretrodroid.GLRetroViewData
 import com.swordfish.libretrodroid.LibretroDroid
 import com.swordfish.libretrodroid.ShaderConfig
 import com.swordfish.libretrodroid.Variable
+import dev.darkaxt.dualplay.ra.RaAccount
 import dev.darkaxt.dualplay.ui.Accent
 import dev.darkaxt.dualplay.ui.DualPlayTheme
 import dev.darkaxt.dualplay.ui.MenuRow
@@ -59,6 +61,9 @@ import dev.darkaxt.dualplay.settings.SettingsList
 import dev.darkaxt.dualplay.settings.SettingsStore
 import dev.darkaxt.dualplay.settings.Source
 import dev.darkaxt.dualplay.settings.settingsSections
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import java.io.File
 
 /**
@@ -80,7 +85,8 @@ import java.io.File
  * App-owned test extras (debuggable builds only): `rewindMb`, `rewindInterval`, `runahead`, `rewindTest`,
  * `ra`, `shader` (override settings); `testCoreSet` / `testGameSet` (`key=value,...` written to the core or
  * game layer before launch); `selfTest` (comma-separated steps, 3 s apart: `states`, `menu`, `settings`,
- * `scope`, `saveGame`, `saveCore`, `resolve`, `wait`, `quit`).
+ * `scope`, `saveGame`, `saveCore`, `shader:<preset>`, `resolve`, `wait`, `quit`, `recreate`). A recreated
+ * instance does not run them again.
  */
 class GameActivity : AppCompatActivity() {
 
@@ -96,6 +102,13 @@ class GameActivity : AppCompatActivity() {
     private lateinit var sramFile: File
     private lateinit var stateDir: File
     @Volatile private var lastSramHash: Int? = null
+    /** Set in onDestroy, also for a recreation (isFinishing stays false then), so the runtime thread stops. */
+    @Volatile private var destroyed = false
+    /** This instance's view rendered a frame (the global frame count may still be the replaced instance's). */
+    @Volatile private var firstFrame = false
+    /** A state written by the instance this one replaces (configuration change Android cannot hand over). */
+    private var resumeState: File? = null
+    private var recreated = false
 
     private val menuOpen = mutableStateOf(false)
     private val menuSlot = mutableIntStateOf(1)
@@ -127,6 +140,7 @@ class GameActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        logLifecycle(savedInstanceState)
         hideSystemBars()
 
         val rom = intent.getStringExtra("rom")?.let(::File)?.takeIf(File::canRead)
@@ -150,8 +164,13 @@ class GameActivity : AppCompatActivity() {
             parseOptions(intent.getStringExtra("testGameSet")).takeIf { it.isNotEmpty() }?.let { store.saveGame(core, title, it) }
         }
         saved.value = store.resolve(core, title)
+        restoreMap(savedInstanceState?.getBundle(STATE_SESSION), session)
+        restoreMap(savedInstanceState?.getBundle(STATE_PENDING), pending)
+        recreated = savedInstanceState != null
+        resumeState = resumeFile().takeIf { savedInstanceState?.getBoolean(STATE_RESUME) == true && it.isFile }
         logSettings("launch")
         val coreVariables = store.launchVariables(core, saved.value).associate { it.key!! to it.value!! } +
+            (session + pending).filterKeys { !Frontend.isFrontend(it) && it !in core.options } +
             parseOptions(intent.getStringExtra("opt"))
         Log.i(TAG, "Loading ${rom.absolutePath} with core ${core.id} as '$title' options $coreVariables")
 
@@ -172,6 +191,10 @@ class GameActivity : AppCompatActivity() {
 
         val view = GLRetroView(this, data)
         retroView = view
+        lifecycleScope.launch {
+            view.getGLRetroEvents().first { it is GLRetroView.GLRetroEvents.FrameRendered }
+            firstFrame = true
+        }
         lifecycle.addObserver(view)
         val menu = ComposeView(this).apply {
             isFocusable = true
@@ -494,7 +517,8 @@ class GameActivity : AppCompatActivity() {
 
     private fun startRuntime(rom: File) {
         val testing = debuggable
-        val s = saved.value
+        // Unsaved changes carried over a recreation apply on top of the saved settings.
+        val s = saved.value.let { Resolved(it.values + session + pending, it.sources) }
         val identify = (testing && intent.getBooleanExtra("ra", false)) || s.flag(Frontend.ACHIEVEMENTS)
         val rewindMb = when {
             testing && intent.hasExtra("rewindMb") -> intent.getIntExtra("rewindMb", 0)
@@ -505,12 +529,18 @@ class GameActivity : AppCompatActivity() {
         val runAhead = if (testing && intent.hasExtra("runahead")) intent.getIntExtra("runahead", 0) else s.int(Frontend.RUN_AHEAD)
         val rewindTest = if (testing) intent.getIntExtra("rewindTest", 0) else 0
         val shader = (if (testing) intent.getStringExtra("shader") else null) ?: s[Frontend.SHADER]
-        val selfTest = if (testing) intent.getStringExtra("selfTest").orEmpty().split(',').filter(String::isNotBlank) else emptyList()
+        val selfTest = if (testing && !recreated) intent.getStringExtra("selfTest").orEmpty().split(',').filter(String::isNotBlank) else emptyList()
         Thread({
             try {
-                while (LibretroDroid.getFrameCount() < 1L) {
+                while (!firstFrame) {
                     Thread.sleep(100)
-                    if (isFinishing) return@Thread
+                    if (isFinishing || destroyed) return@Thread
+                }
+                resumeState?.let { file ->
+                    val ok = retroView?.unserializeState(file.readBytes(), false) == true
+                    file.delete()
+                    resumeState = null
+                    Log.i(TAG, "lifecycle resume state ok=$ok")
                 }
                 LibretroDroid.setRewind(rewindMb * 1024L * 1024L, rewindInterval)
                 LibretroDroid.setRunAhead(runAhead)
@@ -524,6 +554,11 @@ class GameActivity : AppCompatActivity() {
                     val version = packageManager.getPackageInfo(packageName, 0).versionName ?: "dev"
                     achievements = RetroAchievementsBridge(version).also { it.install() }
                     LibretroDroid.achievementsIdentify(core.rcConsoleId(rom), rom.absolutePath)
+                    val account = RaAccount(this).load()
+                    Log.i(TAG, "rcheevos account ${if (account != null) "user=${account.user}" else "none (identify only)"}")
+                    if (account != null) {
+                        LibretroDroid.achievementsLogin(account.user.toByteArray(), ByteArray(0), account.token.toByteArray())
+                    }
                 }
                 val started = System.nanoTime()
                 var rewindPhase = 0 // 0 waiting, 1 rewinding, 2 done
@@ -532,7 +567,7 @@ class GameActivity : AppCompatActivity() {
                 var nextStep = 3_000L
                 val steps = ArrayDeque(selfTest)
                 var catalogSaved = false
-                while (!isFinishing) {
+                while (!isFinishing && !destroyed) {
                     val elapsedMs = (System.nanoTime() - started) / 1_000_000
                     if (rewindTest > 0 && rewindPhase == 0 && elapsedMs >= rewindTest * 1000L) {
                         logRuntime("before-rewind")
@@ -593,7 +628,17 @@ class GameActivity : AppCompatActivity() {
             "saveCore" -> runOnUiThread { if (pending.isNotEmpty()) commitPending(Scope.CORE) }
             "wait" -> Unit
             "quit" -> runOnUiThread { quitGame() }
-            else -> Log.w(TAG, "selfTest unknown step $step")
+            "recreate" -> runOnUiThread { recreate() }
+            // `shader:<preset>` (or `shader:none`): the Settings page's shader row, as a Left/Right press sets it.
+            else -> if (step.startsWith("shader:")) runOnUiThread {
+                openMenu()
+                menuPage.value = Page.SETTINGS
+                val option = store.frontendOptions().first { it.key == Frontend.SHADER }
+                val value = step.removePrefix("shader:").let { if (it == "none") "" else it }
+                if (value in option.values) changeSetting(option, value) else Log.w(TAG, "selfTest no preset $value")
+            } else {
+                Log.w(TAG, "selfTest unknown step $step")
+            }
         }
     }
 
@@ -622,7 +667,7 @@ class GameActivity : AppCompatActivity() {
     private fun logRuntime(label: String) {
         val s = LibretroDroid.getRuntimeStats() ?: return
         Log.i(TAG, "runtime $label frame=${LibretroDroid.getFrameCount()} rewindEntries=${s[0]} " +
-            "rewindBytes=${s[1]} captureUs=${s[2]} stepUs=${s[3]} runAhead=${s[4]} rewinding=${s[5]} encodeUs=${s.getOrNull(6)} shaderUs=${s.getOrNull(7)}")
+            "rewindBytes=${s[1]} captureUs=${s[2]} stepUs=${s[3]} runAhead=${s[4]} rewinding=${s[5]} encodeUs=${s.getOrNull(6)} shaderUs=${s.getOrNull(7)} bottomShaderUs=${s.getOrNull(8)}")
     }
 
     // ---- Secondary display ----
@@ -661,7 +706,57 @@ class GameActivity : AppCompatActivity() {
         })
     }
 
+    /**
+     * D-LIFE-1: one line per onCreate. A second instance in the same process logs which configuration
+     * fields changed since the previous one (Configuration.diff bits, see ActivityInfo.CONFIG_*).
+     */
+    private fun logLifecycle(savedInstanceState: Bundle?) {
+        val config = Configuration(resources.configuration)
+        val previous = lastConfiguration
+        createdInProcess++
+        val diff = previous?.diff(config)
+        Log.i(
+            TAG,
+            "lifecycle create n=$createdInProcess task=$taskId restored=${savedInstanceState != null}" +
+                (if (diff != null) " configDiff=0x${Integer.toHexString(diff)}" else "") +
+                " display=${display?.displayId} orientation=${config.orientation} size=${config.screenWidthDp}x${config.screenHeightDp}dp",
+        )
+        lastConfiguration = config
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        val diff = lastConfiguration?.diff(newConfig)
+        Log.i(TAG, "lifecycle configChanged (handled) diff=0x${Integer.toHexString(diff ?: 0)}")
+        lastConfiguration = Configuration(newConfig)
+    }
+
+    /**
+     * D-LIFE-1: some configuration changes cannot be declared in configChanges (an overlay change gives
+     * CONFIG_ASSETS_PATHS), so Android recreates the activity. The running game is handed over as a
+     * resume state, with the unsaved settings (session and pending); battery saves are already written in onPause.
+     */
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        if (!isChangingConfigurations || !::stateDir.isInitialized || !firstFrame) return
+        val bytes = retroView?.serializeState(false) ?: ByteArray(0)
+        if (bytes.isNotEmpty()) {
+            writeAtomically(resumeFile(), bytes)
+            outState.putBoolean(STATE_RESUME, true)
+        }
+        outState.putBundle(STATE_SESSION, Bundle().apply { session.forEach { (k, v) -> putString(k, v) } })
+        outState.putBundle(STATE_PENDING, Bundle().apply { pending.forEach { (k, v) -> putString(k, v) } })
+        Log.i(TAG, "lifecycle handover state bytes=${bytes.size} session=${session.size} pending=${pending.size}")
+    }
+
+    private fun restoreMap(bundle: Bundle?, target: MutableMap<String, String>) =
+        bundle?.keySet()?.forEach { key -> bundle.getString(key)?.let { target[key] = it } }
+
+    private fun resumeFile() = File(stateDir, "$title.resume")
+
     override fun onDestroy() {
+        destroyed = true
+        Log.i(TAG, "lifecycle destroy finishing=$isFinishing changingConfig=$isChangingConfigurations")
         achievements?.shutdown()
         achievements = null
         probe?.stop()
@@ -688,7 +783,12 @@ class GameActivity : AppCompatActivity() {
 
     companion object {
         const val TAG = "DualPlay"
+        private var createdInProcess = 0
+        private var lastConfiguration: Configuration? = null
         private const val SLOTS = 4
+        private const val STATE_RESUME = "dualplay.resume"
+        private const val STATE_SESSION = "dualplay.session"
+        private const val STATE_PENDING = "dualplay.pending"
 
         /** File-name-safe form of a game title (save and state files). */
         fun safeName(raw: String): String = raw.replace(Regex("[\\\\/:*?\"<>|\\u0000-\\u001f]"), "_").trim().ifEmpty { "game" }

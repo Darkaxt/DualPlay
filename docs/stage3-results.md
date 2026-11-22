@@ -58,3 +58,26 @@ Notes:
 - Hold L2 to rewind and hold R2 to fast-forward are implemented but need a hands-on controller check.
 
 Evidence: `docs/evidence/stage3b-thor-*.png` and `docs/evidence/stage3b-thor-b18-log.txt`.
+
+## Batch 3C: shaders, RetroAchievements sign-in, lifecycle (Thor b19/b20, emulator): implemented
+
+| Check | Result |
+| --- | --- |
+| Bundled presets | 11 licence-reviewed presets (LCD, colour, CRT) in `assets/shaders/builtin`, licences in its `LICENSES.md`. Installed once per APK: `builtin shaders installed files=24`. |
+| Preset per core/game | GBA Advance Wars with `lcd-sameboy` (game layer) loads in 173 ms, shaderUs 70–113, full speed. |
+| DS bottom screen shaded (D-SHADER-1) | Zoo Keeper with `crt-lottes-fast`: both screens shaded, shaderUs 77–96, bottomShaderUs 51–84, ~300 frames per 5 s. |
+| Shader chosen in the menu applies | selfTest `shader:builtin/crt-geom.slangp` goes through the menu's change path: `setting changed dualplay_shader=builtin/crt-geom.slangp live=true`, loaded on both surfaces (246 ms, 32 ms). GBA Kirby: `color-gba` then `none` (shaderUs back to 0). |
+| RetroAchievements sign-in screen | Launcher → Settings → RetroAchievements renders with focus on User name. Sign-in uses RA `login2`; only `{user, token}` are kept, AES-GCM with an Android Keystore key in `files/ra/account.bin`. The token is never logged. |
+| D-LIFE-1 | Root cause: a boot-time overlay change (`CONFIG_ASSETS_PATHS`) relaunched the activity. Reproduced on an API 35 emulator by toggling a cutout overlay (`configDiff=0x80000000`, n=2). With `assetsPaths` declared the same toggles give `configChanged (handled)`. A forced recreation (`selfTest recreate`) hands over a 182 KB resume state, `resume state ok=true`, and the old runtime thread stops. Thor: one `onCreate` per launch in every b16–b20 launch. |
+| Recreation on Thor (b21) | Zoo Keeper with `crt-lottes-fast` chosen in the menu (not yet saved), then `selfTest recreate`: `handover state bytes=19228045 pending=1`, n=2, `resume state ok=true` 0.6 s after destroy, preset reloaded on both surfaces, ~300 frames per 5 s afterwards. The in-game menu is closed after a recreation. |
+
+Findings:
+- **D-SHADER-2 (new).** Curvature presets bend both DS screens as one tube (see `stage3c-thor-nds-*-crt.png`).
+  Ledgered for Stage 6.
+- The Gambatte core is GPL-2.0, loaded as a separate plugin library.
+
+Still needs the user (Stage 3 acceptance): RetroAchievements sign-in and one softcore unlock (D-RA-1), the feel of
+controller navigation and the L2/R2 rewind and fast-forward hotkeys, and the DS bottom-screen tap (D-TOUCH-1).
+
+Evidence: `docs/evidence/stage3c-thor-*.png`, `docs/evidence/stage3c-thor-logs.txt` and
+`docs/evidence/stage3c-life1-emulator.txt`.

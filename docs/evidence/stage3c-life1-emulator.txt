@@ -1,0 +1,91 @@
+# D-LIFE-1 emulator evidence (google_apis x86_64 API 35, pixel_6, disposable AVD), 2026-11-22
+
+## emu3
+# waitdev exit 0
+# overlays exit 0
+[ ] com.android.internal.display.cutout.emulation.corner
+[ ] com.android.internal.display.cutout.emulation.double
+[ ] com.android.internal.display.cutout.emulation.hole
+[ ] com.android.internal.display.cutout.emulation.tall
+[ ] com.android.internal.display.cutout.emulation.emu01
+# clear exit 0
+cleared
+# launch exit 0
+# toggle exit 0
+enabled
+# log exit 0
+11-22 14:25:49.938 I/DualPlay( 3004): lifecycle create n=1 task=12 restored=false display=0 orientation=2 size=914x411dp
+11-22 14:25:50.161 I/DualPlay( 3004): Loading /data/user/0/dev.darkaxt.dualplay/files/roms/ucity.gbc with core gambatte as 'ucity' options {}
+11-22 14:26:03.179 I/DualPlay( 3004): lifecycle destroy finishing=false changingConfig=true
+11-22 14:26:03.270 I/DualPlay( 3004): lifecycle create n=2 task=12 restored=true configDiff=0x80000000 display=0 orientation=2 size=914x411dp
+11-22 14:26:03.306 I/DualPlay( 3004): Loading /data/user/0/dev.darkaxt.dualplay/files/roms/ucity.gbc with core gambatte as 'ucity' options {}
+# ev exit 0
+11-22 14:25:10.817 I/configuration_changed(  600): 512
+11-22 14:25:11.362 I/configuration_changed(  600): 268468224
+11-22 14:25:24.299 I/configuration_changed(  600): -2147483648
+11-22 14:25:25.264 I/configuration_changed(  600): 3
+11-22 14:25:48.312 I/configuration_changed(  600): 536872064
+11-22 14:25:50.472 I/wm_on_create_called( 3004): [222587075,dev.darkaxt.dualplay.GameActivity,performCreate,754]
+11-22 14:26:02.811 I/configuration_changed(  600): -2147483648
+11-22 14:26:02.901 I/wm_relaunch_resume_activity(  600): [0,222587075,12,dev.darkaxt.dualplay/.GameActivity,80000000]
+11-22 14:26:03.203 I/wm_on_destroy_called( 3004): [222587075,dev.darkaxt.dualplay.GameActivity,performDestroy,24]
+11-22 14:26:03.356 I/wm_on_create_called( 3004): [222587075,dev.darkaxt.dualplay.GameActivity,performCreate,91]
+# restore exit 0
+restored
+
+## emu4
+# waitdev exit 0
+# install exit 0
+# clear exit 0
+cleared
+# launch exit 0
+# toggle exit 0
+toggled
+# log exit 0
+11-22 14:37:59.932 I/DualPlay( 3015): lifecycle create n=1 task=14 restored=false display=0 orientation=2 size=914x411dp
+11-22 14:38:00.207 I/DualPlay( 3015): Loading /data/user/0/dev.darkaxt.dualplay/files/roms/ucity.gbc with core gambatte as 'ucity' options {}
+11-22 14:38:02.995 I/DualPlay( 3015): runtime config rewindMb=0 interval=1 runahead=0 rewindTest=0
+11-22 14:38:20.861 I/DualPlay( 3015): lifecycle configChanged (handled) diff=0x80000000
+11-22 14:38:27.317 I/DualPlay( 3015): lifecycle configChanged (handled) diff=0x80000000
+# ev exit 0
+11-22 14:37:13.817 I/configuration_changed(  608): 536894968
+11-22 14:37:15.501 I/configuration_changed(  608): 512
+11-22 14:37:15.849 I/configuration_changed(  608): 268468224
+11-22 14:37:20.455 I/configuration_changed(  608): 3
+11-22 14:37:28.520 I/configuration_changed(  608): -2147483648
+11-22 14:37:37.836 I/configuration_changed(  608): -2147483648
+11-22 14:37:58.416 I/configuration_changed(  608): 536872064
+11-22 14:38:00.453 I/wm_on_create_called( 3015): [1762480,dev.darkaxt.dualplay.GameActivity,performCreate,639]
+11-22 14:38:14.864 I/configuration_changed(  608): -2147483648
+11-22 14:38:22.891 I/configuration_changed(  608): -2147483648
+# stop exit 0
+ls: /data/user/0/dev.darkaxt.dualplay/files/states/gambatte/: Permission denied
+stopped
+
+## emu5
+# waitdev exit 0
+# install exit 0
+# clear exit 0
+cleared
+# log exit 0
+11-22 14:42:24.486 I/DualPlay( 2815): lifecycle create n=1 task=16 restored=false display=0 orientation=2 size=914x411dp
+11-22 14:42:24.906 I/DualPlay( 2815): Loading /data/user/0/dev.darkaxt.dualplay/files/roms/ucity.gbc with core gambatte as 'ucity' options {}
+11-22 14:42:24.951 I/DualPlay( 2815): sram load ucity.srm bytes=131072
+11-22 14:42:29.348 I/DualPlay( 2815): runtime config rewindMb=0 interval=1 runahead=0 rewindTest=0
+11-22 14:42:29.447 I/DualPlay( 2815): runtime periodic frame=4 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=21601 runAhead=0 rewinding=0 encodeUs=0 shaderUs=0 bottomShaderUs=0
+11-22 14:42:32.403 I/DualPlay( 2815): selfTest step=wait frame=46
+11-22 14:42:34.418 I/DualPlay( 2815): runtime periodic frame=81 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=39419 runAhead=0 rewinding=0 encodeUs=0 shaderUs=0 bottomShaderUs=0
+11-22 14:42:35.438 I/DualPlay( 2815): selfTest step=recreate frame=111
+11-22 14:42:39.063 I/DualPlay( 2815): lifecycle handover state bytes=182530 session=0
+11-22 14:42:39.128 I/DualPlay( 2815): lifecycle destroy finishing=false changingConfig=true
+11-22 14:42:39.240 I/DualPlay( 2815): lifecycle create n=2 task=16 restored=true configDiff=0x0 display=0 orientation=2 size=914x411dp
+11-22 14:42:39.332 I/DualPlay( 2815): Loading /data/user/0/dev.darkaxt.dualplay/files/roms/ucity.gbc with core gambatte as 'ucity' options {}
+11-22 14:42:39.369 I/DualPlay( 2815): sram load ucity.srm bytes=131072
+11-22 14:42:42.094 I/DualPlay( 2815): lifecycle resume state ok=true
+11-22 14:42:42.143 I/DualPlay( 2815): runtime config rewindMb=0 interval=1 runahead=0 rewindTest=0
+11-22 14:42:42.144 I/DualPlay( 2815): runtime periodic frame=2 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=45327 runAhead=0 rewinding=0 encodeUs=0 shaderUs=0 bottomShaderUs=0
+11-22 14:42:47.166 I/DualPlay( 2815): runtime periodic frame=129 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=9541 runAhead=0 rewinding=0 encodeUs=0 shaderUs=0 bottomShaderUs=0
+# files exit 0
+listed
+# stop exit 0
+stopped

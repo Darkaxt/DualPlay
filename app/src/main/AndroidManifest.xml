@@ -16,7 +16,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:configChanges="orientation|screenSize|screenLayout|keyboard|keyboardHidden|navigation|uiMode|smallestScreenSize|density"
+            android:configChanges="orientation|screenSize|screenLayout|keyboard|keyboardHidden|navigation|uiMode|smallestScreenSize|density|mcc|mnc|locale|layoutDirection|fontScale|touchscreen|colorMode|fontWeightAdjustment|grammaticalGender|assetsPaths"
             android:screenOrientation="sensorLandscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,7 +28,7 @@
         <activity
             android:name=".GameActivity"
             android:exported="true"
-            android:configChanges="orientation|screenSize|screenLayout|keyboard|keyboardHidden|navigation|uiMode|smallestScreenSize|density"
+            android:configChanges="orientation|screenSize|screenLayout|keyboard|keyboardHidden|navigation|uiMode|smallestScreenSize|density|mcc|mnc|locale|layoutDirection|fontScale|touchscreen|colorMode|fontWeightAdjustment|grammaticalGender|assetsPaths"
             android:launchMode="singleTask"
             android:screenOrientation="sensorLandscape" />
     </application>
