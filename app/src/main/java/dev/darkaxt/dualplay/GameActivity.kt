@@ -8,7 +8,9 @@ import android.hardware.display.DisplayManager
 import android.os.Bundle
 import android.util.Log
 import android.view.Display
+import android.view.InputDevice
 import android.view.KeyEvent
+import android.view.MotionEvent
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
@@ -23,7 +25,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
@@ -45,6 +50,15 @@ import com.swordfish.libretrodroid.Variable
 import dev.darkaxt.dualplay.ui.Accent
 import dev.darkaxt.dualplay.ui.DualPlayTheme
 import dev.darkaxt.dualplay.ui.MenuRow
+import dev.darkaxt.dualplay.ui.rememberInitialFocus
+import dev.darkaxt.dualplay.settings.Frontend
+import dev.darkaxt.dualplay.settings.ON
+import dev.darkaxt.dualplay.settings.OptionInfo
+import dev.darkaxt.dualplay.settings.Resolved
+import dev.darkaxt.dualplay.settings.SettingsList
+import dev.darkaxt.dualplay.settings.SettingsStore
+import dev.darkaxt.dualplay.settings.Source
+import dev.darkaxt.dualplay.settings.settingsSections
 import java.io.File
 
 /**
@@ -59,8 +73,14 @@ import java.io.File
  * Intent extras: `rom` (absolute path of a playable file), `core` (core id; default by extension), `title`
  * (save-file name; default the ROM file name), `addr` / `len` (hex bus address and byte count of the watched
  * region), `opt` (comma-separated `key=value` core options).
+ * Settings resolve game > core > defaults ([SettingsStore]). Changes made on the in-game Settings page apply
+ * at once where the core allows; leaving the page asks whether to save them for this game, for all games of
+ * the core, or for this session only. Hotkeys: hold L2 to rewind (when enabled), hold R2 to fast-forward.
+ *
  * App-owned test extras (debuggable builds only): `rewindMb`, `rewindInterval`, `runahead`, `rewindTest`,
- * `ra`, `shader`, and `selfTest` (comma-separated steps: `states`, `menu`, `quit`).
+ * `ra`, `shader` (override settings); `testCoreSet` / `testGameSet` (`key=value,...` written to the core or
+ * game layer before launch); `selfTest` (comma-separated steps, 3 s apart: `states`, `menu`, `settings`,
+ * `scope`, `saveGame`, `saveCore`, `resolve`, `wait`, `quit`).
  */
 class GameActivity : AppCompatActivity() {
 
@@ -82,6 +102,25 @@ class GameActivity : AppCompatActivity() {
     private val menuMessage = mutableStateOf<String?>(null)
     private var selectHeld = false
     private var startHeld = false
+
+    private enum class Page { MAIN, SETTINGS, SCOPE }
+    private val menuPage = mutableStateOf(Page.MAIN)
+
+    private lateinit var store: SettingsStore
+    /** Saved settings resolved for this game. */
+    private val saved = mutableStateOf(Resolved(emptyMap(), emptyMap()))
+    /** Changes kept for this session only. */
+    private val session = mutableStateMapOf<String, String>()
+    /** Changes made on the Settings page and not yet given a scope. */
+    private val pending = mutableStateMapOf<String, String>()
+
+    private val fastForward = mutableStateOf(false)
+    private var fastForwardLatched = false
+    private var ffKey = false
+    private var ffAxis = false
+    private var rewindKey = false
+    private var rewindAxis = false
+    private var rewindingNow = false
 
     private val debuggable: Boolean
         get() = applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE != 0
@@ -105,15 +144,23 @@ class GameActivity : AppCompatActivity() {
         val saves = File(filesDir, "saves/${core.id}").apply { mkdirs() }
         sramFile = File(saves, "$title.srm")
         stateDir = File(filesDir, "states/${core.id}").apply { mkdirs() }
-        val options = core.options + parseOptions(intent.getStringExtra("opt"))
-        Log.i(TAG, "Loading ${rom.absolutePath} with core ${core.id} as '$title' options $options")
+        store = SettingsStore(this)
+        if (debuggable) {
+            parseOptions(intent.getStringExtra("testCoreSet")).takeIf { it.isNotEmpty() }?.let { store.saveCore(core, it) }
+            parseOptions(intent.getStringExtra("testGameSet")).takeIf { it.isNotEmpty() }?.let { store.saveGame(core, title, it) }
+        }
+        saved.value = store.resolve(core, title)
+        logSettings("launch")
+        val coreVariables = store.launchVariables(core, saved.value).associate { it.key!! to it.value!! } +
+            parseOptions(intent.getStringExtra("opt"))
+        Log.i(TAG, "Loading ${rom.absolutePath} with core ${core.id} as '$title' options $coreVariables")
 
         val system = File(filesDir, "system").apply { mkdirs() }
         val savedRam = sramFile.takeIf(File::isFile)?.readBytes()
         lastSramHash = savedRam?.contentHashCode()
         val data = GLRetroViewData(this).apply {
             coreFilePath = core.library
-            variables = options.map { Variable(it.key, it.value) }.toTypedArray()
+            variables = coreVariables.map { Variable(it.key, it.value) }.toTypedArray()
             gameFilePath = rom.absolutePath
             systemDirectory = system.absolutePath
             savesDirectory = saves.absolutePath
@@ -151,34 +198,161 @@ class GameActivity : AppCompatActivity() {
 
     // ---- In-game menu ----
 
-    @androidx.compose.runtime.Composable
+    @Composable
     private fun InGameMenu() {
         if (!menuOpen.value) return
-        val first = androidx.compose.runtime.remember { FocusRequester() }
-        BackHandler { closeMenu() }
-        LaunchedEffect(Unit) { first.requestFocus() }
+        BackHandler { menuBack() }
+        val page = menuPage.value
         Box(Modifier.fillMaxSize().background(Color(0x99000000))) {
             Column(
-                Modifier.fillMaxHeight().width(420.dp).background(Color(0xF0101416)).padding(24.dp),
+                Modifier.fillMaxHeight().width(if (page == Page.SETTINGS) 680.dp else 440.dp)
+                    .background(Color(0xF0101416)).padding(24.dp),
                 verticalArrangement = Arrangement.spacedBy(6.dp),
             ) {
                 Text(title, color = Accent, fontSize = 18.sp, maxLines = 2)
-                Text(core.id, color = Color(0xFF9AA5A0), fontSize = 14.sp, modifier = Modifier.padding(bottom = 12.dp))
-                MenuRow("Resume", Modifier.focusRequester(first)) { closeMenu() }
-                MenuRow(
-                    "State slot", detail = menuSlot.intValue.toString(),
-                    onLeft = { menuSlot.intValue = (menuSlot.intValue + SLOTS - 2) % SLOTS + 1 },
-                    onRight = { menuSlot.intValue = menuSlot.intValue % SLOTS + 1 },
-                ) { menuSlot.intValue = menuSlot.intValue % SLOTS + 1 }
-                MenuRow("Save state", detail = stateLabel(menuSlot.intValue)) { saveState(menuSlot.intValue) }
-                MenuRow("Load state") { if (loadState(menuSlot.intValue)) closeMenu() }
-                MenuRow("Reset") { retroView?.reset(false); closeMenu() }
-                MenuRow("Quit") { quitGame() }
-                menuMessage.value?.let {
-                    Text(it, color = Color(0xFFB8C4BE), fontSize = 15.sp, modifier = Modifier.padding(top = 12.dp))
+                Text(
+                    if (page == Page.SETTINGS) "${core.label} · Settings" else core.label,
+                    color = Color(0xFF9AA5A0), fontSize = 14.sp, modifier = Modifier.padding(bottom = 8.dp),
+                )
+                menuMessage.value?.let { Text(it, color = Color(0xFFB8C4BE), fontSize = 15.sp) }
+                when (page) {
+                    Page.MAIN -> MainPage()
+                    Page.SETTINGS -> SettingsList(
+                        sections = remember { settingsSections(core, store) },
+                        values = saved.value.values + session + pending,
+                        sources = saved.value.sources,
+                        note = "Changes apply now where possible. Back to choose where to save them.",
+                        onChange = ::changeSetting,
+                    )
+                    Page.SCOPE -> ScopePage()
                 }
             }
         }
+    }
+
+    @Composable
+    private fun MainPage() {
+        val first = rememberInitialFocus()
+        MenuRow("Resume", Modifier.focusRequester(first)) { closeMenu() }
+        MenuRow(
+            "State slot", detail = menuSlot.intValue.toString(),
+            onLeft = { menuSlot.intValue = (menuSlot.intValue + SLOTS - 2) % SLOTS + 1 },
+            onRight = { menuSlot.intValue = menuSlot.intValue % SLOTS + 1 },
+        ) { menuSlot.intValue = menuSlot.intValue % SLOTS + 1 }
+        MenuRow("Save state", detail = stateLabel(menuSlot.intValue)) { saveState(menuSlot.intValue) }
+        MenuRow("Load state") { if (loadState(menuSlot.intValue)) closeMenu() }
+        MenuRow("Fast-forward", detail = if (fastForward.value) "On ×${ffSpeed()}" else "Off") {
+            fastForwardLatched = !fastForwardLatched
+            updateHotkeys()
+        }
+        MenuRow("Settings") {
+            menuMessage.value = null
+            menuPage.value = Page.SETTINGS
+        }
+        MenuRow("Reset") { retroView?.reset(false); closeMenu() }
+        MenuRow("Quit") { quitGame() }
+    }
+
+    @Composable
+    private fun ScopePage() {
+        val first = rememberInitialFocus()
+        Text(
+            "Save ${pending.size} changed setting${if (pending.size == 1) "" else "s"} for:",
+            color = Color(0xFFE4E8E6), fontSize = 18.sp, modifier = Modifier.padding(vertical = 8.dp),
+        )
+        MenuRow("This game", Modifier.focusRequester(first)) { commitPending(Scope.GAME) }
+        MenuRow("All ${core.label} games") { commitPending(Scope.CORE) }
+        MenuRow("This session only") { commitPending(Scope.SESSION) }
+    }
+
+    private enum class Scope { GAME, CORE, SESSION }
+
+    private fun menuBack() {
+        when (menuPage.value) {
+            Page.MAIN -> closeMenu()
+            Page.SETTINGS -> menuPage.value = if (pending.isEmpty()) Page.MAIN else Page.SCOPE
+            Page.SCOPE -> menuPage.value = Page.SETTINGS
+        }
+    }
+
+    private fun commitPending(scope: Scope) {
+        val changes = pending.toMap()
+        when (scope) {
+            Scope.GAME -> store.saveGame(core, title, changes)
+            Scope.CORE -> {
+                store.saveCore(core, changes)
+                // This game follows the new core-level values rather than an older game override.
+                store.clearGame(core, title, changes.keys)
+            }
+            Scope.SESSION -> session.putAll(changes)
+        }
+        pending.clear()
+        if (scope != Scope.SESSION) {
+            changes.keys.forEach(session::remove)
+            saved.value = store.resolve(core, title)
+        }
+        Log.i(TAG, "settings saved scope=${scope.name.lowercase()} " + changes.entries.joinToString(" ") { "${it.key}=${it.value}" })
+        logSettings("saved")
+        menuMessage.value = when (scope) {
+            Scope.GAME -> "Saved for this game."
+            Scope.CORE -> "Saved for all ${core.label} games."
+            Scope.SESSION -> "Kept for this session."
+        }
+        menuPage.value = Page.MAIN
+    }
+
+    private fun effective(key: String): String? = pending[key] ?: session[key] ?: saved.value[key]
+
+    private fun ffSpeed(): Int = effective(Frontend.FF_SPEED)?.toIntOrNull() ?: 3
+
+    private fun changeSetting(option: OptionInfo, value: String) {
+        pending[option.key] = value
+        when (option.key) {
+            Frontend.SHADER -> LibretroDroid.setShaderPreset(if (value.isEmpty()) "" else store.shaderFile(value).absolutePath)
+            Frontend.REWIND, Frontend.REWIND_MB -> applyRewind()
+            Frontend.RUN_AHEAD -> LibretroDroid.setRunAhead(value.toIntOrNull() ?: 0)
+            Frontend.FF_SPEED -> if (fastForward.value) retroView?.frameSpeed = ffSpeed()
+            else -> if (!option.restart) retroView?.updateVariables(Variable(option.key, value))
+        }
+        menuMessage.value = if (option.restart) "${option.label.replace(" (Restart)", "")}: applies on the next launch." else null
+        Log.i(TAG, "setting changed ${option.key}=$value live=${!option.restart}")
+    }
+
+    private fun applyRewind() {
+        val on = effective(Frontend.REWIND) == ON
+        val mb = effective(Frontend.REWIND_MB)?.toIntOrNull() ?: 64
+        LibretroDroid.setRewind(if (on) mb * 1024L * 1024L else 0L, 1)
+    }
+
+    private fun logSettings(label: String) {
+        val r = saved.value
+        val keys = r.values.keys.filter { Frontend.isFrontend(it) || r.sources[it] != Source.DEFAULT }
+        Log.i(TAG, "settings $label " + keys.joinToString(" ") { "$it=${r.values[it]}(${r.sources[it]?.name?.lowercase()})" })
+    }
+
+    // ---- Hotkeys: hold L2 to rewind, hold R2 to fast-forward (buttons or analog triggers) ----
+
+    private fun updateHotkeys() {
+        val rewind = rewindKey || rewindAxis
+        if (rewind != rewindingNow) {
+            rewindingNow = rewind
+            LibretroDroid.setRewinding(rewind)
+        }
+        val ff = ffKey || ffAxis || fastForwardLatched
+        if (ff != fastForward.value) {
+            fastForward.value = ff
+            retroView?.frameSpeed = if (ff) ffSpeed() else 1
+            Log.i(TAG, "fast-forward ${if (ff) "x${ffSpeed()}" else "off"}")
+        }
+    }
+
+    override fun dispatchGenericMotionEvent(event: MotionEvent): Boolean {
+        if (!menuOpen.value && retroView != null && event.isFromSource(InputDevice.SOURCE_JOYSTICK)) {
+            rewindAxis = maxOf(event.getAxisValue(MotionEvent.AXIS_LTRIGGER), event.getAxisValue(MotionEvent.AXIS_BRAKE)) > 0.6f
+            ffAxis = maxOf(event.getAxisValue(MotionEvent.AXIS_RTRIGGER), event.getAxisValue(MotionEvent.AXIS_GAS)) > 0.6f
+            updateHotkeys()
+        }
+        return super.dispatchGenericMotionEvent(event)
     }
 
     private fun stateLabel(slot: Int): String {
@@ -191,6 +365,12 @@ class GameActivity : AppCompatActivity() {
         if (menuOpen.value || retroView == null) return
         LibretroDroid.setPaused(true)
         menuMessage.value = null
+        menuPage.value = Page.MAIN
+        rewindKey = false
+        rewindAxis = false
+        ffKey = false
+        ffAxis = false
+        updateHotkeys()
         menuOpen.value = true
         // The game view holds input focus; hand it to the overlay so the first row shows focus.
         menuView?.requestFocus()
@@ -285,6 +465,16 @@ class GameActivity : AppCompatActivity() {
                 if (event.action == KeyEvent.ACTION_UP) openMenu()
                 return true
             }
+            KeyEvent.KEYCODE_BUTTON_L2 -> {
+                rewindKey = event.action == KeyEvent.ACTION_DOWN
+                updateHotkeys()
+                return true
+            }
+            KeyEvent.KEYCODE_BUTTON_R2 -> {
+                ffKey = event.action == KeyEvent.ACTION_DOWN
+                updateHotkeys()
+                return true
+            }
             KeyEvent.KEYCODE_BUTTON_SELECT -> selectHeld = event.action == KeyEvent.ACTION_DOWN
             KeyEvent.KEYCODE_BUTTON_START -> startHeld = event.action == KeyEvent.ACTION_DOWN
         }
@@ -304,12 +494,17 @@ class GameActivity : AppCompatActivity() {
 
     private fun startRuntime(rom: File) {
         val testing = debuggable
-        val identify = testing && intent.getBooleanExtra("ra", false)
-        val rewindMb = if (testing) intent.getIntExtra("rewindMb", 0) else 0
+        val s = saved.value
+        val identify = (testing && intent.getBooleanExtra("ra", false)) || s.flag(Frontend.ACHIEVEMENTS)
+        val rewindMb = when {
+            testing && intent.hasExtra("rewindMb") -> intent.getIntExtra("rewindMb", 0)
+            s.flag(Frontend.REWIND) -> s.int(Frontend.REWIND_MB)
+            else -> 0
+        }
         val rewindInterval = intent.getIntExtra("rewindInterval", 1)
-        val runAhead = if (testing) intent.getIntExtra("runahead", 0) else 0
+        val runAhead = if (testing && intent.hasExtra("runahead")) intent.getIntExtra("runahead", 0) else s.int(Frontend.RUN_AHEAD)
         val rewindTest = if (testing) intent.getIntExtra("rewindTest", 0) else 0
-        val shader = if (testing) intent.getStringExtra("shader") else null
+        val shader = (if (testing) intent.getStringExtra("shader") else null) ?: s[Frontend.SHADER]
         val selfTest = if (testing) intent.getStringExtra("selfTest").orEmpty().split(',').filter(String::isNotBlank) else emptyList()
         Thread({
             try {
@@ -320,7 +515,7 @@ class GameActivity : AppCompatActivity() {
                 LibretroDroid.setRewind(rewindMb * 1024L * 1024L, rewindInterval)
                 LibretroDroid.setRunAhead(runAhead)
                 if (!shader.isNullOrEmpty()) {
-                    val preset = File(File(filesDir, "shaders"), shader)
+                    val preset = store.shaderFile(shader)
                     Log.i(TAG, "shader preset ${preset.absolutePath} exists=${preset.isFile}")
                     LibretroDroid.setShaderPreset(preset.absolutePath)
                 }
@@ -336,6 +531,7 @@ class GameActivity : AppCompatActivity() {
                 var nextSram = 30_000L
                 var nextStep = 3_000L
                 val steps = ArrayDeque(selfTest)
+                var catalogSaved = false
                 while (!isFinishing) {
                     val elapsedMs = (System.nanoTime() - started) / 1_000_000
                     if (rewindTest > 0 && rewindPhase == 0 && elapsedMs >= rewindTest * 1000L) {
@@ -350,6 +546,10 @@ class GameActivity : AppCompatActivity() {
                     if (elapsedMs >= nextLog) {
                         logRuntime("periodic")
                         nextLog = elapsedMs + 5000L
+                    }
+                    if (!catalogSaved && elapsedMs >= 1_000L) {
+                        saveCatalog()
+                        catalogSaved = true
                     }
                     if (elapsedMs >= nextSram) {
                         persistSram("periodic")
@@ -378,9 +578,45 @@ class GameActivity : AppCompatActivity() {
                 Log.i(TAG, "selfTest states saved=$saved loaded=$loaded savedAtFrame=$savedAt loadedAtFrame=$beforeLoad")
             }
             "menu" -> runOnUiThread { openMenu() }
+            "settings" -> runOnUiThread {
+                openMenu()
+                menuPage.value = Page.SETTINGS
+            }
+            "scope" -> runOnUiThread { scopeSelfTest() }
+            "resolve" -> {
+                logSettings("selfTest")
+                val layered = retroView?.getVariables().orEmpty()
+                    .filter { saved.value.sources[it.key] == Source.CORE || saved.value.sources[it.key] == Source.GAME }
+                Log.i(TAG, "selfTest core reports " + layered.joinToString(" ") { "${it.key}=${it.value}" })
+            }
+            "saveGame" -> runOnUiThread { if (pending.isNotEmpty()) commitPending(Scope.GAME) }
+            "saveCore" -> runOnUiThread { if (pending.isNotEmpty()) commitPending(Scope.CORE) }
+            "wait" -> Unit
             "quit" -> runOnUiThread { quitGame() }
             else -> Log.w(TAG, "selfTest unknown step $step")
         }
+    }
+
+    /** Changes the first live core option to its next value and leaves the Settings page (scope prompt). */
+    private fun scopeSelfTest() {
+        openMenu()
+        menuPage.value = Page.SETTINGS
+        val option = settingsSections(core, store).flatMap { it.options }
+            .firstOrNull { !Frontend.isFrontend(it.key) && !it.restart } ?: return
+        val current = effective(option.key) ?: option.default
+        val next = option.values[(option.values.indexOf(current) + 1) % option.values.size]
+        Log.i(TAG, "selfTest scope change ${option.key} $current -> $next")
+        changeSetting(option, next)
+        menuBack()
+    }
+
+    /** Records the options the core reports (labels, values, defaults) for the settings menus. */
+    private fun saveCatalog() {
+        val variables = retroView?.getVariables() ?: return
+        val count = store.saveCatalog(core, variables)
+        saved.value = store.resolve(core, title)
+        Log.i(TAG, "catalog ${core.id} options=$count curated " + variables.filter { it.key in core.curatedOptions }
+            .joinToString(" ") { "${it.key}=${it.value}" })
     }
 
     private fun logRuntime(label: String) {

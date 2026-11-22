@@ -17,10 +17,15 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.input.InputMode
+import androidx.compose.ui.platform.LocalInputModeManager
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEventType
@@ -41,6 +46,22 @@ private val Scheme = darkColorScheme(
     onBackground = Color(0xFFE4E8E6),
     onSurface = Color(0xFFE4E8E6),
 )
+
+/**
+ * A requester focused once the screen is shown (again when [keys] change). Controller-first: it leaves touch
+ * mode first, because `clickable` rows can only take focus outside touch mode.
+ */
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+fun rememberInitialFocus(vararg keys: Any?): FocusRequester {
+    val requester = remember { FocusRequester() }
+    val inputMode = LocalInputModeManager.current
+    LaunchedEffect(*keys) {
+        inputMode.requestInputMode(InputMode.Keyboard)
+        runCatching { requester.requestFocus() }
+    }
+    return requester
+}
 
 @Composable
 fun DualPlayTheme(content: @Composable () -> Unit) = MaterialTheme(colorScheme = Scheme, content = content)

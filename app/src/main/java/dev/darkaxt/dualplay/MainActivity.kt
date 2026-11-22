@@ -34,12 +34,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.lifecycleScope
 import dev.darkaxt.dualplay.library.GameSystem
+import dev.darkaxt.dualplay.settings.SettingsList
+import dev.darkaxt.dualplay.settings.SettingsStore
+import dev.darkaxt.dualplay.settings.settingsSections
 import dev.darkaxt.dualplay.library.RomEntry
 import dev.darkaxt.dualplay.library.RomLibrary
 import dev.darkaxt.dualplay.library.RomResolver
 import dev.darkaxt.dualplay.ui.Accent
 import dev.darkaxt.dualplay.ui.DualPlayTheme
 import dev.darkaxt.dualplay.ui.MenuRow
+import dev.darkaxt.dualplay.ui.rememberInitialFocus
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -49,7 +53,10 @@ import java.io.File
  * Controller-first launcher on the top display: storage access → systems with game counts → games grouped by
  * subfolder → extraction (archives) → [GameActivity].
  *
- * App-owned test extras (debuggable builds only): `screen=<system folder>` opens that system's list;
+ * Core settings (from the systems screen) are saved at core level for all games of that core.
+ *
+ * App-owned test extras (debuggable builds only): `screen=<system folder>` opens that system's list, and
+ * `screen=settings:<core id>` that core's settings;
  * `autoLaunch=<substring>` launches the first game whose file name contains it (within `screen` if given).
  */
 class MainActivity : ComponentActivity() {
@@ -57,6 +64,7 @@ class MainActivity : ComponentActivity() {
     private sealed interface Screen {
         data object Systems : Screen
         data class Games(val system: GameSystem) : Screen
+        data class CoreSettings(val core: CoreSpec) : Screen
         data class Extracting(val entry: RomEntry, val bytes: Long, val error: String? = null) : Screen
     }
 
@@ -73,7 +81,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (debuggable) {
-            intent.getStringExtra("screen")?.let(GameSystem::byFolder)?.let { screen = Screen.Games(it) }
+            val requested = intent.getStringExtra("screen").orEmpty()
+            GameSystem.byFolder(requested)?.let { screen = Screen.Games(it) }
+            CoreRegistry.byId(requested.removePrefix("settings:"))?.let { screen = Screen.CoreSettings(it) }
             pendingAutoLaunch = intent.getStringExtra("autoLaunch")
         }
         setContent { DualPlayTheme { Root() } }
@@ -132,7 +142,9 @@ class MainActivity : ComponentActivity() {
                 .putExtra("rom", playable.absolutePath)
                 .putExtra("core", entry.system.core.id)
                 .putExtra("title", entry.title)
-            if (debuggable) intent.getStringExtra("selfTest")?.let { game.putExtra("selfTest", it) }
+            if (debuggable) {
+                for (key in listOf("selfTest", "testCoreSet", "testGameSet")) intent.getStringExtra(key)?.let { game.putExtra(key, it) }
+            }
             startActivity(game)
         }
     }
@@ -147,6 +159,7 @@ class MainActivity : ComponentActivity() {
                 else -> when (val current = screen) {
                     Screen.Systems -> SystemsScreen()
                     is Screen.Games -> GamesScreen(current.system)
+                    is Screen.CoreSettings -> CoreSettingsScreen(current.core)
                     is Screen.Extracting -> ExtractingScreen(current)
                 }
             }
@@ -165,7 +178,7 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     private fun AccessScreen() {
-        val focus = remember { FocusRequester() }
+        val focus = rememberInitialFocus()
         Header("DualPlay", "Games are read from the ROMs folder on your storage (ES-DE layout).")
         Text(
             "DualPlay needs all-files access to read your ROMs on the SD card. It only reads them; saves stay inside DualPlay.",
@@ -175,17 +188,17 @@ class MainActivity : ComponentActivity() {
         MenuRow("Grant access", Modifier.focusRequester(focus)) {
             startActivity(Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION, Uri.parse("package:$packageName")))
         }
-        LaunchedEffect(Unit) { focus.requestFocus() }
     }
 
     @Composable
     private fun SystemsScreen() {
         val lib = library
-        val focus = remember { FocusRequester() }
+        val focus = rememberInitialFocus()
         Header("DualPlay", if (lib == null) "Scanning…" else "${lib.values.sumOf { it.size }} games")
         if (lib == null) return
-        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            GameSystem.entries.forEachIndexed { index, system ->
+        LazyColumn(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            items(GameSystem.entries.size) { index ->
+                val system = GameSystem.entries[index]
                 val count = lib[system].orEmpty().size
                 MenuRow(
                     system.label,
@@ -193,14 +206,20 @@ class MainActivity : ComponentActivity() {
                     detail = "$count",
                 ) { if (count > 0) screen = Screen.Games(system) }
             }
+            item {
+                Text("Settings", color = Accent, fontSize = 16.sp, modifier = Modifier.padding(start = 6.dp, top = 18.dp, bottom = 4.dp))
+            }
+            items(CoreRegistry.all.size) { index ->
+                val core = CoreRegistry.all[index]
+                MenuRow(core.label, detail = core.system.uppercase()) { screen = Screen.CoreSettings(core) }
+            }
         }
-        LaunchedEffect(Unit) { focus.requestFocus() }
     }
 
     @Composable
     private fun GamesScreen(system: GameSystem) {
         val entries = library?.get(system).orEmpty()
-        val focus = remember { FocusRequester() }
+        val focus = rememberInitialFocus(system, entries.size)
         BackHandler { screen = Screen.Systems }
         Header(system.label, "${entries.size} games")
         val rows: List<Any> = remember(entries) {
@@ -228,12 +247,31 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-        LaunchedEffect(system, entries.size) { if (entries.isNotEmpty()) runCatching { focus.requestFocus() } }
+    }
+
+    @Composable
+    private fun CoreSettingsScreen(core: CoreSpec) {
+        val store = remember { SettingsStore(this) }
+        var resolved by remember(core) { mutableStateOf(store.resolve(core, null)) }
+        val sections = remember(core) { settingsSections(core, store) }
+        BackHandler { screen = Screen.Systems }
+        Header("${core.label} settings", "Saved for all ${core.label} games. Games can override them from the in-game menu.")
+        SettingsList(
+            sections = sections,
+            values = resolved.values,
+            sources = resolved.sources,
+            note = if (store.catalog(core) == null) "Core options appear here after a ${core.label} game has run once." else null,
+            onChange = { option, value ->
+                store.saveCore(core, mapOf(option.key to value))
+                resolved = store.resolve(core, null)
+                Log.i(TAG, "core setting ${core.id} ${option.key}=$value")
+            },
+        )
     }
 
     @Composable
     private fun ExtractingScreen(state: Screen.Extracting) {
-        val focus = remember { FocusRequester() }
+        val focus = rememberInitialFocus()
         Header(state.entry.title, state.entry.system.label)
         if (state.error == null) {
             Text("Preparing… ${state.bytes / (1 shl 20)} MB", color = Color(0xFFE4E8E6), fontSize = 20.sp)
@@ -242,7 +280,6 @@ class MainActivity : ComponentActivity() {
             Text("Could not open: ${state.error}", color = Color(0xFFE8A0A0), fontSize = 18.sp)
             Spacer(16)
             MenuRow("Back", Modifier.focusRequester(focus)) { screen = Screen.Games(state.entry.system) }
-            LaunchedEffect(Unit) { focus.requestFocus() }
         }
     }
 

@@ -40,3 +40,21 @@ Notes:
   not investigated here.
 
 Evidence: `docs/evidence/stage3a-thor-*.png` and `docs/evidence/stage3a-thor-b16-log.txt`.
+
+## Batch 3B: settings model and per-core menus (Thor, b18): accepted
+
+| Check | Result |
+| --- | --- |
+| Core options discovered and cached | `files/settings/catalog/mgba.json` (17 options), `gambatte.json` (31, b17), `melondsds.json` (80). DS layout options the runtime fixes are `locked` and hidden from the menus. |
+| In-game Save asks for the scope | Leaving Settings with a pending change opens "This game / All mGBA games / This session only" (b17 screenshot; b18 steps go through the same `commitPending` path). |
+| Core-level change persists | Advance Wars: `mgba_color_correction OFF -> GBA`, saved for all mGBA games → `core/mgba.json = {"mgba_color_correction":"GBA"}`; core reports `GBA` live. |
+| Game-level override persists | Advance Wars: `GBA -> GBC`, saved for this game → `game/mgba/Advance Wars (USA).json = {"mgba_color_correction":"GBC"}`; core reports `GBC` live. |
+| Resolution order game > core > default | Kirby launches with `GBA(core)`, core reports `GBA`. Advance Wars relaunches with `GBC(game)`, core reports `GBC`. |
+| Launcher settings edit the core level | `screen=settings:mgba` shows DualPlay settings, the curated mGBA options and Advanced; changes call `saveCore`. |
+| Controller focus | Every screen now opens with a highlighted first row (in-game menu, settings page, launcher home and core settings). b17 had no highlight because Compose stayed in touch mode; `rememberInitialFocus` now requests keyboard input mode first. |
+
+Notes:
+- Options marked "(Restart)" by the core are saved but applied on the next launch; the menu says so.
+- Hold L2 to rewind and hold R2 to fast-forward are implemented but need a hands-on controller check.
+
+Evidence: `docs/evidence/stage3b-thor-*.png` and `docs/evidence/stage3b-thor-b18-log.txt`.

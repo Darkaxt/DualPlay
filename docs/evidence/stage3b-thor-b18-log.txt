@@ -1,0 +1,99 @@
+# install exit 0
+# wake exit 0
+# reset-settings exit 0
+# a1-start exit 0
+# a1-cap exit 0
+# a1-pull exit 0
+# a1-rm exit 0
+# a1-rest exit 0
+# a1-log exit 0
+11-22 14:01:08.013 I/DualPlay(22606): settings launch dualplay_shader=(default) dualplay_rewind=off(default) dualplay_rewind_mb=64(default) dualplay_runahead=0(default) dualplay_ff_speed=3(default) dualplay_achievements=off(default)
+11-22 14:01:09.257 I/DualPlay(22606): catalog mgba options=17 curated mgba_color_correction=OFF mgba_frameskip=disabled mgba_idle_optimization=Remove Known mgba_interframe_blending=OFF mgba_skip_bios=OFF mgba_solar_sensor_level=0
+11-22 14:01:11.263 I/DualPlay(22606): selfTest step=scope frame=186
+11-22 14:01:11.271 I/DualPlay(22606): selfTest scope change mgba_color_correction OFF -> GBA
+11-22 14:01:11.271 I/DualPlay(22606): setting changed mgba_color_correction=GBA live=true
+11-22 14:01:14.277 I/DualPlay(22606): selfTest step=saveCore frame=186
+11-22 14:01:14.284 I/DualPlay(22606): settings saved scope=core mgba_color_correction=GBA
+11-22 14:01:14.285 I/DualPlay(22606): settings saved dualplay_shader=(default) dualplay_rewind=off(default) dualplay_rewind_mb=64(default) dualplay_runahead=0(default) dualplay_ff_speed=3(default) dualplay_achievements=off(default) mgba_color_correction=GBA(core)
+11-22 14:01:17.296 I/DualPlay(22606): selfTest step=resolve frame=186
+11-22 14:01:17.297 I/DualPlay(22606): settings selfTest dualplay_shader=(default) dualplay_rewind=off(default) dualplay_rewind_mb=64(default) dualplay_runahead=0(default) dualplay_ff_speed=3(default) dualplay_achievements=off(default) mgba_color_correction=GBA(core)
+11-22 14:01:17.299 I/DualPlay(22606): selfTest core reports mgba_color_correction=GBA
+11-22 14:01:20.320 I/DualPlay(22606): selfTest step=menu frame=186
+11-22 14:01:23.338 I/DualPlay(22606): selfTest step=wait frame=186
+11-22 14:01:26.359 I/DualPlay(22606): selfTest step=quit frame=186
+# a1-stop exit 0
+# a2-start exit 0
+# a2-cap exit 0
+# a2-pull exit 0
+# a2-rm exit 0
+# a2-rest exit 0
+# a2-log exit 0
+11-22 14:01:36.179 I/DualPlay(23306): settings launch dualplay_shader=(default) dualplay_rewind=off(default) dualplay_rewind_mb=64(default) dualplay_runahead=0(default) dualplay_ff_speed=3(default) dualplay_achievements=off(default) mgba_color_correction=GBA(core)
+11-22 14:01:37.317 I/DualPlay(23306): catalog mgba options=17 curated mgba_color_correction=GBA mgba_frameskip=disabled mgba_idle_optimization=Remove Known mgba_interframe_blending=OFF mgba_skip_bios=OFF mgba_solar_sensor_level=0
+11-22 14:01:39.324 I/DualPlay(23306): selfTest step=scope frame=181
+11-22 14:01:39.331 I/DualPlay(23306): selfTest scope change mgba_color_correction GBA -> GBC
+11-22 14:01:39.331 I/DualPlay(23306): setting changed mgba_color_correction=GBC live=true
+11-22 14:01:42.339 I/DualPlay(23306): selfTest step=saveGame frame=181
+11-22 14:01:42.351 I/DualPlay(23306): settings saved scope=game mgba_color_correction=GBC
+11-22 14:01:42.352 I/DualPlay(23306): settings saved dualplay_shader=(default) dualplay_rewind=off(default) dualplay_rewind_mb=64(default) dualplay_runahead=0(default) dualplay_ff_speed=3(default) dualplay_achievements=off(default) mgba_color_correction=GBC(game)
+11-22 14:01:45.358 I/DualPlay(23306): selfTest step=resolve frame=181
+11-22 14:01:45.359 I/DualPlay(23306): settings selfTest dualplay_shader=(default) dualplay_rewind=off(default) dualplay_rewind_mb=64(default) dualplay_runahead=0(default) dualplay_ff_speed=3(default) dualplay_achievements=off(default) mgba_color_correction=GBC(game)
+11-22 14:01:45.360 I/DualPlay(23306): selfTest core reports mgba_color_correction=GBC
+11-22 14:01:48.375 I/DualPlay(23306): selfTest step=settings frame=181
+11-22 14:01:51.393 I/DualPlay(23306): selfTest step=wait frame=181
+11-22 14:01:54.419 I/DualPlay(23306): selfTest step=quit frame=181
+# a2-stop exit 0
+# b1-start exit 0
+# b1-log exit 0
+11-22 14:02:04.569 I/DualPlay(23975): autoLaunch 'Kirby & The Amazing Mirror' -> /storage/75D7-DC5F/Roms/gba/Kirby & The Amazing Mirror (USA).7z
+11-22 14:02:04.675 I/DualPlay(23975): settings launch dualplay_shader=(default) dualplay_rewind=off(default) dualplay_rewind_mb=64(default) dualplay_runahead=0(default) dualplay_ff_speed=3(default) dualplay_achievements=off(default) mgba_color_correction=GBA(core)
+11-22 14:02:05.920 I/DualPlay(23975): catalog mgba options=17 curated mgba_color_correction=GBA mgba_frameskip=disabled mgba_idle_optimization=Remove Known mgba_interframe_blending=OFF mgba_skip_bios=OFF mgba_solar_sensor_level=0
+11-22 14:02:07.928 I/DualPlay(23975): selfTest step=resolve frame=186
+11-22 14:02:07.930 I/DualPlay(23975): settings selfTest dualplay_shader=(default) dualplay_rewind=off(default) dualplay_rewind_mb=64(default) dualplay_runahead=0(default) dualplay_ff_speed=3(default) dualplay_achievements=off(default) mgba_color_correction=GBA(core)
+11-22 14:02:07.931 I/DualPlay(23975): selfTest core reports mgba_color_correction=GBA
+11-22 14:02:10.944 I/DualPlay(23975): selfTest step=quit frame=366
+# b1-stop exit 0
+# a3-start exit 0
+# a3-log exit 0
+11-22 14:02:18.995 I/DualPlay(24427): autoLaunch 'Advance Wars (USA)' -> /storage/75D7-DC5F/Roms/gba/Advance Wars (USA).7z
+11-22 14:02:19.099 I/DualPlay(24427): settings launch dualplay_shader=(default) dualplay_rewind=off(default) dualplay_rewind_mb=64(default) dualplay_runahead=0(default) dualplay_ff_speed=3(default) dualplay_achievements=off(default) mgba_color_correction=GBC(game)
+11-22 14:02:20.338 I/DualPlay(24427): catalog mgba options=17 curated mgba_color_correction=GBC mgba_frameskip=disabled mgba_idle_optimization=Remove Known mgba_interframe_blending=OFF mgba_skip_bios=OFF mgba_solar_sensor_level=0
+11-22 14:02:22.346 I/DualPlay(24427): selfTest step=resolve frame=187
+11-22 14:02:22.347 I/DualPlay(24427): settings selfTest dualplay_shader=(default) dualplay_rewind=off(default) dualplay_rewind_mb=64(default) dualplay_runahead=0(default) dualplay_ff_speed=3(default) dualplay_achievements=off(default) mgba_color_correction=GBC(game)
+11-22 14:02:22.348 I/DualPlay(24427): selfTest core reports mgba_color_correction=GBC
+11-22 14:02:25.363 I/DualPlay(24427): selfTest step=quit frame=367
+# a3-stop exit 0
+# nds-start exit 0
+# nds-cap exit 0
+# nds-pull exit 0
+# nds-rm exit 0
+# nds-rest exit 0
+# nds-log exit 0
+11-22 14:02:34.443 I/DualPlay(24887): autoLaunch 'Zoo Keeper (USA)' -> /storage/75D7-DC5F/Roms/nds/0034 - Zoo Keeper (USA).7z
+11-22 14:02:34.512 I/DualPlay(24887): settings launch dualplay_shader=(default) dualplay_rewind=off(default) dualplay_rewind_mb=64(default) dualplay_runahead=0(default) dualplay_ff_speed=3(default) dualplay_achievements=off(default) melonds_number_of_screen_layouts=1(locked) melonds_screen_layout1=top-bottom(locked) melonds_screen_gap=0(locked) melonds_show_cursor=disabled(locked)
+11-22 14:02:35.763 I/DualPlay(24887): catalog melondsds options=80 curated melonds_boot_mode=direct melonds_console_mode=auto melonds_firmware_language=auto melonds_jit_enable=enabled melonds_mic_input=microphone melonds_threaded_renderer=enabled melonds_touch_mode=auto
+11-22 14:02:37.779 I/DualPlay(24887): selfTest step=settings frame=185
+11-22 14:02:40.791 I/DualPlay(24887): selfTest step=wait frame=185
+11-22 14:02:43.807 I/DualPlay(24887): selfTest step=wait frame=185
+11-22 14:02:46.824 I/DualPlay(24887): selfTest step=quit frame=185
+# nds-stop exit 0
+# home-start exit 0
+# home-cap exit 0
+# home-pull exit 0
+# home-rm exit 0
+# home-stop exit 0
+# cs-start exit 0
+# cs-cap exit 0
+# cs-pull exit 0
+# cs-rm exit 0
+# cs-stop exit 0
+# files exit 0
+== files/settings/core/mgba.json
+{
+ "mgba_color_correction": "GBA"
+}
+== files/settings/game/mgba/Advance Wars (USA).json
+{
+ "mgba_color_correction": "GBC"
+}
+# sleep exit 0
