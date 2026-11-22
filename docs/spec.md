@@ -80,6 +80,8 @@ from the Beacon/Radikal launcher (design reference only, `D:/Projects/GameLaunch
 | ID | Item | Target | Closing condition |
 | --- | --- | --- | --- |
 | D-MEM-1 | Spike translates only each descriptor's primary `[start, start+len)` range; RA select/disconnect mirror semantics | Stage 2 | Unit tests matching RA preprocessing pass; DualDex region reads match RA on the same state |
+| D-MEM-2 | Reads wait on the core lock, which `step()` also holds during frame pacing (`fpsSync->wait()`); emulator max 76 ms | Stage 2 | Per-frame watch-list snapshot taken right after `retro_run` (or pacing outside the lock); Thor p99 read < 1 ms |
+| D-LIFE-1 | Spike activity is recreated once at launch | Stage 3 | Root cause identified; single `onCreate` per launch on Thor |
 | D-CORE-1 | Spike mGBA is a buildbot nightly pinned by hash | Stage 2 | mGBA built from a pinned commit in CI |
 
 ## 6. Constraints

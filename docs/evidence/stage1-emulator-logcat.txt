@@ -1,0 +1,8 @@
+11-22 02:44:09.669 I/DualPlay( 1568): Loading /data/user/0/dev.darkaxt.dualplay/files/roms/test.gba
+11-22 02:44:10.007 I/DualPlay( 1568): Displays: 0:Built-in Screen, 3:Overlay #1; presentation target: 3
+11-22 02:44:12.634 I/DualPlay( 1568): Loading /data/user/0/dev.darkaxt.dualplay/files/roms/test.gba
+11-22 02:44:12.653 I/DualPlay( 1568): Displays: 0:Built-in Screen, 3:Overlay #1; presentation target: 3
+11-22 02:44:14.122 I/DualPlay( 1568): Memory map: 0x03000000+0x8000, 0x02000000+0x40000, 0x0E000000+0x20000, 0x08000000+0x1000000, 0x0A000000+0x1000000, 0x0C000000+0x1000000, 0x00000000+0x4000, 0x06000000+0x18000, 0x05000000+0x400, 0x07000000+0x400, 0x04000000+0x400
+11-22 02:44:20.906 I/DualPlay( 1568): probe frame=195 read=256 changed=12 avgUs=2011 maxUs=69805
+11-22 02:44:28.252 I/DualPlay( 1568): probe frame=324 read=256 changed=0 avgUs=1876 maxUs=76618
+11-22 02:44:34.629 I/DualPlay( 1568): probe frame=494 read=256 changed=0 avgUs=1488 maxUs=76618
