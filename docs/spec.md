@@ -86,6 +86,7 @@ from the Beacon/Radikal launcher (design reference only, `D:/Projects/GameLaunch
 | D-LIFE-1 | Spike activity is recreated once at launch | Stage 3 | Root cause identified; single `onCreate` per launch on Thor |
 | D-CORE-1 | Spike mGBA is a buildbot nightly pinned by hash | Stage 2 | mGBA built from a pinned commit in CI |
 | D-RA-1 | RetroAchievements login, game load and unlocks are implemented in the runtime (`rc_client`, softcore) but untested: they need the user's account | Stage 3 (settings UI login) | Login with the user's token on Thor, `game-loaded` for an identified ROM, one softcore unlock observed; credentials never stored in the repo |
+| D-SHADER-1 | Slang presets shade only the top (primary) display; the DS bottom screen on the secondary surface is drawn unshaded | Stage 3 (per-screen shader settings) | A preset applied to the DS bottom screen renders at full speed on Thor, or per-screen choice documented as top-only |
 
 ## 6. Constraints
 - Builds through the Coordinator gradle-build-gate; device work through the android-device route with

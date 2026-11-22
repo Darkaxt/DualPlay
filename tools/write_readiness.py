@@ -29,6 +29,7 @@ PIN_GLOBS = [
     "runtime/LibretroDroid/libretrodroid/src/main/cpp/CMakeLists.txt",
     "runtime/LibretroDroid/libretrodroid/src/main/cpp/renderers/**/*",
     "runtime/LibretroDroid/libretrodroid/src/main/cpp/rcheevos/**/*",
+    "runtime/LibretroDroid/libretrodroid/src/main/cpp/librashader/**/*",
     "runtime/LibretroDroid/libretrodroid/src/main/java/**/*",
 ]
 

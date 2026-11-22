@@ -95,3 +95,48 @@ Each request returned in 0.4–0.7 s.
 | --- | --- |
 | 8 Identification by hash for a known ROM, no account | Met (game 14655) |
 | Login / game load / unlocks | Implemented, untested without the user's account → D-RA-1 (Stage 3) |
+
+## Batch D: slang shader presets (fork `99833a9`)
+
+librashader 0.12.1 (upstream `9d0116f`, C API, `runtime-opengl` only) is cross-built for `aarch64-linux-android`
+through rust-build-gate. It ships as `app/src/main/jniLibs/arm64-v8a/librashader.so` with the NDK 27.2
+`libc++_shared.so` (hashes in `cores/README.md`).
+
+The runtime opens it with `dlopen` via the vendored `librashader_ld.h`, so the library stays optional. Without
+it, a preset request fails and the built-in GLSL path keeps rendering.
+
+`ShaderPreset` (fork `shaderpreset.{h,cpp}`) does the work, frame by frame:
+1. Runs the filter chain on the core's frame texture.
+2. Renders into an owned `GL_RGBA8` output texture sized to the viewport.
+3. Restores the renderer's GL state.
+4. Blits the output into the foreground viewport.
+
+The GLSL ES version is detected (`glsl_version = 0`): `crt-geom` needs ESSL 310 or newer.
+
+Two fixes were found on the Thor:
+- **b10: `crt-geom` failed to compile under ESSL 300.** Fixed by version detection.
+- **b10/b11: the chain loaded and ran, but its output was black.** librashader binds mipmap-filtered samplers.
+  The frame texture had one level and the default `GL_TEXTURE_MAX_LEVEL` of 1000, so the GPU treated it as
+  incomplete and sampled black. Fixed by limiting the frame texture to level 0 (`imagerendereres3.cpp`).
+
+### Thor (batch `b12`, evidence `docs/evidence/stage2d-thor-*`)
+| Preset | Core / ROM | Passes | Load | Output | Chain cost per frame | Speed |
+| --- | --- | --- | --- | --- | --- | --- |
+| `crt/crt-geom` | mGBA / corpus GBA | 1 | 310 ms | 1620x1080 | 99–126 µs | full (300 frames per 5 s) |
+| `handheld/lcd-grid-v2` | Gambatte / µCity | 1 | 142 ms | 1200x1080 | 94–201 µs | full |
+| `crt/crt-guest-advanced-fast` | melonDS DS / Zoo Keeper (top) | 9 | 326 ms | 1440x2160 | 281–379 µs | full |
+
+The screenshots show each effect on the top display: curvature with scanlines, the LCD grid, and the CRT mask.
+The one-shot diagnostic at frame 120 reports `glError=0`.
+
+Preset files come from libretro/slang-shaders. They have mixed licences, so they are device test data and
+are not committed. Stage 3 ships a curated preset set with licence review in app storage (`files/shaders`).
+
+The DS bottom screen, drawn on the secondary surface, stays unshaded. Tracked as D-SHADER-1.
+
+### Acceptance (plan Batch D)
+| Item | Result |
+| --- | --- |
+| librashader cross-built for aarch64-linux-android through rust-build-gate and loaded in the runtime | Met |
+| A slang preset loads and renders on GLES 3 on the Thor | Met (three presets, 1 to 9 passes, full speed) |
+

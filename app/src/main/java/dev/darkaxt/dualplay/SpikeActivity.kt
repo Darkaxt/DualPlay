@@ -105,6 +105,8 @@ class SpikeActivity : AppCompatActivity() {
         val rewindInterval = intent.getIntExtra("rewindInterval", 1)
         val runAhead = intent.getIntExtra("runahead", 0)
         val rewindTest = intent.getIntExtra("rewindTest", 0)
+        // Slang preset relative to files/shaders (e.g. "crt/crt-geom.slangp").
+        val shader = intent.getStringExtra("shader")
         Thread({
             try {
                 while (LibretroDroid.getFrameCount() < 1L) {
@@ -113,6 +115,11 @@ class SpikeActivity : AppCompatActivity() {
                 }
                 LibretroDroid.setRewind(rewindMb * 1024L * 1024L, rewindInterval)
                 LibretroDroid.setRunAhead(runAhead)
+                if (!shader.isNullOrEmpty()) {
+                    val preset = File(File(filesDir, "shaders"), shader)
+                    Log.i(TAG, "shader preset ${preset.absolutePath} exists=${preset.isFile}")
+                    LibretroDroid.setShaderPreset(preset.absolutePath)
+                }
                 Log.i(TAG, "runtime config rewindMb=$rewindMb interval=$rewindInterval runahead=$runAhead rewindTest=$rewindTest")
                 if (identify && core.rcConsoleId(rom) != 0) {
                     val version = packageManager.getPackageInfo(packageName, 0).versionName ?: "dev"
@@ -147,7 +154,7 @@ class SpikeActivity : AppCompatActivity() {
     private fun logRuntime(label: String) {
         val s = LibretroDroid.getRuntimeStats() ?: return
         Log.i(TAG, "runtime $label frame=${LibretroDroid.getFrameCount()} rewindEntries=${s[0]} " +
-            "rewindBytes=${s[1]} captureUs=${s[2]} stepUs=${s[3]} runAhead=${s[4]} rewinding=${s[5]} encodeUs=${s.getOrNull(6)}")
+            "rewindBytes=${s[1]} captureUs=${s[2]} stepUs=${s[3]} runAhead=${s[4]} rewinding=${s[5]} encodeUs=${s.getOrNull(6)} shaderUs=${s.getOrNull(7)}")
     }
 
     private fun showPresentation(watch: MemoryProbe.Region, title: String, core: CoreSpec) {

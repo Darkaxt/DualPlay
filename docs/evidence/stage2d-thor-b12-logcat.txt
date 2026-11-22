@@ -1,0 +1,42 @@
+# install exit 0
+# wake exit 0
+# gba-geom-start exit 0
+# gba-geom-cap exit 0
+# gba-geom-pull exit 0
+# gba-geom-rm exit 0
+# gba-geom-log exit 0
+11-22 13:12:23.315 I/DualPlay( 1366): runtime config rewindMb=0 interval=1 runahead=0 rewindTest=0
+11-22 13:12:23.315 I/DualPlay( 1366): runtime periodic frame=1 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=917 runAhead=0 rewinding=0 encodeUs=0 shaderUs=0
+11-22 13:12:23.634 I/libretrodroid( 1366): ShaderPreset: loaded /data/user/0/dev.darkaxt.dualplay/files/shaders/crt/crt-geom.slangp in 310 ms
+11-22 13:12:25.624 I/libretrodroid( 1366): ShaderPreset diag: out=1620x1080 fbo=0x8cd5 glError=0x0 cull=0 scissor=0 stencil=0 depth=0 blend=0 mask=1111 activeUnit=0x84c2 sampler0=0 vao=0 program=6 center=0,0,0,255 quarter=0,0,0,255
+11-22 13:12:28.337 I/DualPlay( 1366): runtime periodic frame=284 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=1738 runAhead=0 rewinding=0 encodeUs=0 shaderUs=126
+11-22 13:12:33.359 I/DualPlay( 1366): runtime periodic frame=584 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=1565 runAhead=0 rewinding=0 encodeUs=0 shaderUs=99
+11-22 13:12:38.383 I/DualPlay( 1366): runtime periodic frame=884 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=1364 runAhead=0 rewinding=0 encodeUs=0 shaderUs=103
+# gba-geom-stop exit 0
+# gbc-lcd-start exit 0
+# gbc-lcd-cap exit 0
+# gbc-lcd-pull exit 0
+# gbc-lcd-rm exit 0
+# gbc-lcd-log exit 0
+11-22 13:12:42.773 I/DualPlay( 1912): runtime config rewindMb=0 interval=1 runahead=0 rewindTest=0
+11-22 13:12:42.773 I/DualPlay( 1912): runtime periodic frame=6 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=210 runAhead=0 rewinding=0 encodeUs=0 shaderUs=0
+11-22 13:12:42.930 I/libretrodroid( 1912): ShaderPreset: loaded /data/user/0/dev.darkaxt.dualplay/files/shaders/handheld/lcd-grid-v2.slangp in 142 ms
+11-22 13:12:44.881 I/libretrodroid( 1912): ShaderPreset diag: out=1200x1080 fbo=0x8cd5 glError=0x0 cull=0 scissor=0 stencil=0 depth=0 blend=0 mask=1111 activeUnit=0x84c2 sampler0=0 vao=0 program=6 center=0,0,0,0 quarter=78,15,46,0
+11-22 13:12:47.797 I/DualPlay( 1912): runtime periodic frame=301 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=281 runAhead=0 rewinding=0 encodeUs=0 shaderUs=110
+11-22 13:12:52.821 I/DualPlay( 1912): runtime periodic frame=601 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=276 runAhead=0 rewinding=0 encodeUs=0 shaderUs=94
+11-22 13:12:57.844 I/DualPlay( 1912): runtime periodic frame=901 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=569 runAhead=0 rewinding=0 encodeUs=0 shaderUs=201
+# gbc-lcd-stop exit 0
+# nds-guest-start exit 0
+# nds-guest-cap exit 0
+# nds-guest-pull exit 0
+# nds-guest-rm exit 0
+# nds-guest-log exit 0
+11-22 13:13:02.088 I/DualPlay( 2587): runtime config rewindMb=0 interval=1 runahead=0 rewindTest=0
+11-22 13:13:02.088 I/DualPlay( 2587): runtime periodic frame=6 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=1916 runAhead=0 rewinding=0 encodeUs=0 shaderUs=0
+11-22 13:13:02.432 I/libretrodroid( 2587): ShaderPreset: loaded /data/user/0/dev.darkaxt.dualplay/files/shaders/crt/crt-guest-advanced-fast.slangp in 326 ms
+11-22 13:13:04.403 I/libretrodroid( 2587): ShaderPreset diag: out=1440x2160 fbo=0x8cd5 glError=0x0 cull=0 scissor=0 stencil=0 depth=0 blend=0 mask=1111 activeUnit=0x84c4 sampler0=0 vao=0 program=33 center=0,0,0,255 quarter=233,46,45,255
+11-22 13:13:07.113 I/DualPlay( 2587): runtime periodic frame=289 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=3142 runAhead=0 rewinding=0 encodeUs=0 shaderUs=379
+11-22 13:13:12.144 I/DualPlay( 2587): runtime periodic frame=590 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=2083 runAhead=0 rewinding=0 encodeUs=0 shaderUs=281
+11-22 13:13:17.175 I/DualPlay( 2587): runtime periodic frame=891 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=2082 runAhead=0 rewinding=0 encodeUs=0 shaderUs=319
+# nds-guest-stop exit 0
+# sleep exit 0
