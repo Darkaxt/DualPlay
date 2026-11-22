@@ -1,0 +1,4 @@
+[submodule "runtime/LibretroDroid"]
+	path = runtime/LibretroDroid
+	url = https://github.com/Darkaxt/LibretroDroid.git
+	branch = dualplay

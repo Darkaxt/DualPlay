@@ -1,0 +1,22 @@
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
+dependencyResolutionManagement {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+rootProject.name = 'DualPlay'
+
+include ':app'
+
+// Runtime: our LibretroDroid fork (git submodule, branch `dualplay`).
+include ':libretrodroid'
+project(':libretrodroid').projectDir = file('runtime/LibretroDroid/libretrodroid')
