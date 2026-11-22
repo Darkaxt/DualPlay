@@ -1,0 +1,29 @@
+11-22 11:40:15.743 I/DualPlay(20400): Loading /data/user/0/dev.darkaxt.dualplay/files/roms/test.gba with core mgba options {}
+11-22 11:40:15.756 I/DualPlay(20400): Displays: 0:Built-in Screen, 4:Screen-2; presentation target: 4
+11-22 11:40:15.961 I/libretrodroid(20400): Audio initialization has been called with input sample rate 65536
+11-22 11:40:15.961 I/libretrodroid(20400): Using low latency stream: 1
+11-22 11:40:15.961 I/libretrodroid(20400): Average audio latency set to: 33.485412 ms
+11-22 11:40:15.976 I/libretrodroid(20400): GL Version = OpenGL ES 3.2 V@0676.53 (GIT@69e13475cb, I1df7ad3aa9, 1703680572) (Date:12/27/23)
+11-22 11:40:15.976 I/libretrodroid(20400): GL Vendor = Qualcomm
+11-22 11:40:15.976 I/libretrodroid(20400): GL Renderer = Adreno (TM) 740
+11-22 11:40:15.976 I/libretrodroid(20400): Initializing graphics
+11-22 11:40:15.992 I/libretrodroid(20400): Starting game with fps 59.727501 on a screen with refresh rate 120.000008. Using vsync: 0
+11-22 11:40:16.073 I/DualPlay(20400): Memory map: 0x03000000+0x8000 sel=0xFF000000 disc=0xFF8000, 0x02000000+0x40000 sel=0xFF000000 disc=0xFC0000, 0x0E000000+0x20000 sel=0xFFFE0000 disc=0x0, 0x08000000+0x1000000 sel=0xFF000000 disc=0x0, 0x0A000000+0x1000000 sel=0xFF000000 disc=0x0, 0x0C000000+0x1000000 sel=0xFF000000 disc=0x0, 0x00000000+0x4000 sel=0xFFFFC000 disc=0x0, 0x06000000+0x18000 sel=0xFF000000 disc=0xFE0000, 0x05000000+0x400 sel=0xFF000000 disc=0xFFFC00, 0x07000000+0x400 sel=0xFF000000 disc=0xFFFC00, 0x04000000+0x400 sel=0xFFFFFC00 disc=0x0
+11-22 11:40:20.996 I/DualPlay(20400): probe frame=299 read=256 changed=0 avgUs=150 p50Us=57 p99Us=470 maxUs=3690 window=50
+11-22 11:40:26.021 I/DualPlay(20400): probe frame=599 read=256 changed=0 avgUs=117 p50Us=62 p99Us=906 maxUs=3690 window=100
+11-22 11:40:31.057 I/DualPlay(20400): probe frame=900 read=256 changed=20 avgUs=105 p50Us=63 p99Us=661 maxUs=3690 window=150
+11-22 11:40:36.094 I/DualPlay(20400): probe frame=1201 read=256 changed=1 avgUs=114 p50Us=67 p99Us=906 maxUs=3690 window=200
+11-22 11:40:42.826 I/DualPlay(20872): Loading /data/user/0/dev.darkaxt.dualplay/files/roms/ucity.gbc with core gambatte options {}
+11-22 11:40:42.840 I/DualPlay(20872): Displays: 0:Built-in Screen, 4:Screen-2; presentation target: 4
+11-22 11:40:42.898 I/libretrodroid(20872): Audio initialization has been called with input sample rate 32768
+11-22 11:40:42.899 I/libretrodroid(20872): Using low latency stream: 1
+11-22 11:40:42.899 I/libretrodroid(20872): Average audio latency set to: 33.485413 ms
+11-22 11:40:42.967 I/libretrodroid(20872): GL Version = OpenGL ES 3.2 V@0676.53 (GIT@69e13475cb, I1df7ad3aa9, 1703680572) (Date:12/27/23)
+11-22 11:40:42.967 I/libretrodroid(20872): GL Vendor = Qualcomm
+11-22 11:40:42.967 I/libretrodroid(20872): GL Renderer = Adreno (TM) 740
+11-22 11:40:42.967 I/libretrodroid(20872): Initializing graphics
+11-22 11:40:42.998 I/libretrodroid(20872): Starting game with fps 59.727501 on a screen with refresh rate 120.000008. Using vsync: 0
+11-22 11:40:43.058 I/DualPlay(20872): Memory map: 0x0000C000+0x1000 sel=0xFFFFFFFFFFFFF000 disc=0x0, 0x0000D000+0x1000 sel=0xFFFFFFFFFFFFF000 disc=0x0, 0x0000FF80+0x80 sel=0xFFFFFFFFFFFFFF80 disc=0x0, 0x00008000+0x2000 sel=0xFFFFFFFFFFFFE000 disc=0x0, 0x0000FE00+0xA0 sel=0xFFFFFFE0 disc=0xFFFFFFFF00000000, 0x00000000+0x4000 sel=0xFFFFFFFFFFFFC000 disc=0x0, 0x00004000+0x4000 sel=0xFFFFFFFFFFFFC000 disc=0x0, 0x0000FF00+0x80 sel=0xFFFFFFFFFFFFFF80 disc=0x0, 0x0000A000+0x20000 sel=0xFFFFFFFFFFFFE000 disc=0x0, 0x00010000+0x6000 sel=0xFFFFA000 disc=0xFFFFFFFF00000000
+11-22 11:40:47.978 I/DualPlay(20872): probe frame=298 read=256 changed=0 avgUs=60 p50Us=29 p99Us=428 maxUs=545 window=50
+11-22 11:40:53.006 I/DualPlay(20872): probe frame=598 read=256 changed=0 avgUs=58 p50Us=49 p99Us=428 maxUs=545 window=100
+11-22 11:40:58.040 I/DualPlay(20872): probe frame=899 read=256 changed=10 avgUs=62 p50Us=55 p99Us=271 maxUs=545 window=150

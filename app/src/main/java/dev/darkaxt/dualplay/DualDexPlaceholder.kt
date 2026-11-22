@@ -44,13 +44,17 @@ class DualDexPlaceholder(
         out.append("display ").append(display.displayId).append(" · in-process core memory\n\n")
         out.append("frame ").append(s.frame)
             .append("   reads ").append(s.reads)
-            .append("   read µs last/avg/max ").append(s.lastMicros).append('/')
-            .append(s.averageMicros).append('/').append(s.maxMicros).append('\n')
+            .append("   read µs last/avg/p50/p99/max ").append(s.lastMicros).append('/')
+            .append(s.averageMicros).append('/').append(s.p50Micros).append('/')
+            .append(s.p99Micros).append('/').append(s.maxMicros).append('\n')
         out.append("watch 0x%08X len %d  got %d  changed %d\n\n".format(
             s.region.address, s.region.length, s.bytesRead, s.changedBytes))
 
         out.append("memory map (").append(s.map.size).append(" regions)\n")
-        s.map.forEach { out.append("  0x%08X  size 0x%06X  flags 0x%X\n".format(it.start, it.length, it.flags)) }
+        s.map.forEach {
+            out.append("  0x%08X  size 0x%06X  sel 0x%08X  disc 0x%X%s\n".format(
+                it.start, it.length, it.select, it.disconnect, if (it.hasData) "" else "  (no data)"))
+        }
         out.append('\n')
 
         val shown = maxOf(0, minOf(s.bytesRead, s.bytes.size))

@@ -1,0 +1,36 @@
+11-22 11:43:56.023 E/Libretro Core(23509): [melonDS] PCap: init failed
+11-22 11:43:56.023 W/Libretro Core(23509): Failed to enumerate Wi-fi adapters
+11-22 11:43:56.023 I/Libretro Core(23509): No homebrew SD card image found at "/data/user/0/dev.darkaxt.dualplay/files/saves/melonDS DS/dldi_sd_card.bin"; will create an image.
+11-22 11:43:56.023 I/Libretro Core(23509): No DSi SD card image found at "/data/user/0/dev.darkaxt.dualplay/files/saves/melonDS DS/dsi_sd_card.bin"; will create an image.
+11-22 11:43:56.023 E/Libretro Core(23509): Failed to open firmware file "/data/user/0/dev.darkaxt.dualplay/files/system//notfound" for reading
+11-22 11:43:56.023 W/Libretro Core(23509): Falling back to built-in firmware
+11-22 11:43:56.023 W/Libretro Core(23509): Falling back to FreeBIOS
+11-22 11:43:56.023 I/Libretro Core(23509): No existing Wi-fi settings found at /data/user/0/dev.darkaxt.dualplay/files/system/melonDS DS/wfcsettings.bin
+11-22 11:43:56.023 W/Libretro Core(23509): Failed to get username, or none was provided; using default
+11-22 11:43:56.026 E/Libretro Core(23509): [melonDS] Failed to allocate memory using ftruncate! (Invalid argument)
+11-22 11:43:56.045 I/Libretro Core(23509): [melonDS] Inserted cart with game code: AZKE
+11-22 11:43:56.045 I/Libretro Core(23509): [melonDS] Inserted cart with ID: 000007C2
+11-22 11:43:56.045 I/Libretro Core(23509): [melonDS] ROM entry: 00800000 00000002
+11-22 11:43:56.045 I/Libretro Core(23509): [melonDS] Ejected GBA cart
+11-22 11:43:56.045 I/Libretro Core(23509): No GBA SRAM was provided.
+11-22 11:43:56.045 I/Libretro Core(23509): No need to defer initialization, proceeding now
+11-22 11:43:56.074 I/Libretro Core(23509): [melonDS] MAC: 00:09:BF:11:22:33
+11-22 11:43:56.075 I/Libretro Core(23509): [melonDS] Secure area decryption OK
+11-22 11:43:56.102 I/Libretro Core(23509): [melonDS] Game is now booting
+11-22 11:43:56.102 I/Libretro Core(23509): Started emulated console
+11-22 11:43:56.102 I/libretrodroid(23509): Audio initialization has been called with input sample rate 32728
+11-22 11:43:56.102 I/libretrodroid(23509): Using low latency stream: 1
+11-22 11:43:56.102 I/libretrodroid(23509): Average audio latency set to: 33.430226 ms
+11-22 11:43:56.115 I/libretrodroid(23509): GL Version = OpenGL ES 3.2 V@0676.53 (GIT@69e13475cb, I1df7ad3aa9, 1703680572) (Date:12/27/23)
+11-22 11:43:56.115 I/libretrodroid(23509): GL Vendor = Qualcomm
+11-22 11:43:56.115 I/libretrodroid(23509): GL Renderer = Adreno (TM) 740
+11-22 11:43:56.115 I/libretrodroid(23509): Initializing graphics
+11-22 11:43:56.125 I/libretrodroid(23509): Starting game with fps 59.826098 on a screen with refresh rate 120.000008. Using vsync: 0
+11-22 11:43:56.125 I/Libretro Core(23509): No homebrew SD card image found at "/data/user/0/dev.darkaxt.dualplay/files/saves/melonDS DS/dldi_sd_card.bin"; will create an image.
+11-22 11:43:56.125 I/Libretro Core(23509): No DSi SD card image found at "/data/user/0/dev.darkaxt.dualplay/files/saves/melonDS DS/dsi_sd_card.bin"; will create an image.
+11-22 11:43:56.153 I/libretrodroid(23509): SecondarySurface: created EGL surface with config 6
+11-22 11:43:56.188 I/DualPlay(23509): Memory map: 0x02000000+0x400000 sel=0xFF000000 disc=0xC00000, 0x00000000+0x8000 sel=0xFE000000 disc=0x1FF8000, 0x0E000000+0x4000 sel=0xFFFFC000 disc=0x0
+11-22 11:44:01.119 I/DualPlay(23509): probe frame=299 read=256 changed=0 avgUs=59 p50Us=46 p99Us=251 maxUs=276 window=50
+11-22 11:44:06.148 I/DualPlay(23509): probe frame=600 read=256 changed=0 avgUs=64 p50Us=47 p99Us=276 maxUs=662 window=100
+11-22 11:44:11.186 I/DualPlay(23509): probe frame=901 read=256 changed=0 avgUs=64 p50Us=48 p99Us=276 maxUs=676 window=150
+11-22 11:44:16.229 I/DualPlay(23509): probe frame=1203 read=256 changed=0 avgUs=73 p50Us=48 p99Us=662 maxUs=2411 window=200

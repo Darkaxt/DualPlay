@@ -79,8 +79,10 @@ from the Beacon/Radikal launcher (design reference only, `D:/Projects/GameLaunch
 
 | ID | Item | Target | Closing condition |
 | --- | --- | --- | --- |
-| D-MEM-1 | Spike translates only each descriptor's primary `[start, start+len)` range; RA select/disconnect mirror semantics | Stage 2 | Unit tests matching RA preprocessing pass; DualDex region reads match RA on the same state |
-| D-MEM-2 | Reads wait on the core lock, which `step()` also holds during frame pacing (`fpsSync->wait()`); emulator max 76 ms | Stage 2 | Per-frame watch-list snapshot taken right after `retro_run` (or pacing outside the lock); Thor p99 read < 1 ms |
+| D-MEM-1 | Spike translates only each descriptor's primary `[start, start+len)` range; RA select/disconnect mirror semantics | Stage 2 | **Closed 2026-11-22** (Batch A): RA-exact port, host test 51/51 against RA `a9850c6f`, mGBA/Gambatte/melonDS DS maps live on Thor |
+| D-MEM-2 | Reads wait on the core lock, which `step()` also holds during frame pacing (`fpsSync->wait()`); emulator max 76 ms | Stage 2 | **Closed 2026-11-22** (Batch A): pacing outside the lock; Thor p99 251–906 µs on three cores |
+| D-TOUCH-1 | DS bottom-screen touch not exercised live (no game input over adb) | Stage 2 hands-on check | A tap on the Thor bottom screen selects a Zoo Keeper menu item |
+| D-GL-1 | melonDS DS Android build exposes no OpenGL renderer (software only, full speed at native res) | Sub-stage 2-GL, after Batch E | GLES renderer in a `Darkaxt/melonds-ds` fork runs ≥2x internal res at full speed on Thor |
 | D-LIFE-1 | Spike activity is recreated once at launch | Stage 3 | Root cause identified; single `onCreate` per launch on Thor |
 | D-CORE-1 | Spike mGBA is a buildbot nightly pinned by hash | Stage 2 | mGBA built from a pinned commit in CI |
 
