@@ -1,0 +1,136 @@
+# Builds the native libraries DualPlay ships in app/src/main/jniLibs/arm64-v8a from pinned source
+# commits (D-CORE-1). Each job follows the libretro buildbot recipe for that core
+# (libretro-infrastructure/ci-templates android-cmake / android-jni), with the NDK pinned.
+# Output: one artifact, native-libs-arm64-v8a, holding the .so files, SHA256SUMS and BUILDINFO.
+name: native-libs
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/native-libs.yml
+
+permissions:
+  contents: read
+
+env:
+  NDK_VERSION: 27.2.12479018
+  ABI: arm64-v8a
+  MGBA_REPO: mgba-emu/mgba
+  MGBA_COMMIT: 7a12d6d4b9acb14c0ae62c9166b6a2f3d08007f6
+  GAMBATTE_REPO: libretro/gambatte-libretro
+  GAMBATTE_COMMIT: 138bcbbf311300a271896bf93a76370c72cab339
+  MELONDSDS_REPO: JesseTG/melonds-ds
+  MELONDSDS_COMMIT: f394adbacb5722ee97c1b37c8064da9a25818310 # tag v1.4.0
+  LIBRASHADER_REPO: SnowflakePowered/librashader
+  LIBRASHADER_COMMIT: 9d0116f86aadb866b0275b19a9fe48ee29b165e7 # 0.12.1
+  RUST_TOOLCHAIN: 1.94.0
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        lib: [mgba, gambatte, melondsds, librashader]
+    steps:
+      - name: Install NDK
+        run: |
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --install "ndk;$NDK_VERSION" > /dev/null
+          echo "NDK_ROOT=$ANDROID_HOME/ndk/$NDK_VERSION" >> "$GITHUB_ENV"
+
+      - name: Select source
+        run: |
+          case "${{ matrix.lib }}" in
+            mgba) echo "SRC_REPO=$MGBA_REPO" >> "$GITHUB_ENV"; echo "SRC_COMMIT=$MGBA_COMMIT" >> "$GITHUB_ENV" ;;
+            gambatte) echo "SRC_REPO=$GAMBATTE_REPO" >> "$GITHUB_ENV"; echo "SRC_COMMIT=$GAMBATTE_COMMIT" >> "$GITHUB_ENV" ;;
+            melondsds) echo "SRC_REPO=$MELONDSDS_REPO" >> "$GITHUB_ENV"; echo "SRC_COMMIT=$MELONDSDS_COMMIT" >> "$GITHUB_ENV" ;;
+            librashader) echo "SRC_REPO=$LIBRASHADER_REPO" >> "$GITHUB_ENV"; echo "SRC_COMMIT=$LIBRASHADER_COMMIT" >> "$GITHUB_ENV" ;;
+          esac
+
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ env.SRC_REPO }}
+          ref: ${{ env.SRC_COMMIT }}
+          path: src
+          submodules: recursive
+
+      - name: Build mGBA
+        if: matrix.lib == 'mgba'
+        working-directory: src
+        run: |
+          cmake -DCMAKE_BUILD_TYPE=Release -DLIBMGBA_ONLY=ON -DBUILD_LIBRETRO=ON \
+            -DANDROID_PLATFORM=android-21 -DCMAKE_TOOLCHAIN_FILE="$NDK_ROOT/build/cmake/android.toolchain.cmake" \
+            -DANDROID_STL=c++_static -DANDROID_ABI=$ABI . -Bbuild
+          cmake --build build --target mgba_libretro --config Release -- -j"$(nproc)"
+          mkdir -p ../out && cp build/mgba_libretro.so ../out/libmgba_libretro_android.so
+
+      - name: Build Gambatte
+        if: matrix.lib == 'gambatte'
+        working-directory: src/libgambatte/libretro
+        run: |
+          "$NDK_ROOT/ndk-build" --no-print-directory -j"$(nproc)" -C jni APP_ABI=$ABI
+          mkdir -p "$GITHUB_WORKSPACE/out" && cp libs/$ABI/libretro.so "$GITHUB_WORKSPACE/out/libgambatte_libretro_android.so"
+
+      - name: Build melonDS DS
+        if: matrix.lib == 'melondsds'
+        working-directory: src
+        env:
+          CXXFLAGS: -Wno-deprecated-declarations -Wno-unknown-attributes
+        run: |
+          cmake -DCMAKE_BUILD_TYPE=Release -Wno-deprecated \
+            -DANDROID_PLATFORM=android-24 -DCMAKE_TOOLCHAIN_FILE="$NDK_ROOT/build/cmake/android.toolchain.cmake" \
+            -DANDROID_STL=c++_static -DANDROID_ABI=$ABI . -Bbuild
+          cmake --build build --target melondsds_libretro --config Release -- -j"$(nproc)"
+          mkdir -p ../out && cp build/src/libretro/melondsds_libretro.so ../out/libmelondsds_libretro_android.so
+
+      - name: Build librashader
+        if: matrix.lib == 'librashader'
+        working-directory: src
+        run: |
+          rustup toolchain install "$RUST_TOOLCHAIN" --profile minimal --target aarch64-linux-android
+          BIN="$NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64/bin"
+          export CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER="$BIN/aarch64-linux-android30-clang"
+          export CC_aarch64_linux_android="$BIN/aarch64-linux-android30-clang"
+          export CXX_aarch64_linux_android="$BIN/aarch64-linux-android30-clang++"
+          export AR_aarch64_linux_android="$BIN/llvm-ar"
+          export ANDROID_NDK_HOME="$NDK_ROOT"
+          cargo +"$RUST_TOOLCHAIN" build --locked --release -p librashader-capi --no-default-features \
+            --features runtime-opengl --target aarch64-linux-android
+          mkdir -p ../out && cp target/aarch64-linux-android/release/liblibrashader_capi.so ../out/librashader.so
+          cp "$NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/libc++_shared.so" ../out/
+
+      - name: Strip and record
+        run: |
+          cd out
+          for f in *.so; do "$NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-strip" "$f"; done
+          echo "${{ matrix.lib }} $SRC_REPO $SRC_COMMIT ndk=$NDK_VERSION" > BUILDINFO-${{ matrix.lib }}
+          sha256sum *.so | tee SHA256SUMS-${{ matrix.lib }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: part-${{ matrix.lib }}
+          path: out/
+          if-no-files-found: error
+
+  collect:
+    needs: build
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: part-*
+          merge-multiple: true
+          path: native-libs
+      - name: Combine records
+        working-directory: native-libs
+        run: |
+          cat SHA256SUMS-* > SHA256SUMS && rm SHA256SUMS-*
+          cat BUILDINFO-* > BUILDINFO && rm BUILDINFO-*
+          cat BUILDINFO SHA256SUMS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: native-libs-arm64-v8a
+          path: native-libs/
+          retention-days: 90
