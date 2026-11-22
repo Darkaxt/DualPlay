@@ -58,6 +58,16 @@ Two steps. Both share one command handler in DualPlay, so the second step reuses
 
 ### 4B: DualDex as an in-process library (needs DualScreenDex changes, coordinated with the DualDex thread)
 
+Finding (2026-11-22): the companion is not additive-hostable. Its Android graph (`AndroidLoopbackServer`,
+`ProductionCompanionRuntime`, `RetroArchSetupCoordinator`, the save, storage and knowledge packages) lives in `app`,
+an `android.application` module, wired through `DualDexApplication` casts, with private ROM-index and save-directory
+lookups. The user chose to restructure DualScreenDex after syncing with the DualDex thread. Planned shape: a
+`dualdex-companion-android` library moved out of `app` (`git mv`, same packages), and a `DualDexCompanionHost(context,
+config)` built from `startLoopback()`. Its config carries the transport factory, an optional host session (ROM path and
+save path), a storage root and a prefs prefix. `DualDexApplication` becomes a thin wrapper around it. The work lands on a
+`dualplay-host` branch under DualDex's sync rules. The bullet points below follow from it.
+
+
 - In DualScreenDex: a small additive `dualdex-host` library module that starts the existing companion runtime and
   web UI with an injected `NetworkCommandTransport`, save source and ROM source, without moving existing files (the
   DualDex thread keeps working in `app`). Landed through that repository's normal review and sync flow.
