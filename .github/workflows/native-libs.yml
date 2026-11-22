@@ -83,7 +83,7 @@ jobs:
             -DANDROID_PLATFORM=android-24 -DCMAKE_TOOLCHAIN_FILE="$NDK_ROOT/build/cmake/android.toolchain.cmake" \
             -DANDROID_STL=c++_static -DANDROID_ABI=$ABI . -Bbuild
           cmake --build build --target melondsds_libretro --config Release -- -j"$(nproc)"
-          mkdir -p ../out && cp build/src/libretro/melondsds_libretro.so ../out/libmelondsds_libretro_android.so
+          mkdir -p ../out && cp build/src/libretro/melondsds_libretro_android.so ../out/libmelondsds_libretro_android.so
 
       - name: Build librashader
         if: matrix.lib == 'librashader'
