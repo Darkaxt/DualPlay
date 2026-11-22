@@ -140,3 +140,41 @@ The DS bottom screen, drawn on the secondary surface, stays unshaded. Tracked as
 | librashader cross-built for aarch64-linux-android through rust-build-gate and loaded in the runtime | Met |
 | A slang preset loads and renders on GLES 3 on the Thor | Met (three presets, 1 to 9 passes, full speed) |
 
+## Batch E: CI-built native libraries (D-CORE-1)
+
+`.github/workflows/native-libs.yml` builds mGBA, Gambatte, melonDS DS and librashader for arm64-v8a from pinned
+commits. It uses NDK 27.2.12479018 and the libretro buildbot recipe for each core. It publishes the
+`native-libs-arm64-v8a` artifact with `SHA256SUMS` and `BUILDINFO`.
+
+Run [45021711773](https://github.com/Darkaxt/DualPlay/actions/runs/45021711773) built all four in parallel.
+Its files replace the earlier buildbot nightlies and the locally built librashader in `jniLibs`. Commits and
+hashes are in `cores/README.md`.
+
+melonDS DS is now pinned to tag `v1.4.0`. The earlier nightly was a build of `main` that also reported 1.4.0.
+
+### Thor (batch `b13`, evidence `docs/evidence/stage2e-thor-*`)
+| Core (CI build) | ROM | Memory map | Speed | Probe read p99 (per 50-frame window) |
+| --- | --- | --- | --- | --- |
+| mGBA | corpus GBA | 11 regions, same as Batch A | full (300 frames per 5 s) | 120–169 µs |
+| Gambatte | µCity | 10 regions, same as Batch A | full | 246 µs |
+| melonDS DS | Zoo Keeper | 3 regions, same as Batch A | full | 113–365 µs. One window measured 5439 µs, from a single 6.2 ms read |
+
+All three runs used Batch D presets, so they also exercise the CI-built librashader:
+
+| Preset | Load time | Chain cost per frame |
+| --- | --- | --- |
+| crt-geom | 260 ms | 79–154 µs |
+| lcd-grid-v2 | 138 ms | 84 µs |
+| crt-guest-advanced-fast | 308 ms | 246–431 µs |
+
+The DS bottom screen (`stage2e-thor-nds-down.png`) renders the title menu.
+
+The single 6.2 ms melonDS read is above the Batch A maximum (906 µs p99). It is one outlier in 150 windows'
+worth of reads, with p50 between 25 and 44 µs. It is tracked as D-MEM-3 rather than treated as met.
+
+### Acceptance (plan Batch E)
+| Item | Result |
+| --- | --- |
+| 10 GitHub Actions builds the pinned cores for arm64 from pinned commits with SHA-256 | Met (run 45021711773, also librashader) |
+| The app uses the CI-built cores and the hashes are recorded | Met (`cores/README.md`; Thor b13) |
+

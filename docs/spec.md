@@ -84,9 +84,10 @@ from the Beacon/Radikal launcher (design reference only, `D:/Projects/GameLaunch
 | D-TOUCH-1 | DS bottom-screen touch not exercised live (no game input over adb) | Stage 2 hands-on check | A tap on the Thor bottom screen selects a Zoo Keeper menu item |
 | D-GL-1 | melonDS DS Android build exposes no OpenGL renderer (software only, full speed at native res) | Sub-stage 2-GL, after Batch E | GLES renderer in a `Darkaxt/melonds-ds` fork runs ≥2x internal res at full speed on Thor |
 | D-LIFE-1 | Spike activity is recreated once at launch | Stage 3 | Root cause identified; single `onCreate` per launch on Thor |
-| D-CORE-1 | Spike mGBA is a buildbot nightly pinned by hash | Stage 2 | mGBA built from a pinned commit in CI |
+| D-CORE-1 | Spike mGBA is a buildbot nightly pinned by hash | Stage 2 | **Closed 2026-11-22** (Batch E): `native-libs` workflow run 45021711773 builds mGBA, Gambatte, melonDS DS and librashader from pinned commits; app uses them, Thor b13 full speed |
 | D-RA-1 | RetroAchievements login, game load and unlocks are implemented in the runtime (`rc_client`, softcore) but untested: they need the user's account | Stage 3 (settings UI login) | Login with the user's token on Thor, `game-loaded` for an identified ROM, one softcore unlock observed; credentials never stored in the repo |
 | D-SHADER-1 | Slang presets shade only the top (primary) display; the DS bottom screen on the secondary surface is drawn unshaded | Stage 3 (per-screen shader settings) | A preset applied to the DS bottom screen renders at full speed on Thor, or per-screen choice documented as top-only |
+| D-MEM-3 | melonDS DS probe saw one 6.2 ms read (window p99 5.4 ms) on Thor b13, above the Batch A bound | Stage 4 (DualDex hosted reads) | Root cause identified (lock contention vs scheduling) or p99 stays under 1 ms across a 5-minute melonDS run |
 
 ## 6. Constraints
 - Builds through the Coordinator gradle-build-gate; device work through the android-device route with

@@ -1,0 +1,54 @@
+# install exit 0
+# wake exit 0
+# gba-geom-start exit 0
+# gba-geom-cap exit 0
+# gba-geom-pull exit 0
+# gba-geom-rm exit 0
+# gba-geom-log exit 0
+11-22 13:25:32.634 I/DualPlay( 9034): Memory map: 0x03000000+0x8000 sel=0xFF000000 disc=0xFF8000, 0x02000000+0x40000 sel=0xFF000000 disc=0xFC0000, 0x0E000000+0x20000 sel=0xFFFE0000 disc=0x0, 0x08000000+0x1000000 sel=0xFF000000 disc=0x0, 0x0A000000+0x1000000 sel=0xFF000000 disc=0x0, 0x0C000000+0x1000000 sel=0xFF000000 disc=0x0, 0x00000000+0x4000 sel=0xFFFFC000 disc=0x0, 0x06000000+0x18000 sel=0xFF000000 disc=0xFE0000, 0x05000000+0x400 sel=0xFF000000 disc=0xFFFC00, 0x07000000+0x400 sel=0xFF000000 disc=0xFFFC00, 0x04000000+0x400 sel=0xFFFFFC00 disc=0x0
+11-22 13:25:32.636 I/DualPlay( 9034): runtime periodic frame=4 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=1204 runAhead=0 rewinding=0 encodeUs=0 shaderUs=0
+11-22 13:25:32.909 I/libretrodroid( 9034): ShaderPreset: loaded /data/user/0/dev.darkaxt.dualplay/files/shaders/crt/crt-geom.slangp in 260 ms
+11-22 13:25:34.896 I/libretrodroid( 9034): ShaderPreset diag: out=1620x1080 fbo=0x8cd5 glError=0x0 cull=0 scissor=0 stencil=0 depth=0 blend=0 mask=1111 activeUnit=0x84c2 sampler0=0 vao=0 program=6 center=0,0,0,255 quarter=0,0,0,255
+11-22 13:25:37.657 I/DualPlay( 9034): runtime periodic frame=290 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=1157 runAhead=0 rewinding=0 encodeUs=0 shaderUs=79
+11-22 13:25:37.746 I/DualPlay( 9034): probe frame=295 read=256 changed=0 avgUs=50 p50Us=45 p99Us=120 maxUs=369 window=50
+11-22 13:25:42.687 I/DualPlay( 9034): runtime periodic frame=590 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=1592 runAhead=0 rewinding=0 encodeUs=0 shaderUs=154
+11-22 13:25:42.771 I/DualPlay( 9034): probe frame=595 read=256 changed=0 avgUs=55 p50Us=53 p99Us=169 maxUs=369 window=100
+11-22 13:25:47.710 I/DualPlay( 9034): runtime periodic frame=890 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=1254 runAhead=0 rewinding=0 encodeUs=0 shaderUs=106
+11-22 13:25:47.800 I/DualPlay( 9034): probe frame=896 read=256 changed=28 avgUs=52 p50Us=49 p99Us=169 maxUs=369 window=150
+# gba-geom-stop exit 0
+# gbc-lcd-start exit 0
+# gbc-lcd-cap exit 0
+# gbc-lcd-pull exit 0
+# gbc-lcd-rm exit 0
+# gbc-lcd-log exit 0
+11-22 13:25:51.283 I/DualPlay( 9862): runtime periodic frame=4 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=211 runAhead=0 rewinding=0 encodeUs=0 shaderUs=0
+11-22 13:25:51.285 I/DualPlay( 9862): Memory map: 0x0000C000+0x1000 sel=0xFFFFFFFFFFFFF000 disc=0x0, 0x0000D000+0x1000 sel=0xFFFFFFFFFFFFF000 disc=0x0, 0x0000FF80+0x80 sel=0xFFFFFFFFFFFFFF80 disc=0x0, 0x00008000+0x2000 sel=0xFFFFFFFFFFFFE000 disc=0x0, 0x0000FE00+0xA0 sel=0xFFFFFFE0 disc=0xFFFFFFFF00000000, 0x00000000+0x4000 sel=0xFFFFFFFFFFFFC000 disc=0x0, 0x00004000+0x4000 sel=0xFFFFFFFFFFFFC000 disc=0x0, 0x0000FF00+0x80 sel=0xFFFFFFFFFFFFFF80 disc=0x0, 0x0000A000+0x20000 sel=0xFFFFFFFFFFFFE000 disc=0x0, 0x00010000+0x6000 sel=0xFFFFA000 disc=0xFFFFFFFF00000000
+11-22 13:25:51.439 I/libretrodroid( 9862): ShaderPreset: loaded /data/user/0/dev.darkaxt.dualplay/files/shaders/handheld/lcd-grid-v2.slangp in 138 ms
+11-22 13:25:53.395 I/libretrodroid( 9862): ShaderPreset diag: out=1200x1080 fbo=0x8cd5 glError=0x0 cull=0 scissor=0 stencil=0 depth=0 blend=0 mask=1111 activeUnit=0x84c2 sampler0=0 vao=0 program=6 center=0,0,0,0 quarter=65,19,145,0
+11-22 13:25:56.261 I/DualPlay( 9862): probe frame=296 read=256 changed=0 avgUs=65 p50Us=51 p99Us=246 maxUs=256 window=50
+11-22 13:25:56.302 I/DualPlay( 9862): runtime periodic frame=298 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=174 runAhead=0 rewinding=0 encodeUs=0 shaderUs=84
+11-22 13:26:01.289 I/DualPlay( 9862): probe frame=596 read=256 changed=0 avgUs=80 p50Us=55 p99Us=312 maxUs=1560 window=100
+11-22 13:26:01.324 I/DualPlay( 9862): runtime periodic frame=598 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=344 runAhead=0 rewinding=0 encodeUs=0 shaderUs=112
+11-22 13:26:06.325 I/DualPlay( 9862): probe frame=897 read=256 changed=0 avgUs=83 p50Us=62 p99Us=312 maxUs=1560 window=150
+11-22 13:26:06.346 I/DualPlay( 9862): runtime periodic frame=898 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=316 runAhead=0 rewinding=0 encodeUs=0 shaderUs=69
+# gbc-lcd-stop exit 0
+# nds-guest-start exit 0
+# nds-guest-cap exit 0
+# nds-down-cap exit 0
+# nds-down-pull exit 0
+# nds-down-rm exit 0
+# nds-guest-pull exit 0
+# nds-guest-rm exit 0
+# nds-guest-log exit 0
+11-22 13:26:09.930 I/DualPlay(10470): runtime periodic frame=5 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=8430 runAhead=0 rewinding=0 encodeUs=0 shaderUs=0
+11-22 13:26:09.932 I/DualPlay(10470): Memory map: 0x02000000+0x400000 sel=0xFF000000 disc=0xC00000, 0x00000000+0x8000 sel=0xFE000000 disc=0x1FF8000, 0x0E000000+0x4000 sel=0xFFFFC000 disc=0x0
+11-22 13:26:10.249 I/libretrodroid(10470): ShaderPreset: loaded /data/user/0/dev.darkaxt.dualplay/files/shaders/crt/crt-guest-advanced-fast.slangp in 308 ms
+11-22 13:26:12.224 I/libretrodroid(10470): ShaderPreset diag: out=1440x2160 fbo=0x8cd5 glError=0x0 cull=0 scissor=0 stencil=0 depth=0 blend=0 mask=1111 activeUnit=0x84c4 sampler0=0 vao=0 program=33 center=0,0,0,255 quarter=233,46,45,255
+11-22 13:26:14.951 I/DualPlay(10470): runtime periodic frame=289 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=2021 runAhead=0 rewinding=0 encodeUs=0 shaderUs=246
+11-22 13:26:15.078 I/DualPlay(10470): probe frame=297 read=256 changed=0 avgUs=157 p50Us=25 p99Us=113 maxUs=6172 window=50
+11-22 13:26:19.973 I/DualPlay(10470): runtime periodic frame=590 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=3348 runAhead=0 rewinding=0 encodeUs=0 shaderUs=431
+11-22 13:26:20.112 I/DualPlay(10470): probe frame=598 read=256 changed=0 avgUs=159 p50Us=34 p99Us=5439 maxUs=6172 window=100
+11-22 13:26:24.994 I/DualPlay(10470): runtime periodic frame=890 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=3722 runAhead=0 rewinding=0 encodeUs=0 shaderUs=354
+11-22 13:26:25.145 I/DualPlay(10470): probe frame=899 read=256 changed=0 avgUs=129 p50Us=44 p99Us=365 maxUs=6172 window=150
+# nds-guest-stop exit 0
+# sleep exit 0
