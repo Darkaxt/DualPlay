@@ -19,7 +19,7 @@ import java.util.concurrent.Executors
 class RetroAchievementsBridge(
     appVersion: String,
     private val onEvent: (event: Int, value: Long, text: String) -> Unit = { event, value, text ->
-        Log.i(SpikeActivity.TAG, "rcheevos ${eventName(event)} value=$value text=${text.replace('\n', '|')}")
+        Log.i(GameActivity.TAG, "rcheevos ${eventName(event)} value=$value text=${text.replace('\n', '|')}")
     },
 ) : LibretroDroid.AchievementsListener {
 
@@ -59,7 +59,7 @@ class RetroAchievementsBridge(
                 response = stream?.use { it.readBytes() } ?: ByteArray(0)
                 connection.disconnect()
             } catch (error: IOException) {
-                Log.w(SpikeActivity.TAG, "rcheevos request failed: ${error.message}")
+                Log.w(GameActivity.TAG, "rcheevos request failed: ${error.message}")
                 status = RETRYABLE_CLIENT_ERROR
             }
             LibretroDroid.achievementsServerResponse(id, response, status)

@@ -1,0 +1,66 @@
+# appops exit 0
+MANAGE_EXTERNAL_STORAGE: allow
+# home-log exit 0
+11-22 13:44:52.328 I/DualPlay(14214): library scan ms=212 gb=0, gbc=0, gba=7, nds=1
+# gba-log exit 0
+11-22 13:45:15.296 I/DualPlay(14949): selfTest step=states frame=186
+11-22 13:45:15.311 I/DualPlay(14949): state save slot=4 bytes=462912 ms=13
+11-22 13:45:17.204 I/DualPlay(14949): probe frame=300 read=256 changed=0 avgUs=58 p50Us=50 p99Us=261 maxUs=396 window=50
+11-22 13:45:17.313 I/DualPlay(14949): state load slot=4 ok=true ms=1
+11-22 13:45:17.313 I/DualPlay(14949): selfTest states saved=true loaded=true savedAtFrame=186 loadedAtFrame=307
+11-22 13:45:17.363 I/DualPlay(14949): runtime periodic frame=310 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=449 runAhead=0 rewinding=0 encodeUs=0 shaderUs=0
+11-22 13:45:18.317 I/DualPlay(14949): selfTest step=menu frame=366
+11-22 13:45:18.322 I/DualPlay(14949): sram saved (menu) Advance Wars (USA).srm bytes=65536
+11-22 13:45:21.335 I/DualPlay(14949): selfTest step=wait frame=366
+11-22 13:45:21.335 W/DualPlay(14949): selfTest unknown step wait
+11-22 13:45:22.229 I/DualPlay(14949): probe frame=366 read=256 changed=0 avgUs=65 p50Us=55 p99Us=272 maxUs=396 window=100
+11-22 13:45:22.390 I/DualPlay(14949): runtime periodic frame=366 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=7 runAhead=0 rewinding=0 encodeUs=0 shaderUs=0
+11-22 13:45:24.351 I/DualPlay(14949): selfTest step=wait frame=366
+11-22 13:45:24.351 W/DualPlay(14949): selfTest unknown step wait
+11-22 13:45:27.276 I/DualPlay(14949): probe frame=366 read=256 changed=0 avgUs=70 p50Us=60 p99Us=263 maxUs=396 window=150
+11-22 13:45:27.365 I/DualPlay(14949): selfTest step=wait frame=366
+11-22 13:45:27.365 W/DualPlay(14949): selfTest unknown step wait
+11-22 13:45:27.416 I/DualPlay(14949): runtime periodic frame=366 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=10 runAhead=0 rewinding=0 encodeUs=0 shaderUs=0
+11-22 13:45:30.379 I/DualPlay(14949): selfTest step=wait frame=366
+11-22 13:45:30.379 W/DualPlay(14949): selfTest unknown step wait
+11-22 13:45:32.313 I/DualPlay(14949): probe frame=366 read=256 changed=0 avgUs=76 p50Us=63 p99Us=381 maxUs=603 window=200
+11-22 13:45:32.438 I/DualPlay(14949): runtime periodic frame=366 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=6 runAhead=0 rewinding=0 encodeUs=0 shaderUs=0
+11-22 13:45:33.394 I/DualPlay(14949): selfTest step=wait frame=366
+11-22 13:45:33.394 W/DualPlay(14949): selfTest unknown step wait
+11-22 13:45:36.426 I/DualPlay(14949): selfTest step=quit frame=366
+# nds-log exit 0
+11-22 13:45:59.026 I/DualPlay(15763): selfTest step=states frame=182
+11-22 13:45:59.154 I/DualPlay(15763): state save slot=4 bytes=19228045 ms=127
+11-22 13:46:00.976 I/DualPlay(15763): probe frame=299 read=256 changed=0 avgUs=74 p50Us=26 p99Us=137 maxUs=1890 window=50
+11-22 13:46:01.180 I/DualPlay(15763): state load slot=4 ok=true ms=24
+11-22 13:46:01.180 I/DualPlay(15763): selfTest states saved=true loaded=true savedAtFrame=182 loadedAtFrame=309
+11-22 13:46:01.232 I/DualPlay(15763): runtime periodic frame=314 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=2655 runAhead=0 rewinding=0 encodeUs=0 shaderUs=0
+11-22 13:46:02.034 I/DualPlay(15763): selfTest step=menu frame=362
+11-22 13:46:02.039 I/DualPlay(15763): sram saved (menu) 0034 - Zoo Keeper (USA).srm bytes=8192
+11-22 13:46:05.046 I/DualPlay(15763): selfTest step=wait frame=362
+11-22 13:46:05.046 W/DualPlay(15763): selfTest unknown step wait
+11-22 13:46:06.010 I/DualPlay(15763): probe frame=362 read=256 changed=0 avgUs=63 p50Us=48 p99Us=182 maxUs=1890 window=100
+11-22 13:46:06.257 I/DualPlay(15763): runtime periodic frame=362 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=10 runAhead=0 rewinding=0 encodeUs=0 shaderUs=0
+11-22 13:46:08.065 I/DualPlay(15763): selfTest step=wait frame=362
+11-22 13:46:08.065 W/DualPlay(15763): selfTest unknown step wait
+11-22 13:46:11.044 I/DualPlay(15763): probe frame=362 read=256 changed=0 avgUs=61 p50Us=50 p99Us=137 maxUs=1890 window=150
+11-22 13:46:11.076 I/DualPlay(15763): selfTest step=wait frame=362
+11-22 13:46:11.076 W/DualPlay(15763): selfTest unknown step wait
+11-22 13:46:11.277 I/DualPlay(15763): runtime periodic frame=362 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=9 runAhead=0 rewinding=0 encodeUs=0 shaderUs=0
+11-22 13:46:14.087 I/DualPlay(15763): selfTest step=wait frame=362
+11-22 13:46:14.088 W/DualPlay(15763): selfTest unknown step wait
+11-22 13:46:16.076 I/DualPlay(15763): probe frame=362 read=256 changed=0 avgUs=63 p50Us=50 p99Us=231 maxUs=1890 window=200
+11-22 13:46:16.300 I/DualPlay(15763): runtime periodic frame=362 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=9 runAhead=0 rewinding=0 encodeUs=0 shaderUs=0
+11-22 13:46:17.104 I/DualPlay(15763): selfTest step=wait frame=362
+11-22 13:46:17.104 W/DualPlay(15763): selfTest unknown step wait
+11-22 13:46:20.116 I/DualPlay(15763): selfTest step=quit frame=362
+# files exit 0
+-rw------- 1 u0_a242 u0_a242 8192 2026-11-22 13:46 0034 - Zoo Keeper (USA).srm
+-rw------- 1 u0_a242 u0_a242 65536 2026-11-22 13:45 Advance Wars (USA).srm
+-rw------- 1 u0_a242 u0_a242 19228045 2026-11-22 13:45 0034 - Zoo Keeper (USA).st4
+-rw------- 1 u0_a242 u0_a242 462912 2026-11-22 13:45 Advance Wars (USA).st4
+12Mcache/extracted
+cache/extracted/295f1facfaf4dfc00d9c:
+Advance Wars (USA).gba
+cache/extracted/9ce189cc6f1a010fe76e:
+0034 - Zoo Keeper (USA).nds

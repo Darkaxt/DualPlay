@@ -5,6 +5,8 @@
 
     <!-- RetroAchievements API (game identification, login, unlocks). -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Reads ROMs from the SD card's ES-DE ROMs folder (read only). -->
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="false"
@@ -12,15 +14,22 @@
         android:theme="@style/Theme.DualPlay">
 
         <activity
-            android:name=".SpikeActivity"
+            android:name=".MainActivity"
             android:exported="true"
             android:configChanges="orientation|screenSize|screenLayout|keyboard|keyboardHidden|navigation|uiMode|smallestScreenSize|density"
-            android:launchMode="singleTask"
             android:screenOrientation="sensorLandscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Exported for app-owned test launches (am start with extras). -->
+        <activity
+            android:name=".GameActivity"
+            android:exported="true"
+            android:configChanges="orientation|screenSize|screenLayout|keyboard|keyboardHidden|navigation|uiMode|smallestScreenSize|density"
+            android:launchMode="singleTask"
+            android:screenOrientation="sensorLandscape" />
     </application>
 </manifest>

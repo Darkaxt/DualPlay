@@ -79,7 +79,7 @@ class MemoryProbe(
             if (map.isEmpty()) {
                 map = LibretroDroid.getMemoryRegions().toList().chunked(6)
                     .map { MappedRegion(it[0], it[1], it[2], it[3], it[4], it[5] != 0L) }
-                Log.i(SpikeActivity.TAG, "Memory map: " + map.joinToString {
+                Log.i(GameActivity.TAG, "Memory map: " + map.joinToString {
                     "0x%08X+0x%X sel=0x%X disc=0x%X".format(it.start, it.length, it.select, it.disconnect)
                 })
             }
@@ -101,7 +101,7 @@ class MemoryProbe(
             val p50 = sorted[(filled - 1) / 2]
             val p99 = sorted[((filled - 1) * 99) / 100]
             if (reads % 50 == 0L) {
-                Log.i(SpikeActivity.TAG, "probe frame=$frame read=$read changed=$changed " +
+                Log.i(GameActivity.TAG, "probe frame=$frame read=$read changed=$changed " +
                     "avgUs=${totalMicros / reads} p50Us=$p50 p99Us=$p99 maxUs=$maxMicros window=$filled")
             }
             onSnapshot(Snapshot(region, frame, current.copyOf(), read, changed, reads, micros,
