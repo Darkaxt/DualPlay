@@ -1,0 +1,27 @@
+> GET_STATUS
+GET_STATUS PLAYING game_boy_advance,Pokemon Unbound (v2.1.1.1),crc32=4b3d4957
+> READ_CORE_MEMORY 2000000 2000
+READ_CORE_MEMORY 2000000 01 00 A3 A3 BC 28 00 00 00 00 00 02 CC 28 00 02 61 CD 0E 08 02 00 00 00 00 00 10 00 00 00 00 00 00 00 00 00 3C 06 02 02 00 00 00 00 00 
+> WRITE_CORE_MEMORY 2000000 00
+11-22 15:29:33.439 I/DualPlay(11216): settings launch dualplay_shader=(default) dualplay_rewind=off(default) dualplay_rewind_mb=64(default) dualplay_runahead=0(default) dualplay_ff_speed=3(default) dualplay_achievements=off(default) dualplay_netcmd=on(default)
+11-22 15:29:33.442 I/DualPlay(11216): sram load Pokemon Unbound (v2.1.1.1).srm bytes=131072
+11-22 15:29:33.765 I/DualPlay(11216): netcmd listening /127.0.0.1:55355 system=game_boy_advance game='Pokemon Unbound (v2.1.1.1)'
+11-22 15:29:33.807 I/DualPlay(11216): netcmd content crc32=4B3D4957 ms=41
+11-22 15:29:39.845 I/DualPlay(11216): selfTest step=netcmd frame=367
+11-22 15:29:39.846 I/DualPlay(11216): netcmd test 'VERSION' -> '1.19.1'
+11-22 15:29:39.847 I/DualPlay(11216): netcmd test 'GET_STATUS' -> 'GET_STATUS PLAYING game_boy_advance,Pokemon Unbound (v2.1.1.1),crc32=4b3d4957'
+11-22 15:29:39.847 I/DualPlay(11216): netcmd test 'GET_CONFIG_PARAM savefile_directory' -> 'GET_CONFIG_PARAM savefile_directory /storage/emulated/0/DualPlay/saves/mgba'
+11-22 15:29:39.847 I/DualPlay(11216): netcmd test 'GET_CONFIG_PARAM video_driver' -> 'GET_CONFIG_PARAM video_driver unsupported'
+11-22 15:29:39.847 I/DualPlay(11216): netcmd test 'READ_CORE_MEMORY 2000000 16' -> 'READ_CORE_MEMORY 2000000 01 00 A3 A3 BC 28 00 00 00 00 00 02 CC 28 00 02'
+11-22 15:29:39.848 I/DualPlay(11216): netcmd test 'READ_CORE_MEMORY 3000000 8' -> 'READ_CORE_MEMORY 3000000 40 58 00 00 2B 96 00 00'
+11-22 15:29:39.848 I/DualPlay(11216): netcmd test 'READ_CORE_MEMORY 10 4' -> 'READ_CORE_MEMORY 10 DE 00 00 EA'
+11-22 15:29:44.591 I/DualPlay(11216): netcmd served=9 reads=4 avgReadUs=139
+11-22 15:29:45.871 I/DualPlay(11216): selfTest step=netcmd frame=547
+11-22 15:29:45.873 I/DualPlay(11216): netcmd test 'VERSION' -> '1.19.1'
+11-22 15:29:45.874 I/DualPlay(11216): netcmd test 'GET_STATUS' -> 'GET_STATUS PAUSED game_boy_advance,Pokemon Unbound (v2.1.1.1),crc32=4b3d4957'
+11-22 15:29:45.875 I/DualPlay(11216): netcmd test 'GET_CONFIG_PARAM savefile_directory' -> 'GET_CONFIG_PARAM savefile_directory /storage/emulated/0/DualPlay/saves/mgba'
+11-22 15:29:45.876 I/DualPlay(11216): netcmd test 'GET_CONFIG_PARAM video_driver' -> 'GET_CONFIG_PARAM video_driver unsupported'
+11-22 15:29:45.877 I/DualPlay(11216): netcmd test 'READ_CORE_MEMORY 2000000 16' -> 'READ_CORE_MEMORY 2000000 01 00 A3 A3 BC 28 00 00 00 00 00 02 CC 28 00 02'
+11-22 15:29:45.877 I/DualPlay(11216): netcmd test 'READ_CORE_MEMORY 3000000 8' -> 'READ_CORE_MEMORY 3000000 40 5C 00 00 2B 96 00 00'
+11-22 15:29:45.878 I/DualPlay(11216): netcmd test 'READ_CORE_MEMORY 10 4' -> 'READ_CORE_MEMORY 10 DE 00 00 EA'
+11-22 15:29:52.472 I/DualPlay(11216): netcmd stopped served=17 reads=7

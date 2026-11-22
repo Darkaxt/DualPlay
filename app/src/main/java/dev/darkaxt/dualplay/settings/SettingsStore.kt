@@ -45,6 +45,7 @@ object Frontend {
     const val RUN_AHEAD = "dualplay_runahead"
     const val FF_SPEED = "dualplay_ff_speed"
     const val ACHIEVEMENTS = "dualplay_achievements"
+    const val NETCMD = "dualplay_netcmd"
 
     fun isFrontend(key: String) = key.startsWith("dualplay_")
 
@@ -55,6 +56,7 @@ object Frontend {
         OptionInfo(RUN_AHEAD, "Run-ahead frames", listOf("0", "1", "2", "3", "4"), "0"),
         OptionInfo(FF_SPEED, "Fast-forward speed", listOf("2", "3", "4", "6", "8"), "3"),
         OptionInfo(ACHIEVEMENTS, "RetroAchievements (Restart)", listOf(OFF, ON), OFF, restart = true),
+        OptionInfo(NETCMD, "DualDex link, read-only (Restart)", listOf(ON, OFF), ON, restart = true),
     )
 }
 

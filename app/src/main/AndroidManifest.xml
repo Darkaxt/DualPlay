@@ -5,7 +5,7 @@
 
     <!-- RetroAchievements API (game identification, login, unlocks). -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <!-- Reads ROMs from the SD card's ES-DE ROMs folder (read only). -->
+    <!-- Reads ROMs from the SD card ES-DE ROMs folder (read only) and keeps battery saves in DualPlay/saves, where DualDex reads them. -->
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
 
     <application

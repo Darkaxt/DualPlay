@@ -7,6 +7,7 @@ import android.content.pm.ApplicationInfo
 import android.content.res.Configuration
 import android.hardware.display.DisplayManager
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import android.view.Display
 import android.view.InputDevice
@@ -96,6 +97,7 @@ class GameActivity : AppCompatActivity() {
     private var probe: MemoryProbe? = null
     private var menuView: ComposeView? = null
     @Volatile private var achievements: RetroAchievementsBridge? = null
+    @Volatile private var netcmd: NetworkCommandServer? = null
 
     private lateinit var core: CoreSpec
     private lateinit var title: String
@@ -155,8 +157,9 @@ class GameActivity : AppCompatActivity() {
         }
         core = resolvedCore
         title = safeName(intent.getStringExtra("title") ?: rom.nameWithoutExtension)
-        val saves = File(filesDir, "saves/${core.id}").apply { mkdirs() }
+        val saves = savesDirectory(core).apply { mkdirs() }
         sramFile = File(saves, "$title.srm")
+        migratePrivateSave(core, sramFile)
         stateDir = File(filesDir, "states/${core.id}").apply { mkdirs() }
         store = SettingsStore(this)
         if (debuggable) {
@@ -550,6 +553,7 @@ class GameActivity : AppCompatActivity() {
                     LibretroDroid.setShaderPreset(preset.absolutePath)
                 }
                 Log.i(TAG, "runtime config rewindMb=$rewindMb interval=$rewindInterval runahead=$runAhead rewindTest=$rewindTest")
+                if (s.flag(Frontend.NETCMD)) startNetworkCommands(rom)
                 if (identify && core.rcConsoleId(rom) != 0) {
                     val version = packageManager.getPackageInfo(packageName, 0).versionName ?: "dev"
                     achievements = RetroAchievementsBridge(version).also { it.install() }
@@ -601,6 +605,34 @@ class GameActivity : AppCompatActivity() {
         }, "DualPlay-Runtime").start()
     }
 
+    private fun netcmdSelfTest() {
+        val commands = listOf(
+            "VERSION", "GET_STATUS", "GET_CONFIG_PARAM savefile_directory", "GET_CONFIG_PARAM video_driver",
+            "READ_CORE_MEMORY 2000000 16", "READ_CORE_MEMORY 3000000 8", "READ_CORE_MEMORY 10 4",
+        )
+        try {
+            java.net.DatagramSocket().use { socket ->
+                socket.soTimeout = 1_000
+                val server = java.net.InetSocketAddress("127.0.0.1", NetworkCommandServer.PORT)
+                val buffer = ByteArray(4096)
+                for (command in commands) {
+                    val bytes = command.toByteArray(Charsets.US_ASCII)
+                    socket.send(java.net.DatagramPacket(bytes, bytes.size, server))
+                    val reply = java.net.DatagramPacket(buffer, buffer.size)
+                    val text = try {
+                        socket.receive(reply)
+                        String(reply.data, 0, reply.length, Charsets.US_ASCII).trimEnd()
+                    } catch (_: java.net.SocketTimeoutException) {
+                        "<no reply>"
+                    }
+                    Log.i(TAG, "netcmd test '$command' -> '$text'")
+                }
+            }
+        } catch (error: java.io.IOException) {
+            Log.w(TAG, "netcmd test failed: $error")
+        }
+    }
+
     private fun runSelfTestStep(step: String) {
         Log.i(TAG, "selfTest step=$step frame=${LibretroDroid.getFrameCount()}")
         when (step) {
@@ -629,6 +661,8 @@ class GameActivity : AppCompatActivity() {
             "wait" -> Unit
             "quit" -> runOnUiThread { quitGame() }
             "recreate" -> runOnUiThread { recreate() }
+            // Sends DualDex's commands to the local network-command server over real UDP and logs the replies.
+            "netcmd" -> Thread({ netcmdSelfTest() }, "DualPlay-NetCmdTest").start()
             // `shader:<preset>` (or `shader:none`): the Settings page's shader row, as a Left/Right press sets it.
             else -> if (step.startsWith("shader:")) runOnUiThread {
                 openMenu()
@@ -690,6 +724,55 @@ class GameActivity : AppCompatActivity() {
             placeholder.show()
             presentation = placeholder
             probe = MemoryProbe(watch) { snapshot -> runOnUiThread { placeholder.render(snapshot) } }.also { it.start() }
+        }
+    }
+
+    private fun startNetworkCommands(rom: File) {
+        val session = NetworkCommandServer.Session(
+            systemId = NetworkCommandServer.systemId(core.system),
+            basename = title,
+            config = mapOf(
+                "savefile_directory" to sramFile.parentFile!!.absolutePath,
+                "savestate_directory" to stateDir.absolutePath,
+                "system_directory" to File(filesDir, "system").absolutePath,
+            ),
+            paused = { menuOpen.value },
+        )
+        val server = NetworkCommandServer(session)
+        if (!server.start()) return
+        netcmd = server
+        if (core.stackedDualScreen) return // DualDex has no DS support; skip hashing large DS images.
+        val started = System.nanoTime()
+        val crc = java.util.zip.CRC32()
+        rom.inputStream().buffered(1 shl 16).use { input ->
+            val buffer = ByteArray(1 shl 16)
+            while (true) {
+                val count = input.read(buffer)
+                if (count < 0) break
+                crc.update(buffer, 0, count)
+            }
+        }
+        session.crc32 = crc.value
+        Log.i(TAG, "netcmd content crc32=%08X ms=%d".format(crc.value, (System.nanoTime() - started) / 1_000_000))
+    }
+
+    /**
+     * Battery saves live in shared storage (`DualPlay/saves/<core>`) when DualPlay has all-files access, so DualDex
+     * can read them; otherwise in app storage. RetroArch's folders are never used.
+     */
+    private fun savesDirectory(core: CoreSpec): File =
+        if (Environment.isExternalStorageManager()) File(Environment.getExternalStorageDirectory(), "DualPlay/saves/${core.id}")
+        else File(filesDir, "saves/${core.id}")
+
+    /** Moves a save written by an earlier build (app storage) to [target] once, keeping the old file as `.migrated`. */
+    private fun migratePrivateSave(core: CoreSpec, target: File) {
+        val old = File(filesDir, "saves/${core.id}/${target.name}")
+        if (old.absolutePath == target.absolutePath || !old.isFile || target.exists()) return
+        val bytes = old.readBytes()
+        writeAtomically(target, bytes)
+        if (target.readBytes().contentEquals(bytes)) {
+            old.renameTo(File(old.parentFile, old.name + ".migrated"))
+            Log.i(TAG, "sram migrated ${old.name} bytes=${bytes.size} -> ${target.parent}")
         }
     }
 
@@ -756,6 +839,8 @@ class GameActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         destroyed = true
+        netcmd?.stop()
+        netcmd = null
         Log.i(TAG, "lifecycle destroy finishing=$isFinishing changingConfig=$isChangingConfigurations")
         achievements?.shutdown()
         achievements = null
