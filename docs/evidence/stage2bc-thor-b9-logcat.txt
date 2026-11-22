@@ -1,0 +1,83 @@
+# install exit 0
+Performing Streamed Install
+Success
+
+# wake exit 0
+
+# nds-rw-start exit 0
+Starting: Intent { cmp=dev.darkaxt.dualplay/.SpikeActivity (has extras) }
+Status: ok
+LaunchState: COLD
+Activity: dev.darkaxt.dualplay/.SpikeActivity
+TotalTime: 340
+WaitTime: 344
+Complete
+
+# nds-rw-log exit 0
+11-22 12:45:53.739 I/DualPlay(11083): runtime config rewindMb=128 interval=4 runahead=0 rewindTest=15
+11-22 12:45:53.739 I/DualPlay(11083): runtime periodic frame=1 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=21501 runAhead=0 rewinding=0 encodeUs=0
+11-22 12:45:58.709 I/DualPlay(11083): probe frame=299 read=256 changed=0 avgUs=50 p50Us=28 p99Us=76 maxUs=629 window=50
+11-22 12:45:58.761 I/DualPlay(11083): runtime periodic frame=302 rewindEntries=74 rewindBytes=1061097 captureUs=3841 stepUs=1954 runAhead=0 rewinding=0 encodeUs=6882
+11-22 12:46:03.740 I/DualPlay(11083): probe frame=600 read=256 changed=0 avgUs=48 p50Us=27 p99Us=431 maxUs=629 window=100
+11-22 12:46:03.786 I/DualPlay(11083): runtime periodic frame=603 rewindEntries=149 rewindBytes=1252712 captureUs=3820 stepUs=2069 runAhead=0 rewinding=0 encodeUs=6620
+11-22 12:46:08.755 I/DualPlay(11083): runtime before-rewind frame=900 rewindEntries=223 rewindBytes=1447479 captureUs=4302 stepUs=2355 runAhead=0 rewinding=0 encodeUs=6463
+11-22 12:46:08.756 I/DualPlay(11083): probe frame=900 read=256 changed=0 avgUs=42 p50Us=26 p99Us=250 maxUs=629 window=150
+11-22 12:46:08.810 I/DualPlay(11083): runtime periodic frame=900 rewindEntries=220 rewindBytes=1441977 captureUs=4302 stepUs=15532 runAhead=0 rewinding=1 encodeUs=6463
+11-22 12:46:11.792 I/DualPlay(11083): runtime during-rewind frame=900 rewindEntries=43 rewindBytes=984827 captureUs=4302 stepUs=15761 runAhead=0 rewinding=1 encodeUs=6463
+11-22 12:46:13.819 I/DualPlay(11083): runtime periodic frame=1022 rewindEntries=72 rewindBytes=1058564 captureUs=4119 stepUs=3146 runAhead=0 rewinding=0 encodeUs=6805
+11-22 12:46:14.002 I/DualPlay(11083): probe frame=1033 read=256 changed=0 avgUs=129 p50Us=27 p99Us=431 maxUs=17072 window=200
+
+# nds-rw-stop exit 0
+
+# gba-rw-start exit 0
+Starting: Intent { cmp=dev.darkaxt.dualplay/.SpikeActivity (has extras) }
+Status: ok
+LaunchState: COLD
+Activity: dev.darkaxt.dualplay/.SpikeActivity
+TotalTime: 359
+WaitTime: 361
+Complete
+
+# gba-rw-log exit 0
+11-22 12:46:17.663 I/DualPlay(11555): runtime config rewindMb=64 interval=4 runahead=0 rewindTest=15
+11-22 12:46:17.663 I/DualPlay(11555): runtime periodic frame=2 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=905 runAhead=0 rewinding=0 encodeUs=0
+11-22 12:46:22.588 I/DualPlay(11555): probe frame=296 read=256 changed=0 avgUs=80 p50Us=46 p99Us=363 maxUs=1008 window=50
+11-22 12:46:22.686 I/DualPlay(11555): runtime periodic frame=302 rewindEntries=74 rewindBytes=81742 captureUs=472 stepUs=2282 runAhead=0 rewinding=0 encodeUs=517
+11-22 12:46:27.622 I/DualPlay(11555): probe frame=597 read=256 changed=0 avgUs=104 p50Us=63 p99Us=996 maxUs=1008 window=100
+11-22 12:46:27.712 I/DualPlay(11555): runtime periodic frame=602 rewindEntries=149 rewindBytes=236562 captureUs=294 stepUs=1627 runAhead=0 rewinding=0 encodeUs=278
+11-22 12:46:32.656 I/DualPlay(11555): probe frame=897 read=256 changed=14 avgUs=96 p50Us=63 p99Us=828 maxUs=1008 window=150
+11-22 12:46:32.687 I/DualPlay(11555): runtime before-rewind frame=899 rewindEntries=223 rewindBytes=428674 captureUs=429 stepUs=2206 runAhead=0 rewinding=0 encodeUs=1940
+11-22 12:46:32.738 I/DualPlay(11555): runtime periodic frame=899 rewindEntries=220 rewindBytes=403266 captureUs=429 stepUs=2148 runAhead=0 rewinding=1 encodeUs=1940
+11-22 12:46:35.703 I/DualPlay(11555): runtime during-rewind frame=899 rewindEntries=43 rewindBytes=13276 captureUs=429 stepUs=2179 runAhead=0 rewinding=1 encodeUs=1940
+11-22 12:46:37.687 I/DualPlay(11555): probe frame=1018 read=256 changed=0 avgUs=100 p50Us=63 p99Us=996 maxUs=2317 window=200
+11-22 12:46:37.762 I/DualPlay(11555): runtime periodic frame=1022 rewindEntries=73 rewindBytes=79577 captureUs=527 stepUs=1372 runAhead=0 rewinding=0 encodeUs=535
+
+# gba-rw-stop exit 0
+
+# gbc-mix-start exit 0
+Starting: Intent { cmp=dev.darkaxt.dualplay/.SpikeActivity (has extras) }
+Status: ok
+LaunchState: COLD
+Activity: dev.darkaxt.dualplay/.SpikeActivity
+TotalTime: 304
+WaitTime: 306
+Complete
+
+# gbc-mix-log exit 0
+11-22 12:46:41.708 I/DualPlay(12138): runtime config rewindMb=64 interval=1 runahead=2 rewindTest=15
+11-22 12:46:41.708 I/DualPlay(12138): runtime periodic frame=5 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=221 runAhead=0 rewinding=0 encodeUs=0
+11-22 12:46:46.629 I/DualPlay(12138): probe frame=299 read=256 changed=0 avgUs=63 p50Us=51 p99Us=211 maxUs=421 window=50
+11-22 12:46:46.729 I/DualPlay(12138): runtime periodic frame=305 rewindEntries=299 rewindBytes=69879 captureUs=15 stepUs=769 runAhead=2 rewinding=0 encodeUs=408
+11-22 12:46:51.654 I/DualPlay(12138): probe frame=599 read=256 changed=0 avgUs=75 p50Us=58 p99Us=421 maxUs=566 window=100
+11-22 12:46:51.752 I/DualPlay(12138): runtime periodic frame=605 rewindEntries=599 rewindBytes=123836 captureUs=18 stepUs=819 runAhead=2 rewinding=0 encodeUs=1921
+11-22 12:46:56.678 I/DualPlay(12138): probe frame=899 read=256 changed=10 avgUs=68 p50Us=55 p99Us=335 maxUs=566 window=150
+11-22 12:46:56.725 I/DualPlay(12138): runtime before-rewind frame=902 rewindEntries=896 rewindBytes=179338 captureUs=17 stepUs=747 runAhead=2 rewinding=0 encodeUs=831
+11-22 12:46:56.776 I/DualPlay(12138): runtime periodic frame=902 rewindEntries=893 rewindBytes=178800 captureUs=17 stepUs=246 runAhead=2 rewinding=1 encodeUs=831
+11-22 12:46:59.737 I/DualPlay(12138): runtime during-rewind frame=902 rewindEntries=716 rewindBytes=145652 captureUs=17 stepUs=1002 runAhead=2 rewinding=1 encodeUs=831
+11-22 12:47:01.700 I/DualPlay(12138): probe frame=1019 read=256 changed=0 avgUs=66 p50Us=57 p99Us=335 maxUs=566 window=200
+11-22 12:47:01.798 I/DualPlay(12138): runtime periodic frame=1025 rewindEntries=839 rewindBytes=168820 captureUs=15 stepUs=759 runAhead=2 rewinding=0 encodeUs=1311
+
+# gbc-mix-stop exit 0
+
+# sleep exit 0
+

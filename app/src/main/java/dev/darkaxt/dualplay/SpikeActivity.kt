@@ -36,6 +36,7 @@ class SpikeActivity : AppCompatActivity() {
     private var presentation: DualDexPlaceholder? = null
     private var bottomScreen: BottomScreenPresentation? = null
     private var probe: MemoryProbe? = null
+    @Volatile private var achievements: RetroAchievementsBridge? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,6 +90,64 @@ class SpikeActivity : AppCompatActivity() {
         if (core.stackedDualScreen) view.setFrameCrop(0f, 0f, 1f, 0.5f)
         showPresentation(watch, rom.name, core)
         logCoreOptionsOnce()
+        startRuntimeFeatures(rom, core)
+    }
+
+    /**
+     * Applies rewind/run-ahead from intent extras once the game runs, then logs runtime stats every
+     * 5 s. `rewindTest=N` holds rewind for 3 s after N s: an app-owned self-test, no input injection.
+     * Extras: rewindMb (int), rewindInterval (frames), runahead (frames), rewindTest (seconds),
+     * ra (boolean: identify the ROM with RetroAchievements by hash; no account needed).
+     */
+    private fun startRuntimeFeatures(rom: File, core: CoreSpec) {
+        val identify = intent.getBooleanExtra("ra", false)
+        val rewindMb = intent.getIntExtra("rewindMb", 0)
+        val rewindInterval = intent.getIntExtra("rewindInterval", 1)
+        val runAhead = intent.getIntExtra("runahead", 0)
+        val rewindTest = intent.getIntExtra("rewindTest", 0)
+        Thread({
+            try {
+                while (LibretroDroid.getFrameCount() < 1L) {
+                    Thread.sleep(100)
+                    if (isFinishing) return@Thread
+                }
+                LibretroDroid.setRewind(rewindMb * 1024L * 1024L, rewindInterval)
+                LibretroDroid.setRunAhead(runAhead)
+                Log.i(TAG, "runtime config rewindMb=$rewindMb interval=$rewindInterval runahead=$runAhead rewindTest=$rewindTest")
+                if (identify && core.rcConsoleId(rom) != 0) {
+                    val version = packageManager.getPackageInfo(packageName, 0).versionName ?: "dev"
+                    achievements = RetroAchievementsBridge(version).also { it.install() }
+                    LibretroDroid.achievementsIdentify(core.rcConsoleId(rom), rom.absolutePath)
+                }
+                val started = System.nanoTime()
+                var rewindPhase = 0 // 0 waiting, 1 rewinding, 2 done
+                var nextLog = 0L
+                while (!isFinishing) {
+                    val elapsedMs = (System.nanoTime() - started) / 1_000_000
+                    if (rewindTest > 0 && rewindPhase == 0 && elapsedMs >= rewindTest * 1000L) {
+                        logRuntime("before-rewind")
+                        LibretroDroid.setRewinding(true)
+                        rewindPhase = 1
+                    } else if (rewindPhase == 1 && elapsedMs >= rewindTest * 1000L + 3000L) {
+                        logRuntime("during-rewind")
+                        LibretroDroid.setRewinding(false)
+                        rewindPhase = 2
+                    }
+                    if (elapsedMs >= nextLog) {
+                        logRuntime("periodic")
+                        nextLog = elapsedMs + 5000L
+                    }
+                    Thread.sleep(50)
+                }
+            } catch (_: InterruptedException) {
+            }
+        }, "DualPlay-Runtime").start()
+    }
+
+    private fun logRuntime(label: String) {
+        val s = LibretroDroid.getRuntimeStats() ?: return
+        Log.i(TAG, "runtime $label frame=${LibretroDroid.getFrameCount()} rewindEntries=${s[0]} " +
+            "rewindBytes=${s[1]} captureUs=${s[2]} stepUs=${s[3]} runAhead=${s[4]} rewinding=${s[5]} encodeUs=${s.getOrNull(6)}")
     }
 
     private fun showPresentation(watch: MemoryProbe.Region, title: String, core: CoreSpec) {
@@ -131,6 +190,8 @@ class SpikeActivity : AppCompatActivity() {
         }.toMap()
 
     override fun onDestroy() {
+        achievements?.shutdown()
+        achievements = null
         probe?.stop()
         probe = null
         presentation?.dismiss()

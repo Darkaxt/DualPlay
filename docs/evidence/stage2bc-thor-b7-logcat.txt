@@ -1,0 +1,121 @@
+# install exit 0
+Performing Streamed Install
+Success
+
+# wake exit 0
+
+# gba-rw-start exit 0
+Starting: Intent { cmp=dev.darkaxt.dualplay/.SpikeActivity (has extras) }
+Status: ok
+LaunchState: COLD
+Activity: dev.darkaxt.dualplay/.SpikeActivity
+TotalTime: 453
+WaitTime: 455
+Complete
+
+# gba-rw-log exit 0
+11-22 12:00:24.016 I/DualPlay(27166): Loading /data/user/0/dev.darkaxt.dualplay/files/roms/test.gba with core mgba options {}
+11-22 12:00:24.031 I/DualPlay(27166): Displays: 0:Built-in Screen, 4:Screen-2; presentation target: 4
+11-22 12:00:24.249 I/DualPlay(27166): runtime config rewindMb=64 interval=4 runahead=0 rewindTest=15
+11-22 12:00:24.250 I/DualPlay(27166): runtime periodic frame=2 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=1022 runAhead=0 rewinding=0
+11-22 12:00:29.182 I/DualPlay(27166): probe frame=297 read=256 changed=0 avgUs=46 p50Us=45 p99Us=96 maxUs=238 window=50
+11-22 12:00:29.276 I/DualPlay(27166): runtime periodic frame=302 rewindEntries=74 rewindBytes=260189 captureUs=1449 stepUs=3579 runAhead=0 rewinding=0
+11-22 12:00:34.207 I/DualPlay(27166): probe frame=597 read=256 changed=0 avgUs=64 p50Us=48 p99Us=312 maxUs=884 window=100
+11-22 12:00:34.299 I/DualPlay(27166): runtime periodic frame=603 rewindEntries=149 rewindBytes=606773 captureUs=1410 stepUs=1345 runAhead=0 rewinding=0
+11-22 12:00:39.234 I/DualPlay(27166): probe frame=897 read=256 changed=14 avgUs=64 p50Us=56 p99Us=269 maxUs=884 window=150
+11-22 12:00:39.273 I/DualPlay(27166): runtime before-rewind frame=900 rewindEntries=223 rewindBytes=987924 captureUs=1927 stepUs=2136 runAhead=0 rewinding=0
+11-22 12:00:39.326 I/DualPlay(27166): runtime periodic frame=900 rewindEntries=220 rewindBytes=954380 captureUs=1927 stepUs=2756 runAhead=0 rewinding=1
+11-22 12:00:42.292 I/DualPlay(27166): runtime during-rewind frame=900 rewindEntries=43 rewindBytes=112568 captureUs=1927 stepUs=2809 runAhead=0 rewinding=1
+11-22 12:00:44.266 I/DualPlay(27166): probe frame=1018 read=256 changed=0 avgUs=66 p50Us=53 p99Us=312 maxUs=1225 window=200
+11-22 12:00:44.352 I/DualPlay(27166): runtime periodic frame=1023 rewindEntries=73 rewindBytes=255720 captureUs=1487 stepUs=1474 runAhead=0 rewinding=0
+11-22 12:00:49.295 I/DualPlay(27166): probe frame=1318 read=256 changed=0 avgUs=69 p50Us=55 p99Us=312 maxUs=1225 window=250
+11-22 12:00:49.378 I/DualPlay(27166): runtime periodic frame=1323 rewindEntries=148 rewindBytes=603067 captureUs=1414 stepUs=1938 runAhead=0 rewinding=0
+
+# gba-rw-stop exit 0
+
+# gba-ra-start exit 0
+Starting: Intent { cmp=dev.darkaxt.dualplay/.SpikeActivity (has extras) }
+Status: ok
+LaunchState: COLD
+Activity: dev.darkaxt.dualplay/.SpikeActivity
+TotalTime: 362
+WaitTime: 363
+Complete
+
+# gba-ra-log exit 0
+11-22 12:00:51.100 I/DualPlay(27905): Loading /data/user/0/dev.darkaxt.dualplay/files/roms/test.gba with core mgba options {}
+11-22 12:00:51.114 I/DualPlay(27905): Displays: 0:Built-in Screen, 4:Screen-2; presentation target: 4
+11-22 12:00:51.336 I/DualPlay(27905): runtime config rewindMb=0 interval=1 runahead=2 rewindTest=0
+11-22 12:00:51.336 I/DualPlay(27905): runtime periodic frame=1 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=842 runAhead=0 rewinding=0
+11-22 12:00:56.261 I/DualPlay(27905): probe frame=295 read=256 changed=0 avgUs=67 p50Us=53 p99Us=279 maxUs=451 window=50
+11-22 12:00:56.362 I/DualPlay(27905): runtime periodic frame=301 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=6722 runAhead=2 rewinding=0
+11-22 12:01:01.302 I/DualPlay(27905): probe frame=596 read=256 changed=0 avgUs=76 p50Us=63 p99Us=414 maxUs=451 window=100
+11-22 12:01:01.385 I/DualPlay(27905): runtime periodic frame=601 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=5708 runAhead=2 rewinding=0
+11-22 12:01:06.340 I/DualPlay(27905): probe frame=897 read=256 changed=14 avgUs=119 p50Us=67 p99Us=451 maxUs=6041 window=150
+11-22 12:01:06.407 I/DualPlay(27905): runtime periodic frame=901 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=4174 runAhead=2 rewinding=0
+11-22 12:01:11.367 I/DualPlay(27905): probe frame=1197 read=256 changed=1 avgUs=110 p50Us=67 p99Us=464 maxUs=6041 window=200
+11-22 12:01:11.434 I/DualPlay(27905): runtime periodic frame=1201 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=6160 runAhead=2 rewinding=0
+11-22 12:01:16.404 I/DualPlay(27905): probe frame=1498 read=256 changed=0 avgUs=108 p50Us=67 p99Us=451 maxUs=6041 window=250
+11-22 12:01:16.456 I/DualPlay(27905): runtime periodic frame=1501 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=3614 runAhead=2 rewinding=0
+
+# gba-ra-stop exit 0
+
+# gbc-ra-start exit 0
+Starting: Intent { cmp=dev.darkaxt.dualplay/.SpikeActivity (has extras) }
+Status: ok
+LaunchState: COLD
+Activity: dev.darkaxt.dualplay/.SpikeActivity
+TotalTime: 360
+WaitTime: 361
+Complete
+
+# gbc-ra-log exit 0
+11-22 12:01:19.307 I/DualPlay(28342): Loading /data/user/0/dev.darkaxt.dualplay/files/roms/ucity.gbc with core gambatte options {}
+11-22 12:01:19.321 I/DualPlay(28342): Displays: 0:Built-in Screen, 4:Screen-2; presentation target: 4
+11-22 12:01:19.536 I/DualPlay(28342): runtime config rewindMb=32 interval=1 runahead=2 rewindTest=15
+11-22 12:01:19.536 I/DualPlay(28342): runtime periodic frame=4 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=225 runAhead=0 rewinding=0
+11-22 12:01:24.462 I/DualPlay(28342): probe frame=298 read=256 changed=0 avgUs=54 p50Us=45 p99Us=181 maxUs=376 window=50
+11-22 12:01:24.557 I/DualPlay(28342): runtime periodic frame=303 rewindEntries=298 rewindBytes=302929 captureUs=346 stepUs=1093 runAhead=2 rewinding=0
+11-22 12:01:29.485 I/DualPlay(28342): probe frame=598 read=256 changed=0 avgUs=51 p50Us=45 p99Us=181 maxUs=376 window=100
+11-22 12:01:29.579 I/DualPlay(28342): runtime periodic frame=603 rewindEntries=598 rewindBytes=590095 captureUs=352 stepUs=1132 runAhead=2 rewinding=0
+11-22 12:01:34.517 I/DualPlay(28342): probe frame=898 read=256 changed=10 avgUs=55 p50Us=52 p99Us=193 maxUs=376 window=150
+11-22 12:01:34.555 I/DualPlay(28342): runtime before-rewind frame=900 rewindEntries=895 rewindBytes=876195 captureUs=252 stepUs=797 runAhead=2 rewinding=0
+11-22 12:01:34.605 I/DualPlay(28342): runtime periodic frame=900 rewindEntries=892 rewindBytes=873370 captureUs=252 stepUs=481 runAhead=2 rewinding=1
+11-22 12:01:37.569 I/DualPlay(28342): runtime during-rewind frame=900 rewindEntries=714 rewindBytes=701817 captureUs=252 stepUs=411 runAhead=2 rewinding=1
+11-22 12:01:39.546 I/DualPlay(28342): probe frame=1018 read=256 changed=0 avgUs=55 p50Us=52 p99Us=193 maxUs=376 window=200
+11-22 12:01:39.630 I/DualPlay(28342): runtime periodic frame=1023 rewindEntries=837 rewindBytes=820402 captureUs=405 stepUs=1131 runAhead=2 rewinding=0
+11-22 12:01:44.577 I/DualPlay(28342): probe frame=1318 read=256 changed=0 avgUs=57 p50Us=54 p99Us=193 maxUs=376 window=250
+11-22 12:01:44.655 I/DualPlay(28342): runtime periodic frame=1323 rewindEntries=1137 rewindBytes=1109072 captureUs=344 stepUs=1091 runAhead=2 rewinding=0
+
+# gbc-ra-stop exit 0
+
+# nds-rw-start exit 0
+Starting: Intent { cmp=dev.darkaxt.dualplay/.SpikeActivity (has extras) }
+Status: ok
+LaunchState: COLD
+Activity: dev.darkaxt.dualplay/.SpikeActivity
+TotalTime: 435
+WaitTime: 437
+Complete
+
+# nds-rw-log exit 0
+11-22 12:01:46.786 I/DualPlay(29075): Loading /data/user/0/dev.darkaxt.dualplay/files/roms/zoo.nds with core melondsds options {melonds_number_of_screen_layouts=1, melonds_screen_layout1=top-bottom, melonds_screen_gap=0, melonds_show_cursor=disabled}
+11-22 12:01:46.799 I/DualPlay(29075): Displays: 0:Built-in Screen, 4:Screen-2; presentation target: 4
+11-22 12:01:47.122 I/DualPlay(29075): runtime config rewindMb=128 interval=4 runahead=0 rewindTest=15
+11-22 12:01:47.123 I/DualPlay(29075): runtime periodic frame=5 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=8371 runAhead=0 rewinding=0
+11-22 12:01:52.151 I/DualPlay(29075): runtime periodic frame=277 rewindEntries=67 rewindBytes=6678023 captureUs=21105 stepUs=23146 runAhead=0 rewinding=0
+11-22 12:01:52.627 I/DualPlay(29075): probe frame=306 read=256 changed=0 avgUs=660 p50Us=23 p99Us=5305 maxUs=25933 window=50
+11-22 12:01:57.176 I/DualPlay(29075): runtime periodic frame=578 rewindEntries=142 rewindBytes=13170966 captureUs=20326 stepUs=1640 runAhead=0 rewinding=0
+11-22 12:01:57.775 I/DualPlay(29075): probe frame=614 read=256 changed=0 avgUs=503 p50Us=29 p99Us=14059 maxUs=25933 window=100
+11-22 12:02:02.147 I/DualPlay(29075): runtime before-rewind frame=876 rewindEntries=216 rewindBytes=19588803 captureUs=20512 stepUs=2294 runAhead=0 rewinding=0
+11-22 12:02:02.222 I/DualPlay(29075): runtime periodic frame=876 rewindEntries=214 rewindBytes=19415195 captureUs=20512 stepUs=28012 runAhead=0 rewinding=1
+11-22 12:02:03.090 I/DualPlay(29075): probe frame=876 read=256 changed=0 avgUs=746 p50Us=47 p99Us=25933 maxUs=28422 window=150
+11-22 12:02:05.138 I/DualPlay(29075): runtime during-rewind frame=876 rewindEntries=113 rewindBytes=10656291 captureUs=20512 stepUs=28150 runAhead=0 rewinding=1
+11-22 12:02:07.227 I/DualPlay(29075): runtime periodic frame=1001 rewindEntries=143 rewindBytes=13261583 captureUs=20880 stepUs=1419 runAhead=0 rewinding=0
+11-22 12:02:08.586 I/DualPlay(29075): probe frame=1082 read=256 changed=0 avgUs=737 p50Us=51 p99Us=28175 maxUs=29803 window=200
+11-22 12:02:12.251 I/DualPlay(29075): runtime periodic frame=1302 rewindEntries=218 rewindBytes=19771164 captureUs=20884 stepUs=2324 runAhead=0 rewinding=0
+
+# nds-rw-stop exit 0
+
+# sleep exit 0
+

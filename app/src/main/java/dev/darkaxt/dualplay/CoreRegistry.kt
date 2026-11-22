@@ -18,7 +18,11 @@ data class CoreSpec(
     /** Default watched bus region for the memory probe. */
     val probeAddress: Long,
     val probeLength: Int = 256,
-)
+    /** RetroAchievements console id (rc_consoles.h) per ROM extension. */
+    val rcConsoles: Map<String, Int> = emptyMap(),
+) {
+    fun rcConsoleId(rom: File): Int = rcConsoles[rom.extension.lowercase()] ?: 0
+}
 
 object CoreRegistry {
     val MGBA = CoreSpec(
@@ -27,6 +31,7 @@ object CoreRegistry {
         system = "gba",
         extensions = setOf("gba"),
         probeAddress = 0x0300_0000L, // IWRAM
+        rcConsoles = mapOf("gba" to 5),
     )
 
     val GAMBATTE = CoreSpec(
@@ -35,6 +40,7 @@ object CoreRegistry {
         system = "gbc",
         extensions = setOf("gb", "gbc", "dmg", "cgb"),
         probeAddress = 0xC000L, // WRAM bank 0
+        rcConsoles = mapOf("gb" to 4, "dmg" to 4, "gbc" to 6, "cgb" to 6),
     )
 
     val MELONDS_DS = CoreSpec(
@@ -50,6 +56,7 @@ object CoreRegistry {
         ),
         stackedDualScreen = true,
         probeAddress = 0x0200_0000L, // main RAM
+        rcConsoles = mapOf("nds" to 18, "dsi" to 78),
     )
 
     val all = listOf(MGBA, GAMBATTE, MELONDS_DS)
