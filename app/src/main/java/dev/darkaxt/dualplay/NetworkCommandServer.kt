@@ -159,7 +159,7 @@ class NetworkCommandServer(private val session: Session) {
         /** The RetroArch release whose command protocol this follows. */
         const val RETROARCH_VERSION = "1.19.1"
         private const val READ = "READ_CORE_MEMORY"
-        private const val MAX_PACKET = 4096
+        const val MAX_PACKET = 4096
         /** Largest read whose reply fits one packet: header plus three characters per byte. */
         private const val MAX_READ = (MAX_PACKET - 32) / 3
         private const val LOG_INTERVAL_NS = 10_000_000_000L

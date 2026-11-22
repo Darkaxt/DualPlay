@@ -41,6 +41,8 @@ android {
 
 dependencies {
     implementation project(':libretrodroid')
+    // DualDex on the bottom display, in-process (external/DualScreenDex).
+    implementation project(':companion-android')
     implementation 'androidx.core:core-ktx:1.13.1'
     implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.10.0'

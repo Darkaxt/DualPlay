@@ -20,3 +20,11 @@ include ':app'
 // Runtime: our LibretroDroid fork (git submodule, branch `dualplay`).
 include ':libretrodroid'
 project(':libretrodroid').projectDir = file('runtime/LibretroDroid/libretrodroid')
+
+// DualDex companion, hosted in-process (git submodule Darkaxt/DualScreenDex). Its project paths are kept as they are
+// there, because its modules refer to each other by them. Only the modules the Android companion needs.
+['companion-android', 'catalog-store', 'companion-core', 'parser-core', 'save-core', 'retroarch-session',
+ 'memory-mapper-lab', 'battle-memory'].each { name ->
+    include ":$name"
+    project(":$name").projectDir = file("external/DualScreenDex/$name")
+}

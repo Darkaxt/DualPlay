@@ -1,0 +1,17 @@
+# Only what the included DualDex modules (external/DualScreenDex) reference through `libs`.
+# DualPlay's own modules declare their dependencies directly.
+[versions]
+agp = "9.4.1"
+coreKtx = "1.10.1"
+appcompat = "1.6.1"
+activity = "1.8.0"
+junit = "4.13.2"
+
+[libraries]
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+
+[plugins]
+android-library = { id = "com.android.library", version.ref = "agp" }

@@ -1,0 +1,169 @@
+===== Thor b26
+# install exit 0
+Performing Streamed Install
+Success
+# wake exit 0
+# u-start exit 0
+Starting: Intent { cmp=dev.darkaxt.dualplay/.MainActivity (has extras) }
+Status: ok
+LaunchState: COLD
+Activity: dev.darkaxt.dualplay/.MainActivity
+TotalTime: 487
+WaitTime: 490
+Complete
+# focus exit 0
+  mCurrentFocus=Window{1409e41 u0 com.darkaxt.dualdex/com.darkaxt.dualdex.MainActivity}
+  mFocusedApp=ActivityRecord{491b188 u0 com.darkaxt.dualdex/.MainActivity} t2447}
+  mCurrentFocus=Window{f3fcb05 u0 dev.darkaxt.dualplay/dev.darkaxt.dualplay.GameActivity}
+  mFocusedApp=ActivityRecord{cc9bf15 u0 dev.darkaxt.dualplay/.GameActivity} t2453}
+  mTopFocusedDisplayId=0
+# u-rest exit 0
+# u-log exit 0
+11-22 16:14:15.394 I/DualPlay(20361): lifecycle create n=1 task=2453 restored=false display=0 orientation=2 size=833x444dp
+11-22 16:14:15.418 I/DualPlay(20361): settings launch dualplay_shader=(default) dualplay_rewind=off(default) dualplay_rewind_mb=64(default) dualplay_runahead=0(default) dualplay_ff_speed=3(default) dualplay_achievements=off(default) dualplay_netcmd=on(default)
+11-22 16:14:15.496 I/DualPlay(20361): dualdex host started origin=http://127.0.0.1:37697
+11-22 16:14:15.647 W/chromium(20361): [WARNING:dns_config_service_android.cc(115)] Failed to read DnsConfig.
+11-22 16:14:15.719 I/DualPlay(20361): dualdex shown on display 4
+11-22 16:14:15.768 W/chromium(20361): [WARNING:display_webview.cc(31)] WebView overlays are enabled!
+11-22 16:14:16.026 I/DualPlay(20361): netcmd listening /127.0.0.1:55355 system=game_boy_advance game='Pokemon Unbound (v2.1.1.1)'
+11-22 16:14:16.098 I/DualPlay(20361): netcmd content crc32=4B3D4957 ms=72
+11-22 16:14:16.099 I/DualPlay(20361): dualdex attached GBA crc32=4B3D4957 'Pokemon Unbound (v2.1.1.1)'
+11-22 16:14:19.559 I/DualDexCache(20361): category=CATALOG_CACHE outcome=MISS_FILE_ABSENT
+11-22 16:14:22.134 I/DualPlay(20361): selfTest step=dualdex frame=368
+11-22 16:14:22.135 I/DualPlay(20361): selfTest dualdex connection=PLAYING resolution=LOADING system=game_boy_advance crc32=4B3D4957 source=null saves=/storage/emulated/0/DualPlay/saves/mgba message='Opening the SHA-256-verified active catalog'
+11-22 16:14:27.731 I/DualPlay(20361): netcmd served=1 reads=0 avgReadUs=0
+11-22 16:14:37.200 I/DualPlay(20361): selfTest step=dualdex frame=1268
+11-22 16:14:37.201 I/DualPlay(20361): selfTest dualdex connection=PLAYING resolution=LOADING system=game_boy_advance crc32=4B3D4957 source=null saves=/storage/emulated/0/DualPlay/saves/mgba message='Opening the SHA-256-verified active catalog'
+11-22 16:14:37.775 I/DualPlay(20361): netcmd served=11 reads=0 avgReadUs=0
+11-22 16:14:47.815 I/DualPlay(20361): netcmd served=21 reads=0 avgReadUs=0
+11-22 16:14:49.274 W/arkaxt.dualplay(20361): JNI critical lock held for 27.021ms on Thread[52,tid=20754,Runnable,Thread*=0xb400007d809bb0a0,peer=0x1aa00000,"dualdex-parser"]
+11-22 16:14:57.862 I/DualPlay(20361): netcmd served=31 reads=0 avgReadUs=0
+11-22 16:14:58.300 I/DualPlay(20361): selfTest step=dualdex frame=2528
+11-22 16:14:58.300 I/DualPlay(20361): selfTest dualdex connection=PLAYING resolution=LOADING system=game_boy_advance crc32=4B3D4957 source=null saves=/storage/emulated/0/DualPlay/saves/mgba message='Opening the SHA-256-verified active catalog'
+11-22 16:15:07.902 I/DualPlay(20361): netcmd served=41 reads=0 avgReadUs=0
+# u-stop exit 0
+# sleep exit 0
+===== Thor b27
+# install exit 0
+Performing Streamed Install
+Success
+# wake exit 0
+# focus exit 0
+  mCurrentFocus=Window{1409e41 u0 com.darkaxt.dualdex/com.darkaxt.dualdex.MainActivity}
+  mFocusedApp=ActivityRecord{491b188 u0 com.darkaxt.dualdex/.MainActivity} t2447}
+  mCurrentFocus=Window{93ff36b u0 dev.darkaxt.dualplay/dev.darkaxt.dualplay.GameActivity}
+  mFocusedApp=ActivityRecord{bb7f690 u0 dev.darkaxt.dualplay/.GameActivity} t2454}
+  mTopFocusedDisplayId=0
+# u-log exit 0
+11-22 16:16:05.487 I/DualPlay(22068): lifecycle create n=1 task=2454 restored=false display=0 orientation=2 size=833x444dp
+11-22 16:16:05.507 I/DualPlay(22068): settings launch dualplay_shader=(default) dualplay_rewind=off(default) dualplay_rewind_mb=64(default) dualplay_runahead=0(default) dualplay_ff_speed=3(default) dualplay_achievements=off(default) dualplay_netcmd=on(default)
+11-22 16:16:05.584 I/DualPlay(22068): dualdex host started origin=http://127.0.0.1:42775
+11-22 16:16:05.644 W/chromium(22068): [WARNING:dns_config_service_android.cc(115)] Failed to read DnsConfig.
+11-22 16:16:05.699 I/DualPlay(22068): dualdex shown on display 4
+11-22 16:16:05.751 W/chromium(22068): [WARNING:display_webview.cc(31)] WebView overlays are enabled!
+11-22 16:16:06.102 I/DualPlay(22068): netcmd listening /127.0.0.1:55355 system=game_boy_advance game='Pokemon Unbound (v2.1.1.1)'
+11-22 16:16:06.161 I/DualPlay(22068): netcmd content crc32=4B3D4957 ms=59
+11-22 16:16:06.162 I/DualPlay(22068): dualdex attached GBA crc32=4B3D4957 'Pokemon Unbound (v2.1.1.1)'
+11-22 16:16:09.649 I/DualDexCache(22068): category=CATALOG_CACHE outcome=MISS_FILE_ABSENT
+11-22 16:16:17.964 I/DualPlay(22068): netcmd served=7 reads=0 avgReadUs=0
+11-22 16:16:28.003 I/DualPlay(22068): netcmd served=17 reads=0 avgReadUs=0
+11-22 16:16:36.317 I/DualPlay(22068): selfTest step=dualdex frame=1811
+11-22 16:16:36.317 I/DualPlay(22068): selfTest dualdex connection=PLAYING resolution=LOADING system=game_boy_advance crc32=4B3D4957 source=null saves=/storage/emulated/0/DualPlay/saves/mgba message='Opening the SHA-256-verified active catalog'
+11-22 16:16:38.041 I/DualPlay(22068): netcmd served=27 reads=0 avgReadUs=0
+11-22 16:16:40.517 W/arkaxt.dualplay(22068): JNI critical lock held for 27.105ms on Thread[54,tid=22347,Runnable,Thread*=0xb400007d80a0b000,peer=0x1aec0000,"dualdex-parser"]
+11-22 16:16:48.081 I/DualPlay(22068): netcmd served=37 reads=0 avgReadUs=0
+11-22 16:16:58.116 I/DualPlay(22068): netcmd served=47 reads=0 avgReadUs=0
+11-22 16:17:06.450 I/DualPlay(22068): selfTest step=dualdex frame=3611
+11-22 16:17:06.450 I/DualPlay(22068): selfTest dualdex connection=PLAYING resolution=LOADING system=game_boy_advance crc32=4B3D4957 source=null saves=/storage/emulated/0/DualPlay/saves/mgba message='Opening the SHA-256-verified active catalog'
+11-22 16:17:08.147 I/DualPlay(22068): netcmd served=57 reads=0 avgReadUs=0
+11-22 16:17:18.184 I/DualPlay(22068): netcmd served=67 reads=0 avgReadUs=0
+11-22 16:17:28.220 I/DualPlay(22068): netcmd served=77 reads=0 avgReadUs=0
+11-22 16:17:36.585 I/DualPlay(22068): selfTest step=dualdex frame=5411
+11-22 16:17:36.585 I/DualPlay(22068): selfTest dualdex connection=PLAYING resolution=LOADING system=game_boy_advance crc32=4B3D4957 source=null saves=/storage/emulated/0/DualPlay/saves/mgba message='Opening the SHA-256-verified active catalog'
+11-22 16:17:38.271 I/DualPlay(22068): netcmd served=87 reads=0 avgReadUs=0
+11-22 16:17:48.302 I/DualPlay(22068): netcmd served=97 reads=0 avgReadUs=0
+11-22 16:17:58.338 I/DualPlay(22068): netcmd served=107 reads=0 avgReadUs=0
+11-22 16:18:06.711 I/DualPlay(22068): selfTest step=dualdex frame=7211
+11-22 16:18:06.711 I/DualPlay(22068): selfTest dualdex connection=PLAYING resolution=LOADING system=game_boy_advance crc32=4B3D4957 source=null saves=/storage/emulated/0/DualPlay/saves/mgba message='Opening the SHA-256-verified active catalog'
+11-22 16:18:08.372 I/DualPlay(22068): netcmd served=117 reads=0 avgReadUs=0
+11-22 16:18:18.410 I/DualPlay(22068): netcmd served=127 reads=0 avgReadUs=0
+11-22 16:18:28.444 I/DualPlay(22068): netcmd served=137 reads=0 avgReadUs=0
+11-22 16:18:36.859 I/DualPlay(22068): selfTest step=dualdex frame=9011
+11-22 16:18:36.859 I/DualPlay(22068): selfTest dualdex connection=PLAYING resolution=ACTIVE system=game_boy_advance crc32=4B3D4957 source=Unbound (v2.1.1.1).gba saves=/storage/emulated/0/DualPlay/saves/mgba message='Opened Unbound (v2.1.1.1).gba.'
+11-22 16:18:38.484 I/DualPlay(22068): netcmd served=147 reads=0 avgReadUs=0
+11-22 16:18:48.516 I/DualPlay(22068): netcmd served=157 reads=0 avgReadUs=0
+11-22 16:18:58.554 I/DualPlay(22068): netcmd served=167 reads=0 avgReadUs=0
+11-22 16:19:07.014 I/DualPlay(22068): selfTest step=dualdex frame=10812
+11-22 16:19:07.014 I/DualPlay(22068): selfTest dualdex connection=PLAYING resolution=ACTIVE system=game_boy_advance crc32=4B3D4957 source=Unbound (v2.1.1.1).gba saves=/storage/emulated/0/DualPlay/saves/mgba message='Opened Unbound (v2.1.1.1).gba.'
+11-22 16:19:08.585 I/DualPlay(22068): netcmd served=177 reads=0 avgReadUs=0
+# u-stop exit 0
+# sleep exit 0
+===== Thor b28
+# install exit 0
+Performing Streamed Install
+Success
+# wake exit 0
+# u-log exit 0
+11-22 16:19:56.078 I/DualPlay(25375): dualdex host started origin=http://127.0.0.1:40145
+11-22 16:19:56.187 I/DualPlay(25375): dualdex shown on display 4
+11-22 16:19:56.663 I/DualPlay(25375): netcmd content crc32=4B3D4957 ms=70
+11-22 16:19:56.663 I/DualPlay(25375): dualdex attached GBA crc32=4B3D4957 'Pokemon Unbound (v2.1.1.1)'
+11-22 16:19:59.695 I/DualPlay(25375): selfTest step=dualdex frame=191
+11-22 16:19:59.695 I/DualPlay(25375): selfTest dualdex connection=DISCONNECTED resolution=NO_CONTENT system=null crc32=null source=null saves=null message='Game discovery could not finish. The folder fallback remains available.'
+11-22 16:20:01.337 I/DualDexCache(25375): category=CATALOG_CACHE outcome=HIT
+11-22 16:20:02.707 I/DualPlay(25375): selfTest step=dualdex frame=371
+11-22 16:20:02.707 I/DualPlay(25375): selfTest dualdex connection=PLAYING resolution=ACTIVE system=game_boy_advance crc32=4B3D4957 source=Unbound (v2.1.1.1).gba saves=/storage/emulated/0/DualPlay/saves/mgba message='Opened Unbound (v2.1.1.1).gba.'
+11-22 16:20:05.721 I/DualPlay(25375): selfTest step=dualdex frame=551
+11-22 16:20:05.721 I/DualPlay(25375): selfTest dualdex connection=PLAYING resolution=ACTIVE system=game_boy_advance crc32=4B3D4957 source=Unbound (v2.1.1.1).gba saves=/storage/emulated/0/DualPlay/saves/mgba message='Opened Unbound (v2.1.1.1).gba.'
+11-22 16:20:08.734 I/DualPlay(25375): selfTest step=dualdex frame=730
+11-22 16:20:08.735 I/DualPlay(25375): selfTest dualdex connection=PLAYING resolution=ACTIVE system=game_boy_advance crc32=4B3D4957 source=Unbound (v2.1.1.1).gba saves=/storage/emulated/0/DualPlay/saves/mgba message='Opened Unbound (v2.1.1.1).gba.'
+11-22 16:20:11.749 I/DualPlay(25375): selfTest step=dualdex frame=911
+11-22 16:20:11.749 I/DualPlay(25375): selfTest dualdex connection=PLAYING resolution=ACTIVE system=game_boy_advance crc32=4B3D4957 source=Unbound (v2.1.1.1).gba saves=/storage/emulated/0/DualPlay/saves/mgba message='Opened Unbound (v2.1.1.1).gba.'
+11-22 16:20:14.765 I/DualPlay(25375): selfTest step=dualdex frame=1090
+11-22 16:20:14.765 I/DualPlay(25375): selfTest dualdex connection=PLAYING resolution=ACTIVE system=game_boy_advance crc32=4B3D4957 source=Unbound (v2.1.1.1).gba saves=/storage/emulated/0/DualPlay/saves/mgba message='Opened Unbound (v2.1.1.1).gba.'
+11-22 16:20:17.782 I/DualPlay(25375): selfTest step=dualdex frame=1271
+11-22 16:20:17.782 I/DualPlay(25375): selfTest dualdex connection=PLAYING resolution=ACTIVE system=game_boy_advance crc32=4B3D4957 source=Unbound (v2.1.1.1).gba saves=/storage/emulated/0/DualPlay/saves/mgba message='Opened Unbound (v2.1.1.1).gba.'
+11-22 16:20:20.800 I/DualPlay(25375): selfTest step=dualdex frame=1451
+11-22 16:20:20.800 I/DualPlay(25375): selfTest dualdex connection=PLAYING resolution=ACTIVE system=game_boy_advance crc32=4B3D4957 source=Unbound (v2.1.1.1).gba saves=/storage/emulated/0/DualPlay/saves/mgba message='Opened Unbound (v2.1.1.1).gba.'
+# u-stop exit 0
+# z-sum exit 0
+lines=38 maxWindowP99Us=1255 windowsP99Over1ms=14 last=1019 maxUs=11263 window=1024
+# z-first exit 0
+11-22 16:22:58.563 I/DualPlay(26398): probe frame=8794 read=256 changed=0 avgUs=128 p50Us=70 p99Us=770 maxUs=9444 window=1024
+11-22 16:23:03.660 I/DualPlay(26398): probe frame=9099 read=256 changed=0 avgUs=137 p50Us=70 p99Us=863 maxUs=9676 window=1024
+11-22 16:23:08.724 I/DualPlay(26398): probe frame=9402 read=256 changed=0 avgUs=136 p50Us=69 p99Us=816 maxUs=9676 window=1024
+# z-last exit 0
+11-22 16:25:55.927 I/DualPlay(26398): probe frame=19405 read=256 changed=0 avgUs=136 p50Us=67 p99Us=889 maxUs=10512 window=1024
+11-22 16:26:00.975 I/DualPlay(26398): probe frame=19707 read=256 changed=0 avgUs=135 p50Us=65 p99Us=889 maxUs=10512 window=1024
+11-22 16:26:06.032 I/DualPlay(26398): probe frame=20010 read=256 changed=0 avgUs=138 p50Us=63 p99Us=1019 maxUs=11263 window=1024
+# z-stop exit 0
+# sleep exit 0
+===== Thor b29
+# wake exit 0
+# z-log exit 0
+11-22 16:26:46.779 I/DualPlay(31856): runtime periodic frame=8 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=1697 runAhead=0 rewinding=0 encodeUs=0 shaderUs=0 bottomShaderUs=0
+11-22 16:26:51.657 I/DualPlay(31856): probe frame=299 read=256 changed=0 avgUs=170 p50Us=63 p99Us=263 maxUs=5101 window=50
+11-22 16:26:51.786 I/DualPlay(31856): runtime periodic frame=307 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=3373 runAhead=0 rewinding=0 encodeUs=0 shaderUs=0 bottomShaderUs=0
+11-22 16:26:56.699 I/DualPlay(31856): probe frame=601 read=256 changed=0 avgUs=173 p50Us=43 p99Us=5101 maxUs=6820 window=100
+11-22 16:26:56.817 I/DualPlay(31856): runtime periodic frame=608 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=3101 runAhead=0 rewinding=0 encodeUs=0 shaderUs=0 bottomShaderUs=0
+11-22 16:27:01.798 I/DualPlay(31856): probe frame=906 read=256 changed=0 avgUs=163 p50Us=62 p99Us=838 maxUs=6820 window=150
+11-22 16:27:01.851 I/DualPlay(31856): runtime periodic frame=909 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=3633 runAhead=0 rewinding=0 encodeUs=0 shaderUs=0 bottomShaderUs=0
+11-22 16:27:06.849 I/DualPlay(31856): probe frame=1208 read=256 changed=0 avgUs=141 p50Us=62 p99Us=838 maxUs=6820 window=200
+11-22 16:27:06.880 I/DualPlay(31856): runtime periodic frame=1210 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=2709 runAhead=0 rewinding=0 encodeUs=0 shaderUs=0 bottomShaderUs=0
+11-22 16:27:11.913 I/DualPlay(31856): runtime periodic frame=1511 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=3686 runAhead=0 rewinding=0 encodeUs=0 shaderUs=0 bottomShaderUs=0
+11-22 16:27:11.914 I/DualPlay(31856): probe frame=1511 read=256 changed=0 avgUs=127 p50Us=62 p99Us=750 maxUs=6820 window=250
+11-22 16:27:16.953 I/DualPlay(31856): runtime periodic frame=1813 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=3727 runAhead=0 rewinding=0 encodeUs=0 shaderUs=0 bottomShaderUs=0
+11-22 16:27:16.969 I/DualPlay(31856): probe frame=1814 read=256 changed=0 avgUs=119 p50Us=65 p99Us=750 maxUs=6820 window=300
+11-22 16:27:21.985 I/DualPlay(31856): runtime periodic frame=2114 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=3037 runAhead=0 rewinding=0 encodeUs=0 shaderUs=0 bottomShaderUs=0
+11-22 16:27:22.034 I/DualPlay(31856): probe frame=2117 read=256 changed=0 avgUs=122 p50Us=65 p99Us=750 maxUs=6820 window=350
+11-22 16:27:27.021 I/DualPlay(31856): runtime periodic frame=2415 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=4191 runAhead=0 rewinding=0 encodeUs=0 shaderUs=0 bottomShaderUs=0
+11-22 16:27:27.089 I/DualPlay(31856): probe frame=2419 read=256 changed=0 avgUs=118 p50Us=65 p99Us=838 maxUs=6820 window=400
+11-22 16:27:32.069 I/DualPlay(31856): runtime periodic frame=2717 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=3415 runAhead=0 rewinding=0 encodeUs=0 shaderUs=0 bottomShaderUs=0
+11-22 16:27:32.169 I/DualPlay(31856): probe frame=2723 read=256 changed=0 avgUs=114 p50Us=66 p99Us=750 maxUs=6820 window=450
+11-22 16:27:37.100 I/DualPlay(31856): runtime periodic frame=3018 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=1988 runAhead=0 rewinding=0 encodeUs=0 shaderUs=0 bottomShaderUs=0
+11-22 16:27:37.235 I/DualPlay(31856): probe frame=3026 read=256 changed=0 avgUs=111 p50Us=67 p99Us=750 maxUs=6820 window=500
+11-22 16:27:42.128 I/DualPlay(31856): runtime periodic frame=3319 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=3755 runAhead=0 rewinding=0 encodeUs=0 shaderUs=0 bottomShaderUs=0
+11-22 16:27:42.318 I/DualPlay(31856): probe frame=3330 read=256 changed=0 avgUs=125 p50Us=67 p99Us=750 maxUs=9820 window=550
+11-22 16:27:47.170 I/DualPlay(31856): runtime periodic frame=3621 rewindEntries=0 rewindBytes=0 captureUs=0 stepUs=3205 runAhead=0 rewinding=0 encodeUs=0 shaderUs=0 bottomShaderUs=0
+# z-stop exit 0
+# sleep exit 0

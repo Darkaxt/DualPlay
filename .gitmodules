@@ -2,3 +2,7 @@
 	path = runtime/LibretroDroid
 	url = https://github.com/Darkaxt/LibretroDroid.git
 	branch = dualplay
+[submodule "external/DualScreenDex"]
+	path = external/DualScreenDex
+	url = https://github.com/Darkaxt/DualScreenDex.git
+	branch = master

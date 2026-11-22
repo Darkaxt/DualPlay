@@ -54,6 +54,8 @@ import dev.darkaxt.dualplay.ui.Accent
 import dev.darkaxt.dualplay.ui.DualPlayTheme
 import dev.darkaxt.dualplay.ui.MenuRow
 import dev.darkaxt.dualplay.ui.rememberInitialFocus
+import dev.darkaxt.dualplay.dualdex.DualDexHosting
+import dev.darkaxt.dualplay.dualdex.DualDexPresentation
 import dev.darkaxt.dualplay.settings.Frontend
 import dev.darkaxt.dualplay.settings.ON
 import dev.darkaxt.dualplay.settings.OptionInfo
@@ -93,6 +95,7 @@ class GameActivity : AppCompatActivity() {
 
     private var retroView: GLRetroView? = null
     private var presentation: DualDexPlaceholder? = null
+    private var dualDex: DualDexPresentation? = null
     private var bottomScreen: BottomScreenPresentation? = null
     private var probe: MemoryProbe? = null
     private var menuView: ComposeView? = null
@@ -663,6 +666,8 @@ class GameActivity : AppCompatActivity() {
             "recreate" -> runOnUiThread { recreate() }
             // Sends DualDex's commands to the local network-command server over real UDP and logs the replies.
             "netcmd" -> Thread({ netcmdSelfTest() }, "DualPlay-NetCmdTest").start()
+            // The hosted DualDex's RetroArch session view (connection, ROM resolution, save folder).
+            "dualdex" -> Log.i(TAG, "selfTest dualdex ${DualDexHosting.state()}")
             // `shader:<preset>` (or `shader:none`): the Settings page's shader row, as a Left/Right press sets it.
             else -> if (step.startsWith("shader:")) runOnUiThread {
                 openMenu()
@@ -719,12 +724,28 @@ class GameActivity : AppCompatActivity() {
             screen.show()
             bottomScreen = screen
             probe = MemoryProbe(watch) { snapshot -> runOnUiThread { screen.render(snapshot) } }.also { it.start() }
+        } else if (saved.value.flag(Frontend.NETCMD) && core.system in DUALDEX_SYSTEMS &&
+            showDualDex(target)
+        ) {
+            return
         } else {
             val placeholder = DualDexPlaceholder(this, target, title)
             placeholder.show()
             presentation = placeholder
             probe = MemoryProbe(watch) { snapshot -> runOnUiThread { placeholder.render(snapshot) } }.also { it.start() }
         }
+    }
+
+    /** DualDex on the bottom display, hosted in this process. Falls back to the placeholder if it cannot start. */
+    private fun showDualDex(target: Display): Boolean {
+        val version = packageManager.getPackageInfo(packageName, 0).versionName
+        val host = DualDexHosting.start(this, "DualPlay ${version ?: "dev"}") ?: return false
+        val origin = host.localOrigin ?: return false
+        val screen = DualDexPresentation(this, target, host, origin)
+        screen.show()
+        dualDex = screen
+        Log.i(TAG, "dualdex shown on display ${target.displayId}")
+        return true
     }
 
     private fun startNetworkCommands(rom: File) {
@@ -739,21 +760,27 @@ class GameActivity : AppCompatActivity() {
             paused = { menuOpen.value },
         )
         val server = NetworkCommandServer(session)
-        if (!server.start()) return
+        // The UDP listener serves the standalone DualDex app; the hosted DualDex calls the handler directly.
+        server.start()
         netcmd = server
         if (core.stackedDualScreen) return // DualDex has no DS support; skip hashing large DS images.
         val started = System.nanoTime()
         val crc = java.util.zip.CRC32()
+        val sha = java.security.MessageDigest.getInstance("SHA-256")
         rom.inputStream().buffered(1 shl 16).use { input ->
             val buffer = ByteArray(1 shl 16)
             while (true) {
                 val count = input.read(buffer)
                 if (count < 0) break
                 crc.update(buffer, 0, count)
+                sha.update(buffer, 0, count)
             }
         }
         session.crc32 = crc.value
+        val sha256 = sha.digest().joinToString("") { "%02x".format(it) }
         Log.i(TAG, "netcmd content crc32=%08X ms=%d".format(crc.value, (System.nanoTime() - started) / 1_000_000))
+        if (destroyed) return
+        DualDexHosting.hostSession(rom, core.system, title, crc.value, sha256)?.let { DualDexHosting.attach(server, it) }
     }
 
     /**
@@ -839,8 +866,11 @@ class GameActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         destroyed = true
+        netcmd?.let(DualDexHosting::detach)
         netcmd?.stop()
         netcmd = null
+        dualDex?.dismiss()
+        dualDex = null
         Log.i(TAG, "lifecycle destroy finishing=$isFinishing changingConfig=$isChangingConfigurations")
         achievements?.shutdown()
         achievements = null
@@ -868,6 +898,8 @@ class GameActivity : AppCompatActivity() {
 
     companion object {
         const val TAG = "DualPlay"
+        /** Systems DualDex supports (`CoreSpec.system`). */
+        private val DUALDEX_SYSTEMS = setOf("gb", "gbc", "gba")
         private var createdInProcess = 0
         private var lastConfiguration: Configuration? = null
         private const val SLOTS = 4
